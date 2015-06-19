@@ -1,5 +1,7 @@
 set nocompatible
 
+let s:is_windows = has('win32') || has('win64')
+
 "Neocompl
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
@@ -29,28 +31,27 @@ set clipboard=unnamed
 "Markdown support
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 
-set timeoutlen=300                                  "mapping timeout
-set ttimeoutlen=50                                  "keycode timeout
-set nofoldenable                                    "disable folding
-set mouse=a                                         "enable mouse
-set mousehide                                       "hide when characters are typed
-set history=1000                                    "number of command lines to remember
-set ttyfast                                         "assume fast terminal connection
-set viewoptions=folds,options,cursor,unix,slash     "unix/windows compatibility
-set encoding=utf-8                                  "set encoding for text
-set hidden                                          "allow buffer switching without saving
-set autoread                                        "auto reload if file saved externally
-set fileformats+=mac                                "add mac to auto-detection of file format line endings
-set nrformats-=octal                                "always assume decimal numbers
-set showcmd                                         "always show last used command
-set autochdir                                       "automatically change to file dir
+set timeoutlen=300   " mapping timeout
+set ttimeoutlen=50   " keycode timeout
+set nofoldenable     " disable folding
+set mouse=a          " enable mouse
+set mousehide        " hide when characters are typed
+set history=1000     " number of command lines to remember
+set ttyfast          " assume fast terminal connection
+set encoding=utf-8   " set encoding for text
+set hidden           " allow buffer switching without saving
+set autoread         " auto reload if file saved externally
+set fileformats+=mac " add mac to auto-detection of file format line endings
+set nrformats-=octal " always assume decimal numbers
+set showcmd          " always show last used command
+set autochdir        " automatically change to file dir
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 filetype off " Required by vundle
 
-if (has('win32') || has('win64'))
+if s:is_windows
     set rtp+=~/.vim
 endif
 set rtp+=~/.vim/bundle/neobundle.vim
@@ -63,8 +64,8 @@ NeoBundle 'bling/vim-airline'               " Status bar
 NeoBundle 'airblade/vim-gitgutter'          " Gitgutter
 NeoBundle 'kien/rainbow_parentheses.vim'    " double rainbow
 NeoBundle 'mhinz/vim-startify'              " More useful startup page
-NeoBundle 'xolox/vim-misc'                  " Used for colorscheme switcher
-NeoBundle 'xolox/vim-colorscheme-switcher'  " Quickswitch theme
+NeoBundle 'xolox/vim-colorscheme-switcher', {
+            \ 'depends' : 'xolox/vim-misc'}  " Quickswitch theme
 
 " Utilities
 NeoBundle 'Shougo/vimproc.vim', {
@@ -87,12 +88,12 @@ NeoBundle 'Raimondi/delimitMate'            " Matching parentheses
 NeoBundle 'nathanaelkane/vim-indent-guides' " Indent visuals
 NeoBundle 'tpope/vim-speeddating'           " <C-a>, <C-x> for dates
 NeoBundle 'tpope/vim-surround'              " Surround shortcuts
-"NeoBundle 'ervandew/supertab'               " Tab Completion
 NeoBundle 'scrooloose/syntastic'            " Syntax errors
 NeoBundle 'majutsushi/tagbar'               " Tag browsing
 NeoBundle 'scrooloose/nerdcommenter'        " Commenting shortcuts
 NeoBundle 'rking/ag.vim'                    " Searcher
 NeoBundle 'Shougo/unite.vim'                " UI for bunch of stuff
+NeoBundle 'qpkorr/vim-bufkill'              " Close buffer without closing window
 
 NeoBundleLazy 'ujihisa/unite-colorscheme', {'autoload':{'unite_sources':'colorscheme'}} "{{{
       nnoremap <silent> [unite]c :<C-u>Unite -winheight=10 -auto-preview -buffer-name=colorschemes colorscheme<cr>
@@ -371,6 +372,8 @@ au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
+set colorcolumn=80
+
 set wildmenu " Wild menu expands autocompletion stuff in cmd mode for tab navigation
 set wildignore=*.o,*~,*.pyc " Ignore compiled files
 
@@ -486,6 +489,11 @@ endif
 set splitright
 set splitbelow
 
+" Split screen shortcut
+nnoremap <Leader>s :sp<CR>
+nnoremap <Leader>v :vsp<CR>
+
+vmap <Leader>s :sort<CR>
 " Treat long lines as break lines (useful when moving around in them)
 map j gj
 map k gk
@@ -538,82 +546,6 @@ endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.js :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
-
-
-" NOTE: These commands may have better places to go
-
-" Delete buffer while keeping window layout (don't close buffer's windows).
-" Version 2008-11-18 from http://vim.wikia.com/wiki/VimTip165
-if v:version < 700 || exists('loaded_bclose') || &cp
-  finish
-endif
-let loaded_bclose = 1
-if !exists('bclose_multiple')
-  let bclose_multiple = 1
-endif
-
-" Display an error message.
-function! s:Warn(msg)
-  echohl ErrorMsg
-  echomsg a:msg
-  echohl NONE
-endfunction
-
-" Command ':Bclose' executes ':bd' to delete buffer in current window.
-" The window will show the alternate buffer (Ctrl-^) if it exists,
-" or the previous buffer (:bp), or a blank buffer if no previous.
-" Command ':Bclose!' is the same, but executes ':bd!' (discard changes).
-" An optional argument can specify which buffer to close (name or number).
-function! s:Bclose(bang, buffer)
-  if empty(a:buffer)
-    let btarget = bufnr('%')
-  elseif a:buffer =~ '^\d\+$'
-    let btarget = bufnr(str2nr(a:buffer))
-  else
-    let btarget = bufnr(a:buffer)
-  endif
-  if btarget < 0
-    call s:Warn('No matching buffer for '.a:buffer)
-    return
-  endif
-  if empty(a:bang) && getbufvar(btarget, '&modified')
-    call s:Warn('No write since last change for buffer '.btarget.' (use :Bclose!)')
-    return
-  endif
-  " Numbers of windows that view target buffer which we will delete.
-  let wnums = filter(range(1, winnr('$')), 'winbufnr(v:val) == btarget')
-  if !g:bclose_multiple && len(wnums) > 1
-    call s:Warn('Buffer is in multiple windows (use ":let bclose_multiple=1")')
-    return
-  endif
-  let wcurrent = winnr()
-  for w in wnums
-    execute w.'wincmd w'
-    let prevbuf = bufnr('#')
-    if prevbuf > 0 && buflisted(prevbuf) && prevbuf != w
-      buffer #
-    else
-      bprevious
-    endif
-    if btarget == bufnr('%')
-      " Numbers of listed buffers which are not the target to be deleted.
-      let blisted = filter(range(1, bufnr('$')), 'buflisted(v:val) && v:val != btarget')
-      " Listed, not target, and not displayed.
-      let bhidden = filter(copy(blisted), 'bufwinnr(v:val) < 0')
-      " Take the first buffer, if any (could be more intelligent).
-      let bjump = (bhidden + blisted + [-1])[0]
-      if bjump > 0
-        execute 'buffer '.bjump
-      else
-        execute 'enew'.a:bang
-      endif
-    endif
-  endfor
-  execute 'bdelete'.a:bang.' '.btarget
-  execute wcurrent.'wincmd w'
-endfunction
-command! -bang -complete=buffer -nargs=? Bclose call s:Bclose('<bang>', '<args>')
-nnoremap <silent> <Leader>bd :Bclose<CR>
 
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
