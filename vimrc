@@ -19,11 +19,9 @@ let g:mapleader = ","
 let maplocalleader = "\\"
 let g:localleader = "\\"
 
-" Fast saving
+" Faster saving
 nmap <leader>w :w!<cr>
-
-" Share clipboard
-set clipboard=unnamed
+set clipboard=unnamed " Share clipboard with windows
 
 " Start vim split window
 " au VimEnter * vsplit
@@ -31,7 +29,7 @@ set clipboard=unnamed
 "Markdown support
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 
-set timeoutlen=300   " mapping timeout
+set timeoutlen=1000   " mapping timeout
 set ttimeoutlen=50   " keycode timeout
 set nofoldenable     " disable folding
 set mouse=a          " enable mouse
@@ -62,7 +60,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'flazz/vim-colorschemes'          " List of common color themes
 NeoBundle 'bling/vim-airline'               " Status bar
 NeoBundle 'airblade/vim-gitgutter'          " Gitgutter
-NeoBundle 'kien/rainbow_parentheses.vim'    " double rainbow
+NeoBundle 'luochen1990/rainbow'             " double rainbow
 NeoBundle 'mhinz/vim-startify'              " More useful startup page
 NeoBundle 'xolox/vim-colorscheme-switcher', {
             \ 'depends' : 'xolox/vim-misc'}  " Quickswitch theme
@@ -95,9 +93,6 @@ NeoBundle 'rking/ag.vim'                    " Searcher
 NeoBundle 'Shougo/unite.vim'                " UI for bunch of stuff
 NeoBundle 'qpkorr/vim-bufkill'              " Close buffer without closing window
 
-NeoBundleLazy 'ujihisa/unite-colorscheme', {'autoload':{'unite_sources':'colorscheme'}} "{{{
-      nnoremap <silent> [unite]c :<C-u>Unite -winheight=10 -auto-preview -buffer-name=colorschemes colorscheme<cr>
-    "}}}
 NeoBundleLazy 'Shougo/neomru.vim', {'autoload':{'unite_sources':'file_mru'}}
 
 " Language specific
@@ -119,12 +114,7 @@ let g:neocomplcache_enable_at_startup=1
 let g:neocomplcache_enable_fuzzy_completion=1
 let g:neocomplcache_enable_smart_case = 1
 let g:neocomplcache_min_syntax_length = 2
-let g:neocomplcache_dictionary_filetype_lists = {
-    \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
-      "}}}
+
 " Define keyword.
 if !exists('g:neocomplcache_keyword_patterns')
     let g:neocomplcache_keyword_patterns = {}
@@ -133,16 +123,13 @@ let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 
 " Plugin key-mappings.
 inoremap <expr><C-g>     neocomplcache#undo_completion()
-inoremap <expr><C-l>     neocomplcache#complete_common_string()
 
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
-  return neocomplcache#smart_close_popup() . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
+  "return neocomplcache#smart_close_popup() . "\<CR>"
+  return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
 endfunction
+
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
@@ -159,6 +146,7 @@ endif
 call neobundle#end()
 filetype plugin indent on
 NeoBundleCheck " Check for missing plugins on startup
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins Settings
@@ -191,39 +179,9 @@ let g:vim_markdown_folding_disabled=1
 let NERDTreeQuitOnOpen=0
 let NERDTreeIgnore=['\.git','\.hg']
 nnoremap <F2> :NERDTreeToggle<CR>
-
-" 256 colors
-if &term =~ "xterm"
-    let &t_Co = 256
-    " restore screen after quitting
-    let &t_ti = "\<Esc>7\<Esc>[r\<Esc>[?47h"
-    let &t_te = "\<Esc>[?47l\<Esc>8"
-    if has("terminfo")
-        let &t_Sf = "\<Esc>[3%p1%dm"
-        let &t_Sb = "\<Esc>[4%p1%dm"
-    else
-        let &t_Sf = "\<Esc>[3%dm"
-        let &t_Sb = "\<Esc>[4%dm"
-    endif
-    colorscheme jellybeans
-endif
+nnoremap <F4> :NERDTreeFind<CR>
 
 " Colorscheme terminal fix (sorta)
-if !empty($CONEMUBUILD)
-    set term=pcansi
-    set t_Co=256
-    set background=dark " Does this stuff work?
-    let &t_AB="\e[48;5;%dm"
-    let &t_AF="\e[38;5;%dm"
-    set bs=indent,eol,start
-    " Dark scheme, only for terminal
-    hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white
-"hi CursorLine term=bold cterm=bold
-    highlight Cursor guifg=black
-    highlight iCursor guifg=black
-    colorscheme hybrid
-endif
-
 " Airline tabline
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
@@ -243,7 +201,6 @@ nmap <leader>6 <Plug>AirlineSelectTab6
 nmap <leader>7 <Plug>AirlineSelectTab7
 nmap <leader>8 <Plug>AirlineSelectTab8
 nmap <leader>9 <Plug>AirlineSelectTab9
-
 
 " startify
 let g:startify_change_to_vcs_root = 1
@@ -315,6 +272,7 @@ function! ToggleErrors()
     let old_last_winnr = winnr('$')
     lclose
     if old_last_winnr == winnr('$')
+        SyntasticCheck
         " Nothing was closed, open syntastic error location panel
         Errors
     endif
@@ -324,6 +282,8 @@ nnoremap <silent> <C-e> :<C-u>call ToggleErrors()<CR>
 
 " Tagbar stuff
 map <silent> <F3> :TagbarToggle<CR>
+let g:tagbar_autofocus = 1
+let g:tagbar_compact = 1
 
 " Git
 nnoremap <silent> <leader>gs :Gstatus<CR>
@@ -365,32 +325,37 @@ nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=m
 autocmd ColorScheme * highlight TodoRed      guifg=#FF5F5F gui=bold
 autocmd ColorScheme * highlight NoteOrange   guifg=LightGreen gui=bold
 
-let g:delimitMate_expand_cr = 2
+let g:delimitMate_expand_cr = 2 "
+
+let g:rainbow_active = 1 " auto activate double rainbow
 
 if v:version > 703
     let g:indent_guides_enable_on_vim_startup = 1
     hi IndentGuideOdd guibg=darkgrey ctermbg=236
     hi IndentGuideEven guibg=darkgrey ctermbg=237
+    if !has('gui_running')
+        let g:indent_guides_auto_colors=0
+        function! s:indent_set_console_colors()
+            hi IndentGuidesOdd ctermbg=235
+            hi IndentGuidesEven ctermbg=236
+        endfunction
+        autocmd VimEnter,Colorscheme * call s:indent_set_console_colors()
+    endif
 endif
 augroup HiglightTODO
     autocmd!
-    autocmd WinEnter,VimEnter * :silent! call matchadd('TodoRed', '\vTODO(:)?', -1)
+    autocmd WinEnter,VimEnter * :silent! call matchadd('TodoRed', '\v\"TODO(:)?', -1)
     autocmd WinEnter,VimEnter * :silent! call matchadd('NoteOrange', 'NOTE', -1)
     autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'INFO', -1)
     autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'IDEA', -1)
     autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'BUG', -1)
 augroup END
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => UI/UX
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable syntax highlighting
 syntax enable
-
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
-
 
 if v:version > 703
     set colorcolumn=80
@@ -440,7 +405,7 @@ function! NumberToggle()
   endif
 endfunc
 
-" nnoremap <C-m> :call NumberToggle()<cr>
+nnoremap <C-n> :call NumberToggle()<cr>
 
 " Highlight cursor line
 set cursorline
@@ -453,14 +418,12 @@ set tm=500
 
 set shortmess+=I "No annoying startup message
 
-" Don't let cursor be near vertical edge of screen
-set scrolloff=10
-
+set scrolloff=10 " Don't let cursor be near vertical edge of screen
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Turn backup off, since most stuff is in SVN, git et.c anyway...
+" Turn backup off, since most stuff is in SVN, git etc anyway...
 set nobackup
 set nowb
 set noswapfile
@@ -499,6 +462,8 @@ set shiftround   " use multiple of shiftwidth when indenting with '<' and '>'
 set autoindent   " always set autoindenting on
 set copyindent   " copy the previous indentation on autoindenting
 
+nnoremap <Leader>fw :execute "Ag ".expand("<cword")<CR> 
+nnoremap <Leader>ff :Ag 
 
  if executable('ag')
     set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
@@ -581,12 +546,37 @@ if has('gui_running')
     set guioptions-=T  "remove toolbar
     set guioptions-=r  "remove right-hand scroll bar
     set guioptions-=L  "remove left-hand scroll bar
-
     set guicursor+=n-v-c:blinkon0
-
     hi CursorLine term=bold cterm=bold guibg=#1c136f
     highlight Cursor guifg=black guibg=#65e770
     highlight iCursor guifg=black guibg=#65e770
     hi clear Conceal
+elseif !empty($CONEMUBUILD)
+    set term=pcansi
+    set t_Co=256
+    set background=dark " Does this stuff work?
+    let &t_AB="\e[48;5;%dm"
+    let &t_AF="\e[38;5;%dm"
+    set bs=indent,eol,start
+    " Dark scheme, only for terminal
+    hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white
+"hi CursorLine term=bold cterm=bold
+    highlight Cursor guifg=black
+    highlight iCursor guifg=black
+    colorscheme hybrid
+elseif &term =~ "xterm"
+    let &t_Co = 256
+    " restore screen after quitting
+    let &t_ti = "\<Esc>7\<Esc>[r\<Esc>[?47h"
+    let &t_te = "\<Esc>[?47l\<Esc>8"
+    if has("terminfo")
+        let &t_Sf = "\<Esc>[3%p1%dm"
+        let &t_Sb = "\<Esc>[4%p1%dm"
+    else
+        let &t_Sf = "\<Esc>[3%dm"
+        let &t_Sb = "\<Esc>[4%dm"
+    endif
+    colorscheme jellybeans
 endif
+
 
