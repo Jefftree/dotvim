@@ -192,15 +192,31 @@ let NERDTreeQuitOnOpen=0
 let NERDTreeIgnore=['\.git','\.hg']
 nnoremap <F2> :NERDTreeToggle<CR>
 
+" 256 colors
+if &term =~ "xterm"
+    let &t_Co = 256
+    " restore screen after quitting
+    let &t_ti = "\<Esc>7\<Esc>[r\<Esc>[?47h"
+    let &t_te = "\<Esc>[?47l\<Esc>8"
+    if has("terminfo")
+        let &t_Sf = "\<Esc>[3%p1%dm"
+        let &t_Sb = "\<Esc>[4%p1%dm"
+    else
+        let &t_Sf = "\<Esc>[3%dm"
+        let &t_Sb = "\<Esc>[4%dm"
+    endif
+    colorscheme jellybeans
+endif
+
 " Colorscheme terminal fix (sorta)
 if !empty($CONEMUBUILD)
     set term=pcansi
     set t_Co=256
+    set background=dark " Does this stuff work?
     let &t_AB="\e[48;5;%dm"
     let &t_AF="\e[38;5;%dm"
     set bs=indent,eol,start
     " Dark scheme, only for terminal
-    set background=dark " Does this stuff work?
     hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white
 "hi CursorLine term=bold cterm=bold
     highlight Cursor guifg=black
@@ -329,8 +345,8 @@ call unite#custom#profile('default', 'context', {
               \ })
 let g:unite_source_history_yank_enable=1
 
-let g:unite_source_rec_async_command = 'ag --follow --nocolor --nogroup --hidden -g ""'
 if executable('ag')
+    let g:unite_source_rec_async_command = 'ag --follow --nocolor --nogroup --hidden -g ""'
     let g:unite_source_grep_command='ag'
     let g:unite_source_grep_default_opts='--nocolor --line-numbers --nogroup -S -C4'
     let g:unite_source_grep_recursive_opt=''
@@ -341,7 +357,7 @@ nnoremap [unite] <nop>
 
 "if exists('b:git_dir')
 
-nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=Search -input= -resume file_rec/async:!<cr>
+nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=Search -input= file_rec/async:!<cr>
     "<c-u> means cursor up one line
 nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
 
@@ -351,8 +367,11 @@ autocmd ColorScheme * highlight NoteOrange   guifg=LightGreen gui=bold
 
 let g:delimitMate_expand_cr = 2
 
-let g:indent_guides_enable_on_vim_startup = 1
-
+if v:version > 703
+    let g:indent_guides_enable_on_vim_startup = 1
+    hi IndentGuideOdd guibg=darkgrey ctermbg=236
+    hi IndentGuideEven guibg=darkgrey ctermbg=237
+endif
 augroup HiglightTODO
     autocmd!
     autocmd WinEnter,VimEnter * :silent! call matchadd('TodoRed', '\vTODO(:)?', -1)
@@ -372,7 +391,10 @@ au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
-set colorcolumn=80
+
+if v:version > 703
+    set colorcolumn=80
+endif
 
 set wildmenu " Wild menu expands autocompletion stuff in cmd mode for tab navigation
 set wildignore=*.o,*~,*.pyc " Ignore compiled files
@@ -451,7 +473,7 @@ nmap <leader>b :e $MYGVIMRC<CR>
 nmap <silent> <leader>r :so $MYVIMRC<CR>
 
 " Start in desired directory
-cd W:/collector-api/
+"cd W:/
 
 " Easy buffer navigation using tabs
 nnoremap <Tab> :bnext<CR>
