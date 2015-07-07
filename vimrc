@@ -1,5 +1,4 @@
 set nocompatible
-
 let s:is_windows = has('win32') || has('win64')
 
 "Neocompl
@@ -47,8 +46,6 @@ set autochdir        " automatically change to file dir
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-filetype off " Required by vundle
-
 if s:is_windows
     set rtp+=~/.vim
 endif
@@ -90,16 +87,17 @@ NeoBundle 'scrooloose/syntastic'            " Syntax errors
 NeoBundle 'majutsushi/tagbar'               " Tag browsing
 NeoBundle 'scrooloose/nerdcommenter'        " Commenting shortcuts
 NeoBundle 'rking/ag.vim'                    " Searcher
-NeoBundle 'Shougo/unite.vim'                " UI for bunch of stuff
 NeoBundle 'qpkorr/vim-bufkill'              " Close buffer without closing window
+
+" Unite requires latest vim version
+NeoBundle 'Shougo/unite.vim'                " UI for bunch of stuff
 
 NeoBundleLazy 'Shougo/neomru.vim', {'autoload':{'unite_sources':'file_mru'}}
 
 " Language specific
 NeoBundle 'derekwyatt/vim-scala'            " Scala support
-NeoBundle 'plasticboy/vim-markdown'         " Markdown support
+NeoBundle 'tpope/vim-markdown'              " Markdown support
 NeoBundle 'jelera/vim-javascript-syntax'    " Javascript Highlighting
-NeoBundle 'klen/python-mode'                " Python
 NeoBundle 'vim-pandoc/vim-pandoc'           " Pandoc
 NeoBundle 'vim-pandoc/vim-pandoc-syntax'    " Pandoc Syntax
 NeoBundle 'elzr/vim-json'                   " JSON Highlighting
@@ -110,6 +108,10 @@ NeoBundleLazy 'gregsexton/gitv', {'depends':['tpope/vim-fugitive'], 'autoload':{
 "}}}
 
 NeoBundleLazy 'Shougo/neocomplcache.vim', {'autoload':{'insert':1}} "{{{
+
+" Auto open new line w indentation after {<cr>
+inoremap {<CR> {<CR>}<Esc>ko
+
 let g:neocomplcache_enable_at_startup=1
 let g:neocomplcache_enable_fuzzy_completion=1
 let g:neocomplcache_enable_smart_case = 1
@@ -166,24 +168,20 @@ let g:ctrlp_max_height=5
 let g:ctrlp_max_files=20000
 let g:ctrlp_show_hidden=0
 
-" ctrl-p use ag instead of default searching
 if executable('ag')
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
   let g:ctrlp_user_command = 'ag -l --nocolor -g "" %s'
 endif
 
-" Disable folding for Markdown
-let g:vim_markdown_folding_disabled=1
-
-" Shortcut to enable Nerdtree
+" NERDtree file explorer
 let NERDTreeQuitOnOpen=0
 let NERDTreeIgnore=['\.git','\.hg']
 nnoremap <F2> :NERDTreeToggle<CR>
 nnoremap <F4> :NERDTreeFind<CR>
+let NERDTreeIgnore=['^node_modules$', '^coverage$']
 
-" Colorscheme terminal fix (sorta)
 " Airline tabline
-let g:airline_powerline_fonts = 1
+"let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='wombat'
 let g:airline#extensions#tabline#buffer_idx_mode = 1	" display numbers in the tab line, and use mappings <leader>1 to <leader>9
@@ -211,7 +209,9 @@ nnoremap <F1> :Startify<cr>
 " pandoc
 let g:pandoc#modules#disabled = ["folding"]
 let g:pandoc#formatting#smart_autoformat_on_cursormoved = 1
-let g:pandoc#syntax#codeblocks#embeds#langs = ["ruby", "scala", "literatehaskell=lhaskell", "bash=sh","json=javascript","css","html","javascript","c","cpp"]
+let g:pandoc#syntax#codeblocks#embeds#langs = ["ruby", "scala",
+                \ "literatehaskell=lhaskell", "bash=sh","json=javascript",
+                \ "css","html","javascript","c","cpp"]
 let g:pandoc#syntax#conceal#blacklist = ["list","atx"]
 
 " syntastic
@@ -224,50 +224,6 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-
-" Python-mode
-" Activate rope
-" Keys
-" K             Show python docs
-" <Ctrl-Space>  Rope autocomplete
-" <Ctrl-c>g     Rope goto definition
-" <Ctrl-c>d     Rope show documentation
-" <Ctrl-c>f     Rope find occurrences
-" <Leader>b     Set, unset breakpoint (g:pymode_breakpoint enabled)
-" [[            Jump on previous class or function (normal, visual, operator modes)
-" ]]            Jump on next class or function (normal, visual, operator modes)
-" [M            Jump on previous class or method (normal, visual, operator modes)
-" ]M            Jump on next class or method (normal, visual, operator modes)
-let g:pymode_rope = 1
-
-" Documentation
-let g:pymode_doc = 1
-let g:pymode_doc_key = 'K'
-
-"Linting
-let g:pymode_lint = 1
-let g:pymode_lint_checkers = ["pyflakes"]
-" Auto check on save
-let g:pymode_lint_write = 1
-
-" Support virtualenv
-let g:pymode_virtualenv = 1
-
-" Enable breakpoints plugin
-let g:pymode_breakpoint = 1
-let g:pymode_breakpoint_bind = '<leader>b'
-
-" syntax highlighting
-let g:pymode_syntax = 1
-let g:pymode_syntax_all = 1
-let g:pymode_syntax_indent_errors = g:pymode_syntax_all
-let g:pymode_syntax_space_errors = g:pymode_syntax_all
-
-" Don't autofold code
-let g:pymode_folding = 0
-
-let NERDTreeIgnore=['^node_modules$', '^coverage$']
-
 function! ToggleErrors()
     let old_last_winnr = winnr('$')
     lclose
@@ -325,8 +281,6 @@ nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=m
 autocmd ColorScheme * highlight TodoRed      guifg=#FF5F5F gui=bold
 autocmd ColorScheme * highlight NoteOrange   guifg=LightGreen gui=bold
 
-let g:delimitMate_expand_cr = 2 "
-
 let g:rainbow_active = 1 " auto activate double rainbow
 
 if v:version > 703
@@ -344,7 +298,7 @@ if v:version > 703
 endif
 augroup HiglightTODO
     autocmd!
-    autocmd WinEnter,VimEnter * :silent! call matchadd('TodoRed', '\v\"TODO(:)?', -1)
+    autocmd WinEnter,VimEnter * :silent! call matchadd('TodoRed', '\v[^a-zA-Z]TODO(:)?', -1)
     autocmd WinEnter,VimEnter * :silent! call matchadd('NoteOrange', 'NOTE', -1)
     autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'INFO', -1)
     autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'IDEA', -1)
@@ -462,10 +416,10 @@ set shiftround   " use multiple of shiftwidth when indenting with '<' and '>'
 set autoindent   " always set autoindenting on
 set copyindent   " copy the previous indentation on autoindenting
 
-nnoremap <Leader>fw :execute "Ag ".expand("<cword")<CR> 
-nnoremap <Leader>ff :Ag 
 
- if executable('ag')
+if executable('ag')
+    nnoremap <Leader>fw :execute "Ag ".expand("<cword")<CR>
+    nnoremap <Leader>ff :Ag
     set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
     set grepformat=%f:%l:%c:%m
 endif
