@@ -88,6 +88,7 @@ NeoBundle 'majutsushi/tagbar'               " Tag browsing
 NeoBundle 'scrooloose/nerdcommenter'        " Commenting shortcuts
 NeoBundle 'rking/ag.vim'                    " Searcher
 NeoBundle 'qpkorr/vim-bufkill'              " Close buffer without closing window
+NeoBundle 'mbbill/undotree'                 " Undo tree
 
 " Unite requires latest vim version
 NeoBundle 'Shougo/unite.vim'                " UI for bunch of stuff
@@ -153,6 +154,8 @@ NeoBundleCheck " Check for missing plugins on startup
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <F5> :UndotreeToggle<CR>
+
 " Tabularize shortcut
 if exists("Tabularize")
     map <Leader>a= :Tabularize /=<CR>
@@ -312,7 +315,7 @@ augroup END
 syntax enable
 
 if v:version > 703
-    set colorcolumn=80
+    "set colorcolumn=80
 endif
 
 set wildmenu " Wild menu expands autocompletion stuff in cmd mode for tab navigation
@@ -377,10 +380,18 @@ set scrolloff=10 " Don't let cursor be near vertical edge of screen
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Turn backup off, since most stuff is in SVN, git etc anyway...
+" Turn backup off
 set nobackup
 set nowb
 set noswapfile
+
+" Undotree
+if has("persistent_undo")
+    set undodir=~/.vim/.undodir
+    set undofile
+    set undolevels=1000 "maximum number of changes that can be undone
+    set undoreload=10000 "maximum number lines to save for undo on a buffer reload
+endif
 
 " Quick access to vimrc
 nmap <leader>, :e ~/.vim/vimrc<CR>
