@@ -32,14 +32,11 @@ set timeoutlen=1000   " mapping timeout
 set ttimeoutlen=50   " keycode timeout
 set nofoldenable     " disable folding
 set mouse=a          " enable mouse
-set mousehide        " hide when characters are typed
 set history=1000     " number of command lines to remember
 set ttyfast          " assume fast terminal connection
 set encoding=utf-8   " set encoding for text
 set hidden           " allow buffer switching without saving
 set autoread         " auto reload if file saved externally
-set fileformats+=mac " add mac to auto-detection of file format line endings
-set nrformats-=octal " always assume decimal numbers
 set showcmd          " always show last used command
 set autochdir        " automatically change to file dir
 
@@ -154,7 +151,7 @@ NeoBundleCheck " Check for missing plugins on startup
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <F5> :UndotreeToggle<CR>
+nnoremap <silent> <F5> :UndotreeToggle<CR>
 
 " Tabularize shortcut
 if exists("Tabularize")
@@ -171,20 +168,20 @@ let g:ctrlp_max_height=5
 let g:ctrlp_max_files=20000
 let g:ctrlp_show_hidden=0
 
+" Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
 if executable('ag')
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
   let g:ctrlp_user_command = 'ag -l --nocolor -g "" %s'
 endif
 
 " NERDtree file explorer
 let NERDTreeQuitOnOpen=0
 let NERDTreeIgnore=['\.git','\.hg']
-nnoremap <F2> :NERDTreeToggle<CR>
-nnoremap <F4> :NERDTreeFind<CR>
+nnoremap <silent> <F2> :NERDTreeToggle<CR>
+nnoremap <silent> <F4> :NERDTreeFind<CR>
 let NERDTreeIgnore=['^node_modules$', '^coverage$']
 
 " Airline tabline
-"let g:airline_powerline_fonts = 1
+"let g:airline_powerline_fonts = 1 " Too much effort to patch fonts on all machines
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='wombat'
 let g:airline#extensions#tabline#buffer_idx_mode = 1	" display numbers in the tab line, and use mappings <leader>1 to <leader>9
@@ -250,7 +247,6 @@ nnoremap <silent> <leader>gd :Gdiff<CR>
 nnoremap <silent> <leader>gl :Glog<CR>
 
 " Colorscheme
-
 noremap <PageUp> :PrevColorScheme<CR>
 noremap <PageDown> :NextColorScheme<CR>
 
@@ -321,51 +317,28 @@ endif
 set wildmenu " Wild menu expands autocompletion stuff in cmd mode for tab navigation
 set wildignore=*.o,*~,*.pyc " Ignore compiled files
 
-"Always show current position
-set ruler
+set ruler       "Show cursor position
+set cmdheight=1 " Lines to use for cmd line
 
-set cmdheight=1
-
-" TODO: Configure backspace so it acts as it should act
-set backspace=eol,start,indent
+set backspace=eol,start,indent " Backspaces solos everything
 " set whichwrap+=<,>,h,l
 
-set ignorecase " ignore case when searching
-set smartcase  " case-sensitive if uppercase search
+" TODO: Must be a better way to do this. Unhighlight search results
+nnoremap <silent> <BS> :set hlsearch! hlsearch?<cr>
 
-
-set hlsearch   " Highlight search results
-set incsearch  " Show search matches as you type
-
- nnoremap <silent> <BS> :set hlsearch! hlsearch?<cr>
-
-"TODO:  For regular expressions turn magic on. what is magic?
-" set magic
-
-
+set ignorecase  " ignore case when searching
+set smartcase   " case-sensitive if uppercase search
+set hlsearch    " Highlight search results
+set incsearch   " Show search matches as you type
+set magic       " Regex is love regex is life
 set showmatch   " Show matching brackets when text indicator is over them
 set matchtime=2 " Time limit for matching brackets
 set lazyredraw
 set noshowmode  " don't show current mode
 set nowrap      " don't wrap lines
 
-"TODO: Experimental: relative line number
-set number
-" set relativenumber
-
-function! NumberToggle()
-  if(&relativenumber == 1)
-    set norelativenumber
-    set number
-  else
-    set relativenumber
-  endif
-endfunc
-
-nnoremap <C-n> :call NumberToggle()<cr>
-
-" Highlight cursor line
-set cursorline
+set number      " Line numbers
+set cursorline  " Highlight cursor line
 
 " No annoying sound on errors
 set noerrorbells
@@ -374,7 +347,6 @@ set t_vb=
 set tm=500
 
 set shortmess+=I "No annoying startup message
-
 set scrolloff=10 " Don't let cursor be near vertical edge of screen
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -395,13 +367,12 @@ endif
 
 " Quick access to vimrc
 nmap <leader>, :e ~/.vim/vimrc<CR>
-nmap <leader>b :e $MYGVIMRC<CR>
 
 " Apply vimrc changes without restart
 nmap <silent> <leader>r :so $MYVIMRC<CR>
 
 " Start in desired directory
-"cd W:/
+cd W:/
 
 " Easy buffer navigation using tabs
 nnoremap <Tab> :bnext<CR>
@@ -414,10 +385,7 @@ nnoremap Q :bd<CR>
 " => Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set expandtab    " Use spaces instead of tabs
-set smarttab     " insert tabs according toshiftwidth, not tabstop
-
-" insert tabs on the start of a line according to shiftwidth, not tabstop
-set smarttab
+set smarttab     " insert tabs according to shiftwidth, not tabstop
 
 " 1 tab == 4 spaces
 set shiftwidth=4
@@ -426,7 +394,6 @@ set shiftround   " use multiple of shiftwidth when indenting with '<' and '>'
 
 set autoindent   " always set autoindenting on
 set copyindent   " copy the previous indentation on autoindenting
-
 
 if executable('ag')
     nnoremap <Leader>fw :execute "Ag ".expand("<cword")<CR>
@@ -438,10 +405,9 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Moving around, tabs, windows and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Splitting shortcuts and defaults
 set splitright
 set splitbelow
-
-" Split screen shortcut
 nnoremap <Leader>s :sp<CR>
 nnoremap <Leader>v :vsp<CR>
 
@@ -461,15 +427,14 @@ nnoremap N Nzz
 nnoremap { {zz
 nnoremap } }zz
 
-
 " Consistent yanking
 nnoremap Y y$
 
 " Windows navigation shortcut
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 """"""""""""""""""""""""""""""
 " => Status line
 """"""""""""""""""""""""""""""
@@ -507,6 +472,7 @@ if has('gui_running')
     set guifont=Inconsolata\ for\ Powerline:h14
     "set guifont=Inconsolata:h11:cANSI
     au GUIEnter * simalt ~x
+    set guiheadroom=0
     set guioptions-=m  "remove menu bar
     set guioptions-=T  "remove toolbar
     set guioptions-=r  "remove right-hand scroll bar
@@ -525,7 +491,7 @@ elseif !empty($CONEMUBUILD)
     set bs=indent,eol,start
     " Dark scheme, only for terminal
     hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white
-"hi CursorLine term=bold cterm=bold
+    "hi CursorLine term=bold cterm=bold
     highlight Cursor guifg=black
     highlight iCursor guifg=black
     colorscheme hybrid
@@ -543,5 +509,3 @@ elseif &term =~ "xterm"
     endif
     colorscheme jellybeans
 endif
-
-
