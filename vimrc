@@ -163,7 +163,7 @@ endif
 " CTRL-P
 let g:ctrlp_cache_dir = $USERPROFILE . '/.cache/ctrlp'
 let g:ctrlp_reuse_window='startify'
-let g:ctrlp_custom_ignore = '\v[\/](\.(git|hg|svn|idea)|node_modules|coverage)$'
+let g:ctrlp_custom_ignore = '\v[\/](\.(git|hg|svn|idea)|node_modules|coverage|bower_components)$'
 let g:ctrlp_max_height=5
 let g:ctrlp_max_files=20000
 let g:ctrlp_show_hidden=0
