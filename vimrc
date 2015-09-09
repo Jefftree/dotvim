@@ -59,18 +59,6 @@ NeoBundle 'mhinz/vim-startify'              " More useful startup page
 NeoBundle 'xolox/vim-colorscheme-switcher', {
             \ 'depends' : 'xolox/vim-misc'}  " Quickswitch theme
 
-" Utilities
-NeoBundle 'Shougo/vimproc.vim', {
-      \ 'build': {
-        \ 'mac': 'make -f make_mac.mak',
-        \ 'unix': 'make -f make_unix.mak',
-        \ 'cygwin': 'make -f make_cygwin.mak',
-        \ 'windows': 'mingw32-make -f make_mingw32.mak',
-      \ },
-    \ }
-
-"}}}
-
 " Functionality
 NeoBundle 'kien/ctrlp.vim'                  " File searcher
 NeoBundle 'godlygeek/tabular'               " Easy alignment of variables
@@ -86,11 +74,6 @@ NeoBundle 'scrooloose/nerdcommenter'        " Commenting shortcuts
 NeoBundle 'rking/ag.vim'                    " Searcher
 NeoBundle 'qpkorr/vim-bufkill'              " Close buffer without closing window
 NeoBundle 'mbbill/undotree'                 " Undo tree
-
-" Unite requires latest vim version
-NeoBundle 'Shougo/unite.vim'                " UI for bunch of stuff
-
-NeoBundleLazy 'Shougo/neomru.vim', {'autoload':{'unite_sources':'file_mru'}}
 
 " Language specific
 NeoBundle 'derekwyatt/vim-scala'            " Scala support
@@ -146,7 +129,6 @@ endif
 call neobundle#end()
 filetype plugin indent on
 NeoBundleCheck " Check for missing plugins on startup
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins Settings
@@ -250,31 +232,6 @@ nnoremap <silent> <leader>gl :Glog<CR>
 noremap <PageUp> :PrevColorScheme<CR>
 noremap <PageDown> :NextColorScheme<CR>
 
-" Unite
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_rank'])
-call unite#custom#profile('default', 'context', {
-              \ 'start_insert': 1,
-              \ 'winheight': 8,
-              \ 'direction': 'botright'
-              \ })
-let g:unite_source_history_yank_enable=1
-
-if executable('ag')
-    let g:unite_source_rec_async_command = 'ag --follow --nocolor --nogroup --hidden -g ""'
-    let g:unite_source_grep_command='ag'
-    let g:unite_source_grep_default_opts='--nocolor --line-numbers --nogroup -S -C4'
-    let g:unite_source_grep_recursive_opt=''
-endif
-
-nmap <space> [unite]
-nnoremap [unite] <nop>
-
-"if exists('b:git_dir')
-
-nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=Search -input= file_rec/async:!<cr>
-    "<c-u> means cursor up one line
-nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
 
   " Highlight TODO, FIXME, NOTE, etc.
 autocmd ColorScheme * highlight TodoRed      guifg=#FF5F5F gui=bold
