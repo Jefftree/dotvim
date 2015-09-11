@@ -329,7 +329,7 @@ nmap <leader>, :e ~/.vim/vimrc<CR>
 nmap <silent> <leader>r :so $MYVIMRC<CR>
 
 " Start in desired directory
-cd W:/
+"cd W:/
 
 " Easy buffer navigation using tabs
 nnoremap <Tab> :bnext<CR>
