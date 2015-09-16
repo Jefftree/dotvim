@@ -88,7 +88,11 @@ NeoBundleLazy 'gregsexton/gitv', {'depends':['tpope/vim-fugitive'], 'autoload':{
     nnoremap <silent> <leader>gV :Gitv!<CR>
 "}}}
 
-NeoBundleLazy 'Shougo/neocomplcache.vim', {'autoload':{'insert':1}} "{{{
+NeoBundleLazy 'Shougo/neocomplcache.vim', {'autoload':{'insert':1}}
+
+" My boy pandoc
+command Math Pandoc -s --mathjax
+nnoremap <Leader>p :Math<CR>
 
 " Auto open new line w indentation after {<cr>
 inoremap {<CR> {<CR>}<Esc>ko
@@ -261,6 +265,9 @@ augroup HiglightTODO
     autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'BUG', -1)
 augroup END
 
+
+" Xelatex compile
+command Xelatex !xelatex %
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => UI/UX
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -302,6 +309,9 @@ set noerrorbells
 set novisualbell
 set t_vb=
 set tm=500
+if has('autocmd')
+  autocmd GUIEnter * set visualbell t_vb=
+endif
 
 set shortmess+=I "No annoying startup message
 set scrolloff=10 " Don't let cursor be near vertical edge of screen
