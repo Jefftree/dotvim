@@ -82,6 +82,7 @@ NeoBundle 'jelera/vim-javascript-syntax'    " Javascript Highlighting
 NeoBundle 'vim-pandoc/vim-pandoc'           " Pandoc
 NeoBundle 'vim-pandoc/vim-pandoc-syntax'    " Pandoc Syntax
 NeoBundle 'elzr/vim-json'                   " JSON Highlighting
+NeoBundle 'mxw/vim-jsx'                     " JSX for React.js
 
 NeoBundleLazy 'gregsexton/gitv', {'depends':['tpope/vim-fugitive'], 'autoload':{'commands':'Gitv'}} "{{{
     nnoremap <silent> <leader>gv :Gitv<CR>
@@ -96,6 +97,9 @@ nnoremap <Leader>p :Math<CR>
 
 " Auto open new line w indentation after {<cr>
 inoremap {<CR> {<CR>}<Esc>ko
+
+" JSX Enabled on all JS Files
+let g:jsx_ext_required = 0
 
 let g:neocomplcache_enable_at_startup=1
 let g:neocomplcache_enable_fuzzy_completion=1
