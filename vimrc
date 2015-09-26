@@ -339,6 +339,9 @@ endif
 " Quick access to vimrc
 nmap <leader>, :e ~/.vim/vimrc<CR>
 
+" Easy way to peace vim
+nmap <leader>x :x<CR>
+
 " Apply vimrc changes without restart
 nmap <silent> <leader>r :so $MYVIMRC<CR>
 
@@ -442,7 +445,7 @@ if has('gui_running')
     "colorscheme herald
     set guifont=Inconsolata\ for\ Powerline:h14
     "set guifont=Inconsolata:h11:cANSI
-    au GUIEnter * simalt ~x
+    "au GUIEnter * simalt ~x
     set guiheadroom=0
     set guioptions-=m  "remove menu bar
     set guioptions-=T  "remove toolbar
