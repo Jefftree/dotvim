@@ -2,6 +2,7 @@ set nocompatible
 let s:is_windows = has('win32') || has('win64')
 
 "Neocompl
+"TODO: For Unix based OS, look into Neocomplete or Youcompleteme
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
@@ -11,6 +12,13 @@ autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+if has("gui_macvim")
+    let macvim_hig_shift_movement = 1 " Shift to select text
+    " What is this sorcery?
+    nmap <SwipeLeft> :bprevious<CR>
+    nmap <SwipeRight> :bnext<CR>
+endif
 
 " Leader to comma
 let mapleader = ","
@@ -443,7 +451,7 @@ nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 if has('gui_running')
     colorscheme jellybeans
     "colorscheme herald
-    set guifont=Inconsolata\ for\ Powerline:h14
+    set guifont=Inconsolata-dz:h11
     "set guifont=Inconsolata:h11:cANSI
     "au GUIEnter * simalt ~x
     set guiheadroom=0
