@@ -35,6 +35,7 @@ set clipboard=unnamed " Share clipboard with windows
 
 "Markdown support
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
+au BufNewFile,BufFilePre,BufRead *.pentadactylrc set filetype=vim
 
 set timeoutlen=1000   " mapping timeout
 set ttimeoutlen=50   " keycode timeout
@@ -451,7 +452,7 @@ nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 if has('gui_running')
     colorscheme jellybeans
     "colorscheme herald
-    set guifont=Inconsolata-dz:h11
+    set guifont=Inconsolata-dz:h10
     "set guifont=Inconsolata:h11:cANSI
     "au GUIEnter * simalt ~x
     set guiheadroom=0
