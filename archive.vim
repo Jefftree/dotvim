@@ -1,3 +1,4 @@
+" Snippets from vimrc that aren't being used
 
 " Utilities
 NeoBundle 'Shougo/vimproc.vim', {
@@ -8,8 +9,6 @@ NeoBundle 'Shougo/vimproc.vim', {
         \ 'windows': 'mingw32-make -f make_mingw32.mak',
       \ },
     \ }
-
-"}}}
 
 " Unite requires latest vim version
 NeoBundle 'Shougo/unite.vim'                " UI for bunch of stuff
@@ -41,11 +40,6 @@ nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=Search -input= file_rec/asyn
     "<c-u> means cursor up one line
 nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
 
-
-
-
-
-" Snippets from vimrc that aren't being used
 NeoBundle 'klen/python-mode'                " Python
 
 " Python-mode
@@ -88,6 +82,3 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 
 " Don't autofold code
 let g:pymode_folding = 0
-
-
-

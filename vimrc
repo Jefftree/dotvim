@@ -1,8 +1,7 @@
 set nocompatible
 let s:is_windows = has('win32') || has('win64')
 
-"Neocompl
-"TODO: For Unix based OS, look into Neocomplete or Youcompleteme
+" Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
@@ -26,14 +25,13 @@ let g:mapleader = ","
 let maplocalleader = "\\"
 let g:localleader = "\\"
 
+nnoremap <Space> <Nop>
+
 " Faster saving
 nmap <leader>w :w!<cr>
 set clipboard=unnamed " Share clipboard with windows
 
-" Start vim split window
-" au VimEnter * vsplit
-
-"Markdown support
+" File extension corrections
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 au BufNewFile,BufFilePre,BufRead *.pentadactylrc set filetype=vim
 
@@ -69,6 +67,7 @@ NeoBundle 'xolox/vim-colorscheme-switcher', {
             \ 'depends' : 'xolox/vim-misc'}  " Quickswitch theme
 
 " Functionality
+NeoBundle 'Shougo/neocomplete.vim'      " Completion
 NeoBundle 'kien/ctrlp.vim'                  " File searcher
 NeoBundle 'godlygeek/tabular'               " Easy alignment of variables
 NeoBundle 'scrooloose/nerdtree'             " File explorer
@@ -85,63 +84,80 @@ NeoBundle 'qpkorr/vim-bufkill'              " Close buffer without closing windo
 NeoBundle 'mbbill/undotree'                 " Undo tree
 
 " Language specific
-NeoBundle 'derekwyatt/vim-scala'            " Scala support
-NeoBundle 'tpope/vim-markdown'              " Markdown support
 NeoBundle 'jelera/vim-javascript-syntax'    " Javascript Highlighting
-NeoBundle 'vim-pandoc/vim-pandoc'           " Pandoc
-NeoBundle 'vim-pandoc/vim-pandoc-syntax'    " Pandoc Syntax
 NeoBundle 'elzr/vim-json'                   " JSON Highlighting
 NeoBundle 'mxw/vim-jsx'                     " JSX for React.js
+NeoBundle 'derekwyatt/vim-scala'            " Scala support
+NeoBundle 'tpope/vim-markdown'              " Markdown support
+NeoBundle 'vim-pandoc/vim-pandoc'           " Pandoc
+NeoBundle 'vim-pandoc/vim-pandoc-syntax'    " Pandoc Syntax
+NeoBundle 'klen/python-mode'                " Python
+
 
 NeoBundleLazy 'gregsexton/gitv', {'depends':['tpope/vim-fugitive'], 'autoload':{'commands':'Gitv'}} "{{{
     nnoremap <silent> <leader>gv :Gitv<CR>
     nnoremap <silent> <leader>gV :Gitv!<CR>
 "}}}
 
-NeoBundleLazy 'Shougo/neocomplcache.vim', {'autoload':{'insert':1}}
-
-" My boy pandoc
-command Math Pandoc -s --mathjax
-nnoremap <Leader>p :Math<CR>
-
-" Auto open new line w indentation after {<cr>
-inoremap {<CR> {<CR>}<Esc>ko
-
 " JSX Enabled on all JS Files
 let g:jsx_ext_required = 0
 
-let g:neocomplcache_enable_at_startup=1
-let g:neocomplcache_enable_fuzzy_completion=1
-let g:neocomplcache_enable_smart_case = 1
-let g:neocomplcache_min_syntax_length = 2
+" ---------------- NEOCOMPLETE (Needs more tweaking)
+"  -------------------------------
+" Disable AutoComplPop. (changed)
+let g:acp_enableAtStartup = 1
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
 
 " Define keyword.
-if !exists('g:neocomplcache_keyword_patterns')
-    let g:neocomplcache_keyword_patterns = {}
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
 endif
-let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
 " Plugin key-mappings.
-inoremap <expr><C-g>     neocomplcache#undo_completion()
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
 
-function! s:my_cr_function()
-  "return neocomplcache#smart_close_popup() . "\<CR>"
-  return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
-endfunction
-
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  " return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+  " For no inserting <CR> key.
+  return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplcache#close_popup()
-inoremap <expr><C-e>  neocomplcache#cancel_popup()
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
 
-if !exists('g:neocomplcache_force_omni_patterns')
-  let g:neocomplcache_force_omni_patterns = {}
+" AutoComplPop like behavior.
+let g:neocomplete#enable_auto_select = 1
+
+"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
 endif
+"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
 call neobundle#end()
 filetype plugin indent on
@@ -150,6 +166,17 @@ NeoBundleCheck " Check for missing plugins on startup
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Auto open new line indentation after {<cr>
+inoremap {<CR> {<CR>}<Esc>ko
+
+" Easily compile math notes
+command Math Pandoc -s --mathjax
+nnoremap <Leader>p :Math<CR>
+
+" Xelatex compile
+command Xelatex !xelatex %
+
 nnoremap <silent> <F5> :UndotreeToggle<CR>
 
 " Tabularize shortcut
@@ -249,13 +276,56 @@ nnoremap <silent> <leader>gl :Glog<CR>
 noremap <PageUp> :PrevColorScheme<CR>
 noremap <PageDown> :NextColorScheme<CR>
 
+" Python-mode
+" Activate rope
+" Keys
+" K             Show python docs
+" <Ctrl-Space>  Rope autocomplete
+" <Ctrl-c>g     Rope goto definition
+" <Ctrl-c>d     Rope show documentation
+" <Ctrl-c>f     Rope find occurrences
+" <Leader>b     Set, unset breakpoint (g:pymode_breakpoint enabled)
+" [[            Jump on previous class or function (normal, visual, operator modes)
+" ]]            Jump on next class or function (normal, visual, operator modes)
+" [M            Jump on previous class or method (normal, visual, operator modes)
+" ]M            Jump on next class or method (normal, visual, operator modes)
+let g:pymode_rope = 1
 
-  " Highlight TODO, FIXME, NOTE, etc.
+let g:pymode_run_bind = '<Space>r'
+
+" Documentation
+let g:pymode_doc = 1
+let g:pymode_doc_key = 'K'
+
+"Linting
+let g:pymode_lint = 1
+let g:pymode_lint_checkers = ["pyflakes"]
+" Auto check on save
+let g:pymode_lint_write = 1
+
+" Support virtualenv
+let g:pymode_virtualenv = 1
+
+" Enable breakpoints plugin
+let g:pymode_breakpoint = 1
+let g:pymode_breakpoint_bind = '<leader>b'
+
+" syntax highlighting
+let g:pymode_syntax = 1
+let g:pymode_syntax_all = 1
+let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+let g:pymode_syntax_space_errors = g:pymode_syntax_all
+
+" Don't autofold code
+let g:pymode_folding = 0
+
+" Highlight TODO, FIXME, NOTE, etc.
 autocmd ColorScheme * highlight TodoRed      guifg=#FF5F5F gui=bold
 autocmd ColorScheme * highlight NoteOrange   guifg=LightGreen gui=bold
 
 let g:rainbow_active = 1 " auto activate double rainbow
 
+" Indent guide configuration for terminal
 if v:version > 703
     let g:indent_guides_enable_on_vim_startup = 1
     hi IndentGuideOdd guibg=darkgrey ctermbg=236
@@ -269,6 +339,8 @@ if v:version > 703
         autocmd VimEnter,Colorscheme * call s:indent_set_console_colors()
     endif
 endif
+
+" GUI TODO Highlighter
 augroup HiglightTODO
     autocmd!
     autocmd WinEnter,VimEnter * :silent! call matchadd('TodoRed', '\v[^a-zA-Z]TODO(:)?', -1)
@@ -278,29 +350,22 @@ augroup HiglightTODO
     autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'BUG', -1)
 augroup END
 
-
-" Xelatex compile
-command Xelatex !xelatex %
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => UI/UX
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable syntax highlighting
 syntax enable
 
-if v:version > 703
-    "set colorcolumn=80
-endif
-
 set wildmenu " Wild menu expands autocompletion stuff in cmd mode for tab navigation
 set wildignore=*.o,*~,*.pyc " Ignore compiled files
 
-set ruler       "Show cursor position
+set ruler       " Show cursor position
 set cmdheight=1 " Lines to use for cmd line
 
 set backspace=eol,start,indent " Backspaces solos everything
 " set whichwrap+=<,>,h,l
 
-" TODO: Must be a better way to do this. Unhighlight search results
+" Unhighlight search results
 nnoremap <silent> <BS> :set hlsearch! hlsearch?<cr>
 
 set ignorecase  " ignore case when searching
@@ -354,7 +419,7 @@ nmap <leader>x :x<CR>
 " Apply vimrc changes without restart
 nmap <silent> <leader>r :so $MYVIMRC<CR>
 
-" Start in desired directory
+" Start in desired directory (Please configure per machine instead)
 "cd W:/
 
 " Easy buffer navigation using tabs
@@ -380,7 +445,7 @@ set copyindent   " copy the previous indentation on autoindenting
 
 if executable('ag')
     nnoremap <Leader>fw :execute "Ag ".expand("<cword")<CR>
-    nnoremap <Leader>ff :Ag
+    nnoremap <Leader>ff :Ag<space>
     set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
     set grepformat=%f:%l:%c:%m
 endif
@@ -451,10 +516,11 @@ nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 if has('gui_running')
     colorscheme jellybeans
-    "colorscheme herald
-    set guifont=Inconsolata-dz:h10
+    set guifont=Inconsolata-dz:h10 " Eyesight must be getting better
     "set guifont=Inconsolata:h11:cANSI
-    "au GUIEnter * simalt ~x
+    if !has("gui_macvim")
+        au GUIEnter * simalt ~x
+    endif
     set guiheadroom=0
     set guioptions-=m  "remove menu bar
     set guioptions-=T  "remove toolbar
@@ -465,6 +531,8 @@ if has('gui_running')
     highlight Cursor guifg=black guibg=#65e770
     highlight iCursor guifg=black guibg=#65e770
     hi clear Conceal
+elseif &term =~ "xterm"
+    colorscheme jellybeans
 elseif !empty($CONEMUBUILD)
     set term=pcansi
     set t_Co=256
@@ -478,17 +546,4 @@ elseif !empty($CONEMUBUILD)
     highlight Cursor guifg=black
     highlight iCursor guifg=black
     colorscheme hybrid
-elseif &term =~ "xterm"
-    let &t_Co = 256
-    " restore screen after quitting
-    let &t_ti = "\<Esc>7\<Esc>[r\<Esc>[?47h"
-    let &t_te = "\<Esc>[?47l\<Esc>8"
-    if has("terminfo")
-        let &t_Sf = "\<Esc>[3%p1%dm"
-        let &t_Sb = "\<Esc>[4%p1%dm"
-    else
-        let &t_Sf = "\<Esc>[3%dm"
-        let &t_Sb = "\<Esc>[4%dm"
-    endif
-    colorscheme jellybeans
 endif
