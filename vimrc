@@ -237,7 +237,7 @@ let g:pandoc#modules#disabled = ["folding"]
 let g:pandoc#formatting#smart_autoformat_on_cursormoved = 1
 let g:pandoc#syntax#codeblocks#embeds#langs = ["ruby", "scala",
                 \ "literatehaskell=lhaskell", "bash=sh","json=javascript",
-                \ "css","html","javascript","c","cpp"]
+                \ "css","html","javascript","c","cpp","python"]
 let g:pandoc#syntax#conceal#blacklist = ["list","atx"]
 
 " syntastic
