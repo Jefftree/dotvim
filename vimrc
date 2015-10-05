@@ -103,7 +103,7 @@ NeoBundleLazy 'gregsexton/gitv', {'depends':['tpope/vim-fugitive'], 'autoload':{
 let g:jsx_ext_required = 0
 
 " ---------------- NEOCOMPLETE (Needs more tweaking)
-"  -------------------------------
+
 " Disable AutoComplPop. (changed)
 let g:acp_enableAtStartup = 1
 " Use neocomplete.
@@ -289,8 +289,8 @@ noremap <PageDown> :NextColorScheme<CR>
 " ]]            Jump on next class or function (normal, visual, operator modes)
 " [M            Jump on previous class or method (normal, visual, operator modes)
 " ]M            Jump on next class or method (normal, visual, operator modes)
-let g:pymode_rope = 1
 
+let g:pymode_rope = 1
 let g:pymode_run_bind = '<Space>r'
 
 " Documentation
@@ -353,8 +353,7 @@ augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => UI/UX
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Enable syntax highlighting
-syntax enable
+syntax enable " Enable syntax highlighting
 
 set wildmenu " Wild menu expands autocompletion stuff in cmd mode for tab navigation
 set wildignore=*.o,*~,*.pyc " Ignore compiled files
@@ -378,7 +377,6 @@ set matchtime=2 " Time limit for matching brackets
 set lazyredraw
 set noshowmode  " don't show current mode
 set nowrap      " don't wrap lines
-
 set number      " Line numbers
 set cursorline  " Highlight cursor line
 
@@ -460,6 +458,7 @@ nnoremap <Leader>s :sp<CR>
 nnoremap <Leader>v :vsp<CR>
 
 vmap <Leader>s :sort<CR>
+
 " Treat long lines as break lines (useful when moving around in them)
 map j gj
 map k gk
@@ -486,8 +485,7 @@ nnoremap <C-l> <C-w>l
 """"""""""""""""""""""""""""""
 " => Status line
 """"""""""""""""""""""""""""""
-" Always show the status line
-set laststatus=2
+set laststatus=2 " Always show the status line
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
@@ -509,8 +507,10 @@ func! DeleteTrailingWS()
   exe "normal `z"
 endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
+autocmd BufWrite *.md :call DeleteTrailingWS()
 autocmd BufWrite *.js :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
+
 
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
@@ -519,7 +519,7 @@ if has('gui_running')
     set guifont=Inconsolata-dz:h10 " Eyesight must be getting better
     "set guifont=Inconsolata:h11:cANSI
     if !has("gui_macvim")
-        au GUIEnter * simalt ~x
+        au GUIEnter * simalt ~x "Windows Full Screen"
     endif
     set guiheadroom=0
     set guioptions-=m  "remove menu bar
@@ -536,14 +536,12 @@ elseif &term =~ "xterm"
 elseif !empty($CONEMUBUILD)
     set term=pcansi
     set t_Co=256
-    set background=dark " Does this stuff work?
+    set background=dark 
     let &t_AB="\e[48;5;%dm"
     let &t_AF="\e[38;5;%dm"
     set bs=indent,eol,start
-    " Dark scheme, only for terminal
     hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white
-    "hi CursorLine term=bold cterm=bold
     highlight Cursor guifg=black
     highlight iCursor guifg=black
-    colorscheme hybrid
+    colorscheme jellybeans
 endif
