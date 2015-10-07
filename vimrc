@@ -92,15 +92,13 @@ NeoBundle 'tpope/vim-markdown'              " Markdown support
 NeoBundle 'vim-pandoc/vim-pandoc'           " Pandoc
 NeoBundle 'vim-pandoc/vim-pandoc-syntax'    " Pandoc Syntax
 NeoBundle 'klen/python-mode'                " Python
-
+NeoBundle 'tmux-plugins/vim-tmux'           " tmux file highlighting
 
 NeoBundleLazy 'gregsexton/gitv', {'depends':['tpope/vim-fugitive'], 'autoload':{'commands':'Gitv'}} "{{{
     nnoremap <silent> <leader>gv :Gitv<CR>
     nnoremap <silent> <leader>gV :Gitv!<CR>
 "}}}
 
-" JSX Enabled on all JS Files
-let g:jsx_ext_required = 0
 
 " ---------------- NEOCOMPLETE (Needs more tweaking)
 
@@ -132,12 +130,12 @@ inoremap <expr><C-l>     neocomplete#complete_common_string()
 
 " Recommended key-mappings.
 " <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  " return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-  " For no inserting <CR> key.
-  return pumvisible() ? "\<C-y>" : "\<CR>"
-endfunction
+"inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+"function! s:my_cr_function()
+  "" return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+  "" For no inserting <CR> key.
+  "return pumvisible() ? "\<C-y>" : "\<CR>"
+"endfunction
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
@@ -147,7 +145,7 @@ inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 "inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
 
 " AutoComplPop like behavior.
-let g:neocomplete#enable_auto_select = 1
+let g:neocomplete#enable_auto_select = 0
 
 "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
 
@@ -166,6 +164,9 @@ NeoBundleCheck " Check for missing plugins on startup
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" JSX Enabled on all JS Files
+let g:jsx_ext_required = 0
 
 " Auto open new line indentation after {<cr>
 inoremap {<CR> {<CR>}<Esc>ko
@@ -536,7 +537,7 @@ elseif &term =~ "xterm"
 elseif !empty($CONEMUBUILD)
     set term=pcansi
     set t_Co=256
-    set background=dark 
+    set background=dark
     let &t_AB="\e[48;5;%dm"
     let &t_AF="\e[38;5;%dm"
     set bs=indent,eol,start
