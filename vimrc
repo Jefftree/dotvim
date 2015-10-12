@@ -256,7 +256,6 @@ function! ToggleErrors()
     lclose
     if old_last_winnr == winnr('$')
         SyntasticCheck
-        " Nothing was closed, open syntastic error location panel
         Errors
     endif
 endfunction
@@ -281,6 +280,7 @@ noremap <PageDown> :NextColorScheme<CR>
 " Activate rope
 " Keys
 " K             Show python docs
+" <Leader>r     Run program
 " <Ctrl-Space>  Rope autocomplete
 " <Ctrl-c>g     Rope goto definition
 " <Ctrl-c>d     Rope show documentation
@@ -386,6 +386,7 @@ set noerrorbells
 set novisualbell
 set t_vb=
 set tm=500
+
 if has('autocmd')
   autocmd GUIEnter * set visualbell t_vb=
 endif
