@@ -1,17 +1,17 @@
 set nocompatible
+set all& "reset
 let s:is_windows = has('win32') || has('win64')
 
 " Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+au FileType css setlocal omnifunc=csscomplete#CompleteCSS
+au FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+au FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+au FileType python setlocal omnifunc=pythoncomplete#Complete
+au FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 if has("gui_macvim")
     let macvim_hig_shift_movement = 1 " Shift to select text
     " What is this sorcery?
@@ -25,28 +25,25 @@ let g:mapleader = ","
 let maplocalleader = "\\"
 let g:localleader = "\\"
 
-nnoremap <Space> <Nop>
-
-" Faster saving
-nmap <leader>w :w!<cr>
-nmap <leader>e :w !sudo tee %<cr>
-set clipboard=unnamed " Share clipboard with windows
-
 " File extension corrections
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
-au BufNewFile,BufFilePre,BufRead *.pentadactylrc set filetype=vim
+au BufNewFile,BufFilePre,BufRead *.*rc set filetype=vim
 
-set timeoutlen=1000   " mapping timeout
-set ttimeoutlen=50   " keycode timeout
-set nofoldenable     " disable folding
-set mouse=a          " enable mouse
-set history=1000     " number of command lines to remember
-set ttyfast          " assume fast terminal connection
-set encoding=utf-8   " set encoding for text
-set hidden           " allow buffer switching without saving
-set autoread         " auto reload if file saved externally
-set showcmd          " always show last used command
-set autochdir        " automatically change to file dir
+" makefile tab indent correction
+au FileType make setlocal noexpandtab
+
+set timeoutlen=2000   " mapping timeout
+set ttimeoutlen=50    " keycode timeout
+set nofoldenable      " disable folding
+set mouse=a           " enable mouse
+set history=1000      " number of command lines to remember
+set ttyfast           " assume fast terminal connection
+set encoding=utf-8    " set encoding for text
+set hidden            " allow buffer switching without saving
+set autoread          " auto reload if file saved externally
+set showcmd           " always show last used command
+set autochdir         " automatically change to file dir
+set clipboard=unnamed " Share clipboard with windows
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
@@ -145,9 +142,9 @@ if has('lua')
     " <CR>: close popup and save indent.
     inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
     function! s:my_cr_function()
-    "" return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-    "" For no inserting <CR> key.
-        return pumvisible() ? "\<C-y>" : "\<CR>"
+        return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+    " For no inserting <CR> key.
+        "return pumvisible() ? "\<C-y>" : "\<CR>"
     endfunction
     " <TAB>: completion.
     inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -178,9 +175,6 @@ NeoBundleCheck " Check for missing plugins on startup
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-command! -nargs=1 FW echo <q-args>
-command! FW echo <q-args>
 
 " JSX Enabled on all JS Files
 let g:jsx_ext_required = 0
@@ -255,7 +249,7 @@ let g:pandoc#modules#disabled = ["folding"]
 let g:pandoc#formatting#smart_autoformat_on_cursormoved = 1
 let g:pandoc#syntax#codeblocks#embeds#langs = ["ruby", "scala",
                 \ "literatehaskell=lhaskell", "bash=sh","json=javascript",
-                \ "css","html","javascript","c","cpp","python"]
+                \ "css","html","javascript","c","cpp","python","make"]
 let g:pandoc#syntax#conceal#blacklist = ["list","atx"]
 
 " syntastic
@@ -337,9 +331,6 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 " Don't autofold code
 let g:pymode_folding = 0
 
-" Highlight TODO, FIXME, NOTE, etc.
-autocmd ColorScheme * highlight TodoRed      guifg=#FF5F5F gui=bold
-autocmd ColorScheme * highlight NoteOrange   guifg=LightGreen gui=bold
 
 let g:rainbow_active = 1 " auto activate double rainbow
 
@@ -358,45 +349,50 @@ if v:version > 703
     endif
 endif
 
+" Highlight TODO, FIXME, NOTE, etc.
+autocmd ColorScheme * highlight TodoRed      guifg=#FF5F5F gui=bold
+autocmd ColorScheme * highlight NoteOrange   guifg=LightGreen gui=bold
+
 " GUI TODO Highlighter
 augroup HiglightTODO
     autocmd!
-    autocmd WinEnter,VimEnter * :silent! call matchadd('TodoRed', '\v[^a-zA-Z]TODO(:)?', -1)
+    autocmd WinEnter,VimEnter * :silent! call matchadd('TodoRed', '\v(^|[^a-zA-Z])TODO(:)?', -1)
     autocmd WinEnter,VimEnter * :silent! call matchadd('NoteOrange', 'NOTE', -1)
-    autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'INFO', -1)
     autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'IDEA', -1)
-    autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'BUG', -1)
 augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => UI/UX
+" => General Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-syntax enable " Enable syntax highlighting
+syntax enable                  " Enable syntax highlighting
 
-set wildmenu " Wild menu expands autocompletion stuff in cmd mode for tab navigation
-set wildignore=*.o,*~,*.pyc " Ignore compiled files
+set wildmenu                   " Wild menu expands autocompletion stuff in cmd mode for tab navigation
+set wildignore=*.o,*~,*.pyc    " Ignore compiled files
 
-set ruler       " Show cursor position
-set cmdheight=1 " Lines to use for cmd line
+set ruler                      " Show cursor position
+set cmdheight=1                " Lines to use for cmd line
 
 set backspace=eol,start,indent " Backspaces solos everything
-" set whichwrap+=<,>,h,l
+set whichwrap+=<,>,h,l         " move to next line after line end
 
-" Unhighlight search results
-nnoremap <silent> <BS> :set hlsearch! hlsearch?<cr>
 
-set ignorecase  " ignore case when searching
-set smartcase   " case-sensitive if uppercase search
-set hlsearch    " Highlight search results
-set incsearch   " Show search matches as you type
-set magic       " Regex is love regex is life
-set showmatch   " Show matching brackets when text indicator is over them
-set matchtime=2 " Time limit for matching brackets
-set lazyredraw
-set noshowmode  " don't show current mode
-set nowrap      " don't wrap lines
-set number      " Line numbers
-set cursorline  " Highlight cursor line
+set ignorecase                 " ignore case when searching
+set smartcase                  " case-sensitive if uppercase search
+set hlsearch                   " Highlight search results
+set incsearch                  " Show search matches as you type
+set magic                      " Regex is love regex is life
+set showmatch                  " Show matching brackets when text indicator is over them
+set matchtime=2                " Time limit for matching brackets
+set lazyredraw                 " less is more
+set noshowmode                 " don't show current mode
+set nowrap                     " don't wrap lines
+set number                     " Line numbers
+set cursorline                 " Highlight cursor line
+
+set shortmess+=I               " No annoying startup message
+set scrolloff=10               " Don't let cursor be near vertical edge of screen
+set laststatus=2               " Always show the status line
+
 
 " No annoying sound on errors
 set noerrorbells
@@ -405,46 +401,9 @@ set t_vb=
 set tm=500
 
 if has('autocmd')
-  autocmd GUIEnter * set visualbell t_vb=
+  autocmd GUIEnter * set novisualbell t_vb=
 endif
 
-set shortmess+=I "No annoying startup message
-set scrolloff=10 " Don't let cursor be near vertical edge of screen
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Files, backups and undo
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Turn backup off
-set nobackup
-set nowb
-set noswapfile
-
-" Undotree
-if has("persistent_undo")
-    set undodir=~/.vim/.undodir
-    set undofile
-    set undolevels=1000 "maximum number of changes that can be undone
-    set undoreload=10000 "maximum number lines to save for undo on a buffer reload
-endif
-
-" Quick access to vimrc
-nmap <leader>, :e ~/.vim/vimrc<CR>
-
-" Easy way to peace vim
-nmap <leader>x :x<CR>
-
-" Apply vimrc changes without restart
-nmap <silent> <leader>r :so $MYVIMRC<CR>
-
-" Start in desired directory (Please configure per machine instead)
-"cd W:/
-
-" Easy buffer navigation using tabs
-nnoremap <Tab> :bnext<CR>
-nnoremap <S-Tab> :bprevious<CR>
-
-"Close buffer
-nnoremap Q :bd<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
@@ -460,8 +419,28 @@ set shiftround   " use multiple of shiftwidth when indenting with '<' and '>'
 set autoindent   " always set autoindenting on
 set copyindent   " copy the previous indentation on autoindenting
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Files, backups and undo
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Turn backup off
+set nobackup
+set nowb
+set noswapfile
+
+" Undotree
+if has("persistent_undo")
+    if !isdirectory(expand('~').'/.vim/.undodir')
+        silent !mkdir ~/.vim/.undodir > dev/null
+    endif
+    set undodir=~/.vim/.undodir
+    set undofile
+    set undolevels=1000 "maximum number of changes that can be undone
+    set undoreload=10000 "maximum number lines to save for undo on a buffer reload
+endif
+
 if executable('ag')
-    nnoremap <Leader>fw :execute "Ag ".expand("<cword")<CR>
+    nnoremap <Leader>fw :execute "Ag ".expand("<cword>")<CR>
     nnoremap <Leader>ff :Ag<space>
     set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
     set grepformat=%f:%l:%c:%m
@@ -473,6 +452,7 @@ endif
 " Splitting shortcuts and defaults
 set splitright
 set splitbelow
+
 nnoremap <Leader>s :sp<CR>
 nnoremap <Leader>v :vsp<CR>
 
@@ -501,14 +481,29 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-""""""""""""""""""""""""""""""
-" => Status line
-""""""""""""""""""""""""""""""
-set laststatus=2 " Always show the status line
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Unhighlight search results
+nnoremap <silent> <BS> :set hlsearch! hlsearch?<cr>
+
+" Quick access to vimrc
+nmap <leader>, :e ~/.vim/vimrc<CR>
+
+" Faster saving
+nmap <leader>w :w!<cr>
+nmap <leader>e :w !sudo tee %<cr>
+
+" Easy way to peace vim
+nmap <leader>x :x<CR>
+
+" Apply vimrc changes without restart
+nmap <silent> <leader>r :so $MYVIMRC<CR>
+
+" Easy buffer navigation using tabs
+nnoremap <Tab> :bnext<CR>
+nnoremap <S-Tab> :bprevious<CR>
 
 " Remap VIM 0 to first non-blank character
 nnoremap 0 ^
@@ -525,11 +520,8 @@ func! DeleteTrailingWS()
   %s/\s\+$//ge
   exe "normal `z"
 endfunc
-autocmd BufWrite *.py :call DeleteTrailingWS()
-autocmd BufWrite *.md :call DeleteTrailingWS()
-autocmd BufWrite *.js :call DeleteTrailingWS()
-autocmd BufWrite *.coffee :call DeleteTrailingWS()
 
+autocmd BufWrite *.py,*.md,*.js :call DeleteTrailingWS()
 
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
@@ -551,8 +543,10 @@ if has('gui_running')
     highlight iCursor guifg=black guibg=#65e770
     hi clear Conceal
 elseif &term =~ "xterm"
+    "TODO: Check 256 color support first
     set t_Co=256
     colorscheme jellybeans
+    hi Cursor ctermfg=black ctermbg=10
 elseif !empty($CONEMUBUILD)
     set term=pcansi
     set t_Co=256
