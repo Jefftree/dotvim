@@ -431,7 +431,7 @@ set noswapfile
 " Undotree
 if has("persistent_undo")
     if !isdirectory(expand('~').'/.vim/.undodir')
-        silent !mkdir ~/.vim/.undodir > dev/null
+        silent !mkdir ~/.vim/.undodir > /dev/null
     endif
     set undodir=~/.vim/.undodir
     set undofile
