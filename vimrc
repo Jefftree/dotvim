@@ -84,6 +84,7 @@ NeoBundle 'scrooloose/nerdcommenter'        " Commenting shortcuts
 NeoBundle 'rking/ag.vim'                    " Searcher
 NeoBundle 'qpkorr/vim-bufkill'              " Close buffer without closing window
 NeoBundle 'mbbill/undotree'                 " Undo tree
+NeoBundle 'tpope/vim-repeat'                " Repeat stuff
 
 " Language specific
 NeoBundle 'jelera/vim-javascript-syntax'    " Javascript Highlighting
@@ -546,7 +547,7 @@ elseif &term =~ "xterm"
     "TODO: Check 256 color support first
     set t_Co=256
     colorscheme jellybeans
-    hi Cursor ctermfg=black ctermbg=10
+    hi CursorLine ctermbg=17
 elseif !empty($CONEMUBUILD)
     set term=pcansi
     set t_Co=256
