@@ -560,3 +560,7 @@ elseif !empty($CONEMUBUILD)
     highlight iCursor guifg=black
     colorscheme jellybeans
 endif
+
+
+" Make 
+nnoremap <Leader>m :make debugrun<CR>
