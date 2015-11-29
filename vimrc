@@ -113,8 +113,6 @@ smap <expr><S-TAB> pumvisible() ? "\<C-p>" : ""
 " ---------------- NEOCOMPLETE (Needs more tweaking)
 
 if has('lua')
-    " Disable AutoComplPop. (changed)
-    let g:acp_enableAtStartup = 1
     " Use neocomplete.
     let g:neocomplete#enable_at_startup = 1
     let g:neocomplete#enable_smart_case = 1
@@ -148,25 +146,22 @@ if has('lua')
         "return pumvisible() ? "\<C-y>" : "\<CR>"
     endfunction
     " <TAB>: completion.
-    inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+    "inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
     " <C-h>, <BS>: close popup and delete backword char.
     inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-    inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+    "inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
     " Close popup by <Space>.
     "inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
 
     " AutoComplPop like behavior.
     let g:neocomplete#enable_auto_select = 0
 
-    "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+    inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
 
     " Enable heavy omni completion.
     if !exists('g:neocomplete#sources#omni#input_patterns')
     let g:neocomplete#sources#omni#input_patterns = {}
     endif
-    "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-    "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-    "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 endif
 
 call neobundle#end()
@@ -285,8 +280,11 @@ nnoremap <silent> <leader>gd :Gdiff<CR>
 nnoremap <silent> <leader>gl :Glog<CR>
 
 " Colorscheme
-noremap <PageUp> :PrevColorScheme<CR>
-noremap <PageDown> :NextColorScheme<CR>
+"noremap <PageUp> :PrevColorScheme<CR>
+"noremap <PageDown> :NextColorScheme<CR>
+noremap <PageUp> <C-b>
+noremap <PageDown> <C-f>
+
 
 " Python-mode
 " Activate rope
