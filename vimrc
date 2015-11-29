@@ -58,13 +58,11 @@ NeoBundle 'xolox/vim-colorscheme-switcher', {
             \ 'depends' : 'xolox/vim-misc'}  " Quickswitch theme
 
 " Functionality
-NeoBundle 'Shougo/neosnippet'               " Snippets functionality
-NeoBundle 'Shougo/neosnippet-snippets'      " Useful snippets
 
 if has('lua')
-    NeoBundleLazy 'Shougo/neocomplete.vim', {'autoload':{'insert':1}, 'vim_version':'7.3.885'} "{{{
-        let g:neocomplete#enable_at_startup=1
-        let g:neocomplete#data_directory='~/.cache/neocomplete'
+    NeoBundle 'Shougo/neosnippet'               " Snippets functionality
+    NeoBundle 'Shougo/neosnippet-snippets'      " Useful snippets
+    NeoBundle 'Shougo/neocomplete.vim'          " Completion
 endif
 NeoBundle 'kien/ctrlp.vim'                  " File searcher
 NeoBundle 'godlygeek/tabular'               " Easy alignment of variables
@@ -98,16 +96,6 @@ NeoBundleLazy 'gregsexton/gitv', {'depends':['tpope/vim-fugitive'], 'autoload':{
     nnoremap <silent> <leader>gV :Gitv!<CR>
 "}}}
 
-let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets,~/.vim/snippets'
-let g:neosnippet#enable_snipmate_compatibility=1
-
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ? "\<C-n>" : "\<TAB>")
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-imap <expr><S-TAB> pumvisible() ? "\<C-p>" : ""
-smap <expr><S-TAB> pumvisible() ? "\<C-p>" : ""
-imap <Down> <Down>
-
-
 call neobundle#end()
 filetype plugin indent on
 NeoBundleCheck " Check for missing plugins on startup
@@ -115,6 +103,21 @@ NeoBundleCheck " Check for missing plugins on startup
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <F6> :e %:p:s,.h$,.X123X,:s,.cc$,.h,:s,.X123X$,.cc,<CR>
+
+if has('lua')
+    let g:neocomplete#enable_at_startup=1
+
+    imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ? "\<C-n>" : "\<TAB>")
+    smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+    imap <expr><S-TAB> pumvisible() ? "\<C-p>" : ""
+    smap <expr><S-TAB> pumvisible() ? "\<C-p>" : ""
+
+    " For nano guys
+    imap <expr><Up> pumvisible() ? neocomplete#smart_close_popup() . "\<Up>" : "<Up>"
+    imap <expr><Down> pumvisible() ? neocomplete#smart_close_popup() . "\<Down>" : "<Down>"
+endif
+
 
 " JSX Enabled on all JS Files
 let g:jsx_ext_required = 0
