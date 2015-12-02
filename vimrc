@@ -491,6 +491,7 @@ if has('gui_running')
 elseif &term =~ "xterm"
     "TODO: Check 256 color support first
     set t_Co=256
+    set term=screen-256color
     colorscheme jellybeans
     hi CursorLine ctermbg=17
 elseif !empty($CONEMUBUILD)
