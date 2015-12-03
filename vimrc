@@ -170,16 +170,6 @@ let g:airline_right_sep=''
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 
-nmap <leader>1 <Plug>AirlineSelectTab1
-nmap <leader>2 <Plug>AirlineSelectTab2
-nmap <leader>3 <Plug>AirlineSelectTab3
-nmap <leader>4 <Plug>AirlineSelectTab4
-nmap <leader>5 <Plug>AirlineSelectTab5
-nmap <leader>6 <Plug>AirlineSelectTab6
-nmap <leader>7 <Plug>AirlineSelectTab7
-nmap <leader>8 <Plug>AirlineSelectTab8
-nmap <leader>9 <Plug>AirlineSelectTab9
-
 " startify
 let g:startify_change_to_vcs_root = 1
 let g:startify_session_persistence = 0		" automatically update sessions
@@ -320,7 +310,6 @@ set cmdheight=1                " Lines to use for cmd line
 set backspace=eol,start,indent " Backspaces solos everything
 set whichwrap+=<,>,h,l         " move to next line after line end
 
-
 set ignorecase                 " ignore case when searching
 set smartcase                  " case-sensitive if uppercase search
 set hlsearch                   " Highlight search results
@@ -338,7 +327,6 @@ set shortmess+=I               " No annoying startup message
 set scrolloff=10               " Don't let cursor be near vertical edge of screen
 set laststatus=2               " Always show the status line
 
-
 " No annoying sound on errors
 set noerrorbells
 set novisualbell
@@ -348,7 +336,6 @@ set tm=500
 if has('autocmd')
   autocmd GUIEnter * set novisualbell t_vb=
 endif
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
@@ -433,8 +420,9 @@ nnoremap <C-l> <C-w>l
 " Unhighlight search results
 nnoremap <silent> <BS> :set hlsearch! hlsearch?<cr>
 
-" Quick access to vimrc
+" Quick access to config files. TODO: May need to remap
 nmap <leader>, :e ~/.vim/vimrc<CR>
+nmap <leader>t :e ~/.tmux.conf<CR>
 
 " Faster saving
 nmap <leader>w :w!<cr>
@@ -501,11 +489,11 @@ elseif !empty($CONEMUBUILD)
     let &t_AF="\e[38;5;%dm"
     set bs=indent,eol,start
     hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white
+    colorscheme jellybeans
     highlight Cursor guifg=black
     highlight iCursor guifg=black
-    colorscheme jellybeans
 endif
 
-
-" Make
-nnoremap <Leader>m :make debugrun<CR>
+" Place into appropriate location
+set fillchars+=vert:\
+hi! VertSplit ctermfg=234 ctermbg=234 term=NONE
