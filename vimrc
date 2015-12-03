@@ -156,10 +156,9 @@ endif
 
 " NERDtree file explorer
 let NERDTreeQuitOnOpen=0
-let NERDTreeIgnore=['\.git','\.hg']
+let NERDTreeIgnore=['\.git','\.hg','\.o$','\.d$','^node_modules$', '^coverage$']
 nnoremap <silent> <F2> :NERDTreeToggle<CR>
 nnoremap <silent> <F4> :NERDTreeFind<CR>
-let NERDTreeIgnore=['^node_modules$', '^coverage$']
 
 " Airline tabline
 "let g:airline_powerline_fonts = 1 " Too much effort to patch fonts on all machines
