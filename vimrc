@@ -1,7 +1,6 @@
 set nocompatible
-set all& "reset
+"set all& "reset
 let s:is_windows = has('win32') || has('win64')
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -20,7 +19,7 @@ let g:localleader = "\\"
 
 " File extension corrections
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
-au BufNewFile,BufFilePre,BufRead *.*rc set filetype=vim
+au BufNewFile,BufFilePre,BufRead .*rrc,.*lrc set filetype=vim
 
 " makefile tab indent correction
 au FileType make setlocal noexpandtab
@@ -125,12 +124,13 @@ let g:jsx_ext_required = 0
 " Auto open new line indentation after {<cr>
 inoremap {<CR> {<CR>}<Esc>ko
 
+" TODO: Change into one command that detects filetype
+
 " Easily compile math notes
-command Math Pandoc -s --mathjax
-nnoremap <Leader>p :Math<CR>
+nnoremap <Leader>p :Pandoc -s --mathjax<CR>
 
 " Xelatex compile
-command Xelatex !xelatex %
+nnoremap <Leader>o !xelatex %<CR>
 
 nnoremap <silent> <F5> :UndotreeToggle<CR>
 
@@ -277,8 +277,8 @@ if v:version > 703
     if !has('gui_running')
         let g:indent_guides_auto_colors=0
         function! s:indent_set_console_colors()
-            hi IndentGuidesOdd ctermbg=235
-            hi IndentGuidesEven ctermbg=236
+            hi IndentGuidesOdd ctermbg=234
+            hi IndentGuidesEven ctermbg=233
         endfunction
         autocmd VimEnter,Colorscheme * call s:indent_set_console_colors()
     endif
