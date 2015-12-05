@@ -1,3 +1,17 @@
+
+" Don't use macvim anymore
+" Highlight TODO, FIXME, NOTE, etc.
+autocmd ColorScheme * highlight TodoRed      guifg=#FF5F5F gui=bold
+autocmd ColorScheme * highlight NoteOrange   guifg=LightGreen gui=bold
+
+" GUI TODO Highlighter
+augroup HiglightTODO
+    autocmd!
+    autocmd WinEnter,VimEnter * :silent! call matchadd('TodoRed', '\v(^|[^a-zA-Z])TODO(:)?', -1)
+    autocmd WinEnter,VimEnter * :silent! call matchadd('NoteOrange', 'NOTE', -1)
+    autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'IDEA', -1)
+augroup END
+
 " Snippets from vimrc that aren't being used
 
 " Utilities

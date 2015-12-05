@@ -63,21 +63,23 @@ if has('lua')
     NeoBundle 'Shougo/neosnippet-snippets'      " Useful snippets
     NeoBundle 'Shougo/neocomplete.vim'          " Completion
 endif
+
 NeoBundle 'kien/ctrlp.vim'                  " File searcher
 NeoBundle 'godlygeek/tabular'               " Easy alignment of variables
 NeoBundle 'scrooloose/nerdtree'             " File explorer
+NeoBundle 'scrooloose/syntastic'            " Syntax errors
+NeoBundle 'scrooloose/nerdcommenter'        " Commenting shortcuts
 NeoBundle 'tpope/vim-fugitive'              " Git
-NeoBundle 'Raimondi/delimitMate'            " Matching parentheses
-NeoBundle 'nathanaelkane/vim-indent-guides' " Indent visuals
 NeoBundle 'tpope/vim-speeddating'           " <C-a>, <C-x> for dates
 NeoBundle 'tpope/vim-surround'              " Surround shortcuts
-NeoBundle 'scrooloose/syntastic'            " Syntax errors
+NeoBundle 'tpope/vim-repeat'                " Repeat stuff
+NeoBundle 'Raimondi/delimitMate'            " Matching parentheses
+NeoBundle 'nathanaelkane/vim-indent-guides' " Indent visuals
 NeoBundle 'majutsushi/tagbar'               " Tag browsing
-NeoBundle 'scrooloose/nerdcommenter'        " Commenting shortcuts
 NeoBundle 'rking/ag.vim'                    " Searcher
 NeoBundle 'qpkorr/vim-bufkill'              " Close buffer without closing window
 NeoBundle 'mbbill/undotree'                 " Undo tree
-NeoBundle 'tpope/vim-repeat'                " Repeat stuff
+NeoBundle 'benmills/vimux'                  " tmux + vim
 
 " Language specific
 NeoBundle 'jelera/vim-javascript-syntax'    " Javascript Highlighting
@@ -87,7 +89,6 @@ NeoBundle 'derekwyatt/vim-scala'            " Scala support
 NeoBundle 'tpope/vim-markdown'              " Markdown support
 NeoBundle 'vim-pandoc/vim-pandoc'           " Pandoc
 NeoBundle 'vim-pandoc/vim-pandoc-syntax'    " Pandoc Syntax
-NeoBundle 'klen/python-mode'                " Python
 NeoBundle 'tmux-plugins/vim-tmux'           " tmux file highlighting
 
 NeoBundleLazy 'gregsexton/gitv', {'depends':['tpope/vim-fugitive'], 'autoload':{'commands':'Gitv'}} "{{{
@@ -124,22 +125,25 @@ let g:jsx_ext_required = 0
 " Auto open new line indentation after {<cr>
 inoremap {<CR> {<CR>}<Esc>ko
 
-" TODO: Change into one command that detects filetype
+" Vimux split fun
+let g:VimuxOrientation = "h"
+let g:VimuxHeight = "40"
 
-" Easily compile math notes
-nnoremap <Leader>p :Pandoc -s --mathjax<CR>
+" TODO: Change to vimux commands later
+map [compile] <Nop>
+autocmd Filetype pandoc nmap <silent> <buffer> [compile] :Pandoc -s --mathjax<CR>
+autocmd Filetype tex nmap <silent> <buffer> [compile] :!xelatex %<CR>
+autocmd Filetype python nmap <silent> <buffer> [compile] :call VimuxRunCommand("python ".bufname("%"))<CR>
+autocmd Filetype c,cpp,cc nmap <silent> <buffer> [compile] :call VimuxRunCommand("make")<CR>
 
-" Xelatex compile
-nnoremap <Leader>o !xelatex %<CR>
+map [test] <Nop>
+autocmd Filetype python nmap <silent> <buffer> [test] :call VimuxRunCommand("ts ".bufname("%"))<CR>
+map <leader>n [test]
+
+" Probably need a more logical mapping lol
+map <leader>m [compile]
 
 nnoremap <silent> <F5> :UndotreeToggle<CR>
-
-" Tabularize shortcut
-if exists("Tabularize")
-    map <Leader>a= :Tabularize /=<CR>
-    map <Leader>a: :Tabularize /:<CR>
-    map <Leader>a" :Tabularize /"<CR>
-endif
 
 " CTRL-P
 let g:ctrlp_cache_dir = $USERPROFILE . '/.cache/ctrlp'
@@ -164,19 +168,18 @@ nnoremap <silent> <F4> :NERDTreeFind<CR>
 "let g:airline_powerline_fonts = 1 " Too much effort to patch fonts on all machines
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='wombat'
-let g:airline#extensions#tabline#buffer_idx_mode = 1	" display numbers in the tab line, and use mappings <leader>1 to <leader>9
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 
-" startify
+" Startify
 let g:startify_change_to_vcs_root = 1
 let g:startify_session_persistence = 0		" automatically update sessions
 let g:startify_show_sessions = 1
 nnoremap <F1> :Startify<cr>
 
-" pandoc
+" Pandoc
 let g:pandoc#modules#disabled = ["folding"]
 let g:pandoc#formatting#smart_autoformat_on_cursormoved = 1
 let g:pandoc#syntax#codeblocks#embeds#langs = ["ruby", "scala",
@@ -184,7 +187,7 @@ let g:pandoc#syntax#codeblocks#embeds#langs = ["ruby", "scala",
                 \ "css","html","javascript","c","cpp","python","make"]
 let g:pandoc#syntax#conceal#blacklist = ["list","atx"]
 
-" syntastic
+" Syntastic
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -216,92 +219,17 @@ nnoremap <silent> <leader>gd :Gdiff<CR>
 nnoremap <silent> <leader>gl :Glog<CR>
 
 " Colorscheme
-"noremap <PageUp> :PrevColorScheme<CR>
-"noremap <PageDown> :NextColorScheme<CR>
-noremap <PageUp> <C-b>
-noremap <PageDown> <C-f>
-
-
-" Python-mode
-" Activate rope
-" Keys
-" K             Show python docs
-" <Leader>r     Run program
-" <Ctrl-Space>  Rope autocomplete
-" <Ctrl-c>g     Rope goto definition
-" <Ctrl-c>d     Rope show documentation
-" <Ctrl-c>f     Rope find occurrences
-" <Leader>b     Set, unset breakpoint (g:pymode_breakpoint enabled)
-" [[            Jump on previous class or function (normal, visual, operator modes)
-" ]]            Jump on next class or function (normal, visual, operator modes)
-" [M            Jump on previous class or method (normal, visual, operator modes)
-" ]M            Jump on next class or method (normal, visual, operator modes)
-
-let g:pymode_rope = 1
-let g:pymode_run_bind = '<Space>r'
-
-" Documentation
-let g:pymode_doc = 1
-let g:pymode_doc_key = 'K'
-
-"Linting
-let g:pymode_lint = 1
-let g:pymode_lint_checkers = ["pyflakes"]
-" Auto check on save
-let g:pymode_lint_write = 1
-
-" Support virtualenv
-let g:pymode_virtualenv = 1
-
-" Enable breakpoints plugin
-let g:pymode_breakpoint = 1
-let g:pymode_breakpoint_bind = '<leader>b'
-
-" syntax highlighting
-let g:pymode_syntax = 1
-let g:pymode_syntax_all = 1
-let g:pymode_syntax_indent_errors = g:pymode_syntax_all
-let g:pymode_syntax_space_errors = g:pymode_syntax_all
-
-" Don't autofold code
-let g:pymode_folding = 0
-
+noremap <PageUp> :PrevColorScheme<CR>
+noremap <PageDown> :NextColorScheme<CR>
 
 let g:rainbow_active = 1 " auto activate double rainbow
-
-" Indent guide configuration for terminal
-if v:version > 703
-    let g:indent_guides_enable_on_vim_startup = 1
-    hi IndentGuideOdd guibg=darkgrey ctermbg=236
-    hi IndentGuideEven guibg=darkgrey ctermbg=237
-    if !has('gui_running')
-        let g:indent_guides_auto_colors=0
-        function! s:indent_set_console_colors()
-            hi IndentGuidesOdd ctermbg=234
-            hi IndentGuidesEven ctermbg=233
-        endfunction
-        autocmd VimEnter,Colorscheme * call s:indent_set_console_colors()
-    endif
-endif
-
-" Highlight TODO, FIXME, NOTE, etc.
-autocmd ColorScheme * highlight TodoRed      guifg=#FF5F5F gui=bold
-autocmd ColorScheme * highlight NoteOrange   guifg=LightGreen gui=bold
-
-" GUI TODO Highlighter
-augroup HiglightTODO
-    autocmd!
-    autocmd WinEnter,VimEnter * :silent! call matchadd('TodoRed', '\v(^|[^a-zA-Z])TODO(:)?', -1)
-    autocmd WinEnter,VimEnter * :silent! call matchadd('NoteOrange', 'NOTE', -1)
-    autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'IDEA', -1)
-augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 syntax enable                  " Enable syntax highlighting
 
-set wildmenu                   " Wild menu expands autocompletion stuff in cmd mode for tab navigation
+set wildmenu                   " Expands autocompletion stuff in cmd mode
 set wildignore=*.o,*~,*.pyc    " Ignore compiled files
 
 set ruler                      " Show cursor position
@@ -327,34 +255,23 @@ set shortmess+=I               " No annoying startup message
 set scrolloff=10               " Don't let cursor be near vertical edge of screen
 set laststatus=2               " Always show the status line
 
+set expandtab                  " Use spaces instead of tabs
+set smarttab                   " insert tabs according to shiftwidth, not tabstop
+
+" 1 tab == 4 spaces
+set shiftwidth=4
+set tabstop=4
+set shiftround                 " use multiple of shiftwidth when indenting with '<' and '>'
+
+set autoindent                 " always set autoindenting on
+set copyindent                 " copy the previous indentation on autoindenting
+
 " No annoying sound on errors
 set noerrorbells
 set novisualbell
 set t_vb=
 set tm=500
 
-if has('autocmd')
-  autocmd GUIEnter * set novisualbell t_vb=
-endif
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set expandtab    " Use spaces instead of tabs
-set smarttab     " insert tabs according to shiftwidth, not tabstop
-
-" 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
-set shiftround   " use multiple of shiftwidth when indenting with '<' and '>'
-
-set autoindent   " always set autoindenting on
-set copyindent   " copy the previous indentation on autoindenting
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Files, backups and undo
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Turn backup off
 set nobackup
 set nowb
@@ -446,7 +363,6 @@ nnoremap ^ 0
 vnoremap < <gv
 vnoremap > >gv
 
-
 " TODO: Delete trailing white space on save
 func! DeleteTrailingWS()
   exe "normal mz"
@@ -456,7 +372,31 @@ endfunc
 
 autocmd BufWrite *.py,*.md,*.js :call DeleteTrailingWS()
 
+" Reselect paste
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => GUI
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Reduce annoying split line impact
+set fillchars+=vert:.
+hi! VertSplit ctermfg=234 ctermbg=234 term=NONE
+
+" Indent guide configuration for terminal
+if v:version > 703
+    let g:indent_guides_enable_on_vim_startup = 1
+    let g:indent_guides_auto_colors=0
+    hi IndentGuideOdd ctermbg=234 guibg=darkgrey
+    hi IndentGuideEven ctermbg=233 guibg=darkgrey
+    " TODO: Why can't we get rid of this section?
+    if !has('gui_running')
+        function! s:indent_set_console_colors()
+            hi IndentGuidesOdd ctermbg=234
+            hi IndentGuidesEven ctermbg=233
+        endfunction
+        autocmd VimEnter,Colorscheme * call s:indent_set_console_colors()
+    endif
+endif
 
 if has('gui_running')
     colorscheme jellybeans
@@ -475,12 +415,13 @@ if has('gui_running')
     highlight Cursor guifg=black guibg=#65e770
     highlight iCursor guifg=black guibg=#65e770
     hi clear Conceal
-elseif &term =~ "xterm"
+elseif (&term =~ "xterm" || &term =~ "screen-256color")
     "TODO: Check 256 color support first
     set t_Co=256
     set term=screen-256color
     colorscheme jellybeans
     hi CursorLine ctermbg=17
+    hi clear Conceal
 elseif !empty($CONEMUBUILD)
     set term=pcansi
     set t_Co=256
@@ -493,7 +434,3 @@ elseif !empty($CONEMUBUILD)
     highlight Cursor guifg=black
     highlight iCursor guifg=black
 endif
-
-" Place into appropriate location
-set fillchars+=vert:\
-hi! VertSplit ctermfg=234 ctermbg=234 term=NONE
