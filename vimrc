@@ -80,6 +80,7 @@ NeoBundle 'rking/ag.vim'                    " Searcher
 NeoBundle 'qpkorr/vim-bufkill'              " Close buffer without closing window
 NeoBundle 'mbbill/undotree'                 " Undo tree
 NeoBundle 'benmills/vimux'                  " tmux + vim
+NeoBundle 'christoomey/vim-tmux-navigator'  " easier tmux navigation
 
 " Language specific
 NeoBundle 'jelera/vim-javascript-syntax'    " Javascript Highlighting
