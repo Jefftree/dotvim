@@ -103,6 +103,7 @@ NeoBundleCheck " Check for missing plugins on startup
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Swap between header and implementation file
 nnoremap <F6> :e %:p:s,.h$,.X123X,:s,.cc$,.h,:s,.X123X$,.cc,<CR>
 
 if has('lua')
@@ -138,10 +139,10 @@ autocmd Filetype c,cpp,cc nmap <silent> <buffer> [compile] :call VimuxRunCommand
 
 map [test] <Nop>
 autocmd Filetype python nmap <silent> <buffer> [test] :call VimuxRunCommand("ts ".bufname("%"))<CR>
-map <leader>n [test]
+nmap <leader>n [test]
 
 " Probably need a more logical mapping lol
-map <leader>m [compile]
+nmap <leader>m [compile]
 
 function Light()
     let g:airline_theme='tomorrow'
@@ -266,25 +267,17 @@ set laststatus=2               " Always show the status line
 
 set expandtab                  " Use spaces instead of tabs
 set smarttab                   " insert tabs according to shiftwidth, not tabstop
-
-" 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=4 tabstop=4     " 1 tab == 4 spaces
 set shiftround                 " use multiple of shiftwidth when indenting with '<' and '>'
 
 set autoindent                 " always set autoindenting on
 set copyindent                 " copy the previous indentation on autoindenting
 
-" No annoying sound on errors
-set noerrorbells
-set novisualbell
+set noerrorbells novisualbell  " No annoying sound on errors
 set t_vb=
 set tm=500
 
-" Turn backup off
-set nobackup
-set nowb
-set noswapfile
+set nobackup nowb noswapfile   " Turn backup off
 
 " Undotree
 if has("persistent_undo")
@@ -348,6 +341,7 @@ nnoremap <silent> <BS> :set hlsearch! hlsearch?<cr>
 
 " Quick access to config files. TODO: May need to remap
 nmap <leader>, :e ~/.vim/vimrc<CR>
+nmap <leader>. :e ~/.vim/sandbox.vim<CR>
 nmap <leader>t :e ~/.tmux.conf<CR>
 
 " Faster saving
@@ -394,18 +388,13 @@ hi! VertSplit ctermfg=234 ctermbg=234 term=NONE
 " Indent guide configuration for terminal
 if v:version > 703
     " TODO: Enable or disable on startup?
-    "let g:indent_guides_enable_on_vim_startup = 1
+    let g:indent_guides_enable_on_vim_startup = 1
     let g:indent_guides_auto_colors=0
-    hi IndentGuideOdd ctermbg=234 guibg=darkgrey
-    hi IndentGuideEven ctermbg=233 guibg=darkgrey
-    " TODO: Why can't we get rid of this section?
-    if !has('gui_running')
-        function! s:indent_set_console_colors()
-            hi IndentGuidesOdd ctermbg=234
-            hi IndentGuidesEven ctermbg=233
-        endfunction
-        autocmd VimEnter,Colorscheme * call s:indent_set_console_colors()
-    endif
+    function! s:indent_set_console_colors()
+        hi IndentGuidesOdd ctermbg=234 guibg=darkgrey
+        hi IndentGuidesEven ctermbg=233 guibg=darkgrey
+    endfunction
+    autocmd VimEnter,Colorscheme * call s:indent_set_console_colors()
 endif
 
 if has('gui_running')
