@@ -35,7 +35,7 @@ set hidden            " allow buffer switching without saving
 set autoread          " auto reload if file saved externally
 set showcmd           " always show last used command
 set autochdir         " automatically change to file dir
-set clipboard=unnamed " Share clipboard with windows
+set clipboard=unnamed " Share clipboard with OS
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
@@ -142,6 +142,15 @@ map <leader>n [test]
 
 " Probably need a more logical mapping lol
 map <leader>m [compile]
+
+function Light()
+    let g:airline_theme='tomorrow'
+    colorscheme Tomorrow
+endfunction
+
+nnoremap <leader>l :call Light()<CR>
+
+
 
 nnoremap <silent> <F5> :UndotreeToggle<CR>
 
@@ -384,7 +393,8 @@ hi! VertSplit ctermfg=234 ctermbg=234 term=NONE
 
 " Indent guide configuration for terminal
 if v:version > 703
-    let g:indent_guides_enable_on_vim_startup = 1
+    " TODO: Enable or disable on startup?
+    "let g:indent_guides_enable_on_vim_startup = 1
     let g:indent_guides_auto_colors=0
     hi IndentGuideOdd ctermbg=234 guibg=darkgrey
     hi IndentGuideEven ctermbg=233 guibg=darkgrey
