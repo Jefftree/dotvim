@@ -1,3 +1,17 @@
+" ======================================================
+" Stuff that looks interesting, but never ended up using
+" ======================================================
+
+if has("gui_macvim")
+    let macvim_hig_shift_movement = 1 " Shift to select text
+    " What is this sorcery?
+    nmap <SwipeLeft> :bprevious<CR>
+    nmap <SwipeRight> :bnext<CR>
+endif
+
+NeoBundle 'tpope/vim-speeddating'           " <C-a>, <C-x> for dates
+
+NeoBundle 'derekwyatt/vim-scala'            " Scala support
 
 " Don't use macvim anymore
 " Highlight TODO, FIXME, NOTE, etc.

@@ -4,12 +4,6 @@ let s:is_windows = has('win32') || has('win64')
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if has("gui_macvim")
-    let macvim_hig_shift_movement = 1 " Shift to select text
-    " What is this sorcery?
-    nmap <SwipeLeft> :bprevious<CR>
-    nmap <SwipeRight> :bnext<CR>
-endif
 
 " Leader to comma
 let mapleader = ","
@@ -70,7 +64,6 @@ NeoBundle 'scrooloose/nerdtree'             " File explorer
 NeoBundle 'scrooloose/syntastic'            " Syntax errors
 NeoBundle 'scrooloose/nerdcommenter'        " Commenting shortcuts
 NeoBundle 'tpope/vim-fugitive'              " Git
-NeoBundle 'tpope/vim-speeddating'           " <C-a>, <C-x> for dates
 NeoBundle 'tpope/vim-surround'              " Surround shortcuts
 NeoBundle 'tpope/vim-repeat'                " Repeat stuff
 NeoBundle 'Raimondi/delimitMate'            " Matching parentheses
@@ -86,7 +79,6 @@ NeoBundle 'christoomey/vim-tmux-navigator'  " easier tmux navigation
 NeoBundle 'jelera/vim-javascript-syntax'    " Javascript Highlighting
 NeoBundle 'elzr/vim-json'                   " JSON Highlighting
 NeoBundle 'mxw/vim-jsx'                     " JSX for React.js
-NeoBundle 'derekwyatt/vim-scala'            " Scala support
 NeoBundle 'tpope/vim-markdown'              " Markdown support
 NeoBundle 'vim-pandoc/vim-pandoc'           " Pandoc
 NeoBundle 'vim-pandoc/vim-pandoc-syntax'    " Pandoc Syntax
@@ -104,8 +96,6 @@ NeoBundleCheck " Check for missing plugins on startup
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Swap between header and implementation file
-nnoremap <F6> :e %:p:s,.h$,.X123X,:s,.cc$,.h,:s,.X123X$,.cc,<CR>
 
 if has('lua')
     let g:neocomplete#enable_at_startup=1
@@ -152,6 +142,12 @@ endfunction
 
 nnoremap <leader>l :call Light()<CR>
 
+" Definition text object
+vnoremap id :<C-U>silent! normal! 0vt:<CR>
+omap id :normal vid<CR>
+
+" Bolds definition object. Could probably remap to <C-b> in insert mode LOL
+nmap <leader>b ysid*.
 
 
 nnoremap <silent> <F5> :UndotreeToggle<CR>
@@ -337,8 +333,12 @@ nnoremap <C-l> <C-w>l
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " Unhighlight search results
 nnoremap <silent> <BS> :set hlsearch! hlsearch?<cr>
+
+" Swap between header and implementation file
+nnoremap <F6> :e %:p:s,.h$,.X123X,:s,.cc$,.h,:s,.X123X$,.cc,<CR>
 
 " Quick access to config files. TODO: May need to remap
 nmap <leader>, :e ~/.vim/vimrc<CR>
@@ -389,7 +389,7 @@ hi! VertSplit ctermfg=234 ctermbg=234 term=NONE
 " Indent guide configuration for terminal
 if v:version > 703
     " TODO: Enable or disable on startup?
-    let g:indent_guides_enable_on_vim_startup = 1
+    "let g:indent_guides_enable_on_vim_startup = 1
     let g:indent_guides_auto_colors=0
     function! s:indent_set_console_colors()
         hi IndentGuidesOdd ctermbg=234 guibg=darkgrey
@@ -419,8 +419,10 @@ elseif (&term =~ "xterm" || &term =~ "screen-256color")
     "TODO: Check 256 color support first
     set t_Co=256
     set term=screen-256color
-    colorscheme jellybeans
-    hi CursorLine ctermbg=17
+    "colorscheme jellybeans
+    let g:airline_theme='tomorrow'
+    colorscheme Tomorrow
+    "hi CursorLine ctermbg=17
     hi clear Conceal
 elseif !empty($CONEMUBUILD)
     set term=pcansi
