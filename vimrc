@@ -74,6 +74,7 @@ NeoBundle 'qpkorr/vim-bufkill'              " Close buffer without closing windo
 NeoBundle 'mbbill/undotree'                 " Undo tree
 NeoBundle 'benmills/vimux'                  " tmux + vim
 NeoBundle 'christoomey/vim-tmux-navigator'  " easier tmux navigation
+NeoBundle 'jceb/vim-orgmode'                " Might be useful
 
 " Language specific
 NeoBundle 'jelera/vim-javascript-syntax'    " Javascript Highlighting
@@ -121,10 +122,9 @@ inoremap {<CR> {<CR>}<Esc>ko
 let g:VimuxOrientation = "h"
 let g:VimuxHeight = "40"
 
-" TODO: Change to vimux commands later
 map [compile] <Nop>
-autocmd Filetype pandoc nmap <silent> <buffer> [compile] :Pandoc -s --mathjax<CR>
-autocmd Filetype tex nmap <silent> <buffer> [compile] :!xelatex %<CR>
+autocmd Filetype pandoc nmap <silent> <buffer> [compile] :Pandoc -s --mathjax pdf<CR>
+autocmd Filetype tex nmap <silent> <buffer> [compile] :call VimuxRunCommand("xelatex %")<CR>
 autocmd Filetype python nmap <silent> <buffer> [compile] :call VimuxRunCommand("python ".bufname("%"))<CR>
 autocmd Filetype c,cpp,cc nmap <silent> <buffer> [compile] :call VimuxRunCommand("make")<CR>
 
@@ -419,9 +419,9 @@ elseif (&term =~ "xterm" || &term =~ "screen-256color")
     "TODO: Check 256 color support first
     set t_Co=256
     set term=screen-256color
-    "colorscheme jellybeans
-    let g:airline_theme='tomorrow'
-    colorscheme Tomorrow
+    colorscheme jellybeans
+    "let g:airline_theme='tomorrow'
+    "colorscheme Tomorrow
     "hi CursorLine ctermbg=17
     hi clear Conceal
 elseif !empty($CONEMUBUILD)
