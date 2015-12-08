@@ -189,9 +189,9 @@ nnoremap <F1> :Startify<cr>
 " Pandoc
 let g:pandoc#modules#disabled = ["folding"]
 let g:pandoc#formatting#smart_autoformat_on_cursormoved = 1
-let g:pandoc#syntax#codeblocks#embeds#langs = ["ruby", "scala",
+let g:pandoc#syntax#codeblocks#embeds#langs = ["ruby","python",
                 \ "literatehaskell=lhaskell", "bash=sh","json=javascript",
-                \ "css","html","javascript","c","cpp","python","make"]
+                \ "css","html","javascript","c","cpp","make"]
 let g:pandoc#syntax#conceal#blacklist = ["list","atx"]
 
 " Syntastic
