@@ -123,13 +123,14 @@ let g:VimuxOrientation = "h"
 let g:VimuxHeight = "40"
 
 map [compile] <Nop>
-autocmd Filetype pandoc nmap <silent> <buffer> [compile] :Pandoc -s --mathjax pdf<CR>
-autocmd Filetype tex nmap <silent> <buffer> [compile] :call VimuxRunCommand("xelatex %")<CR>
+autocmd Filetype pandoc nmap <silent> <buffer> [compile] :Pandoc -s --mathjax<CR>
+autocmd Filetype tex nmap <silent> <buffer> [compile] :call VimuxRunCommand("xelatex ".bufname("%"))<CR>
 autocmd Filetype python nmap <silent> <buffer> [compile] :call VimuxRunCommand("python ".bufname("%"))<CR>
 autocmd Filetype c,cpp,cc nmap <silent> <buffer> [compile] :call VimuxRunCommand("make")<CR>
 
 map [test] <Nop>
 autocmd Filetype python nmap <silent> <buffer> [test] :call VimuxRunCommand("ts ".bufname("%"))<CR>
+autocmd Filetype pandoc nmap <silent> <buffer> [test] :call VimuxRunCommand("notes ".bufname("%"))<CR>
 nmap <leader>n [test]
 
 " Probably need a more logical mapping lol
