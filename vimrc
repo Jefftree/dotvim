@@ -29,7 +29,7 @@ set hidden            " allow buffer switching without saving
 set autoread          " auto reload if file saved externally
 set showcmd           " always show last used command
 set autochdir         " automatically change to file dir
-set clipboard=unnamed " Share clipboard with OS
+set clipboard=unnamedplus " Share clipboard with OS
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
@@ -84,6 +84,8 @@ NeoBundle 'tpope/vim-markdown'              " Markdown support
 NeoBundle 'vim-pandoc/vim-pandoc'           " Pandoc
 NeoBundle 'vim-pandoc/vim-pandoc-syntax'    " Pandoc Syntax
 NeoBundle 'tmux-plugins/vim-tmux'           " tmux file highlighting
+
+NeoBundle 'PotatoesMaster/i3-vim-syntax'    " i3 highlighting
 
 NeoBundleLazy 'gregsexton/gitv', {'depends':['tpope/vim-fugitive'], 'autoload':{'commands':'Gitv'}} "{{{
     nnoremap <silent> <leader>gv :Gitv<CR>
@@ -416,14 +418,14 @@ if has('gui_running')
     highlight Cursor guifg=black guibg=#65e770
     highlight iCursor guifg=black guibg=#65e770
     hi clear Conceal
-elseif (&term =~ "xterm" || &term =~ "screen-256color")
+elseif (&term =~ "xterm" || &term =~ "screen-256color" || &term =~ "rxvt-unicode-256color")
     "TODO: Check 256 color support first
     set t_Co=256
     set term=screen-256color
     colorscheme jellybeans
     "let g:airline_theme='tomorrow'
     "colorscheme Tomorrow
-    "hi CursorLine ctermbg=17
+    hi CursorLine ctermbg=17
     hi clear Conceal
 elseif !empty($CONEMUBUILD)
     set term=pcansi
