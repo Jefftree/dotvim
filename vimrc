@@ -350,7 +350,7 @@ nmap <leader>t :e ~/.tmux.conf<CR>
 
 " Faster saving
 nmap <leader>w :w!<cr>
-nmap <leader>e :w !sudo tee %<cr>
+nmap <leader>e :w !sudo tee > /dev/null %<cr>
 
 " Easy way to peace vim
 nmap <leader>x :x<CR>
