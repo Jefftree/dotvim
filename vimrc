@@ -11,6 +11,8 @@ let g:mapleader = ","
 let maplocalleader = "\\"
 let g:localleader = "\\"
 
+let $DOTFILES=(expand('~/.dotfiles'))
+
 " File extension corrections
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 au BufNewFile,BufFilePre,BufRead .*rrc,.*lrc set filetype=vim
@@ -75,6 +77,7 @@ NeoBundle 'mbbill/undotree'                 " Undo tree
 NeoBundle 'benmills/vimux'                  " tmux + vim
 NeoBundle 'christoomey/vim-tmux-navigator'  " easier tmux navigation
 NeoBundle 'jceb/vim-orgmode'                " Might be useful
+NeoBundle 'mattn/emmet-vim'                 " HTML Love
 
 " Language specific
 NeoBundle 'jelera/vim-javascript-syntax'    " Javascript Highlighting
@@ -84,7 +87,6 @@ NeoBundle 'tpope/vim-markdown'              " Markdown support
 NeoBundle 'vim-pandoc/vim-pandoc'           " Pandoc
 NeoBundle 'vim-pandoc/vim-pandoc-syntax'    " Pandoc Syntax
 NeoBundle 'tmux-plugins/vim-tmux'           " tmux file highlighting
-
 NeoBundle 'PotatoesMaster/i3-vim-syntax'    " i3 highlighting
 
 NeoBundleLazy 'gregsexton/gitv', {'depends':['tpope/vim-fugitive'], 'autoload':{'commands':'Gitv'}} "{{{
@@ -151,7 +153,6 @@ omap id :normal vid<CR>
 
 " Bolds definition object. Could probably remap to <C-b> in insert mode LOL
 nmap <leader>b ysid*.
-
 
 nnoremap <silent> <F5> :UndotreeToggle<CR>
 
@@ -370,6 +371,9 @@ nnoremap ^ 0
 vnoremap < <gv
 vnoremap > >gv
 
+" Reindent
+nnoremap <F12> mzgg=G`z
+
 " TODO: Delete trailing white space on save
 func! DeleteTrailingWS()
   exe "normal mz"
@@ -381,6 +385,8 @@ autocmd BufWrite *.py,*.md,*.js :call DeleteTrailingWS()
 
 " Reselect paste
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
+
+nnoremap <silent> <Leader>j :sp<CR>:resize 10<CR> :execute 'edit' expand('%:r').'.in'<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => GUI
