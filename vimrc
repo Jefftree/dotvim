@@ -16,6 +16,7 @@ let $DOTFILES=(expand('~/.dotfiles'))
 " File extension corrections
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 au BufNewFile,BufFilePre,BufRead .*rrc,.*lrc set filetype=vim
+"au BufRead *.html set filetype=htmlm4
 
 " makefile tab indent correction
 au FileType make setlocal noexpandtab
@@ -122,7 +123,8 @@ endif
 let g:jsx_ext_required = 0
 
 " Auto open new line indentation after {<cr>
-inoremap {<CR> {<CR>}<Esc>ko
+"inoremap {<CR> {<CR>}<Esc>ko
+let delimitMate_expand_cr = 1
 
 " Vimux split fun
 let g:VimuxOrientation = "h"
@@ -205,7 +207,7 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-let g:syntastic_javascript_checkers=['jscs']
+let g:syntastic_javascript_checkers=['eslint']
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
@@ -429,7 +431,7 @@ if has('gui_running')
 elseif (&term =~ "xterm" || &term =~ "screen-256color" || &term =~ "rxvt-unicode-256color")
     "TODO: Check 256 color support first
     set t_Co=256
-    set term=screen-256color
+    "set term=screen-256color " This messages with rxvt escape codes
     colorscheme jellybeans
     "let g:airline_theme='tomorrow'
     "colorscheme Tomorrow
