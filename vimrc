@@ -32,7 +32,7 @@ set hidden            " allow buffer switching without saving
 set autoread          " auto reload if file saved externally
 set showcmd           " always show last used command
 set autochdir         " automatically change to file dir
-set clipboard=unnamedplus " Share clipboard with OS
+set clipboard=unnamed " Share clipboard with OS
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
