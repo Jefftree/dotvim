@@ -149,7 +149,14 @@ function Light()
     colorscheme Tomorrow
 endfunction
 
+function Dark()
+    let g:airline_theme='wombat'
+    colorscheme jellybeans
+    hi CursorLine ctermbg=17
+endfunction
+
 nnoremap <leader>l :call Light()<CR>
+nnoremap <leader>k :call Dark()<CR>
 
 " Definition text object
 vnoremap id :<C-U>silent! normal! 0vt:<CR>
