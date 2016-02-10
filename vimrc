@@ -47,6 +47,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " Interface
 NeoBundle 'flazz/vim-colorschemes'          " List of common color themes
 NeoBundle 'bling/vim-airline'               " Status bar
+NeoBundle 'vim-airline/vim-airline-themes'
 NeoBundle 'airblade/vim-gitgutter'          " Gitgutter
 NeoBundle 'luochen1990/rainbow'             " double rainbow
 NeoBundle 'mhinz/vim-startify'              " More useful startup page
@@ -81,7 +82,9 @@ NeoBundle 'jceb/vim-orgmode'                " Might be useful
 NeoBundle 'mattn/emmet-vim'                 " HTML Love
 
 " Language specific
-NeoBundle 'jelera/vim-javascript-syntax'    " Javascript Highlighting
+NeoBundle 'othree/html5.vim'
+"NeoBundle 'jelera/vim-javascript-syntax'    " Javascript Highlighting
+NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'elzr/vim-json'                   " JSON Highlighting
 NeoBundle 'mxw/vim-jsx'                     " JSX for React.js
 NeoBundle 'tpope/vim-markdown'              " Markdown support
@@ -244,7 +247,7 @@ nnoremap <silent> <leader>gl :Glog<CR>
 noremap <PageUp> :PrevColorScheme<CR>
 noremap <PageDown> :NextColorScheme<CR>
 
-let g:rainbow_active = 1 " auto activate double rainbow
+let g:rainbow_active = 0 " Temporarily disabled
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General Settings
