@@ -178,6 +178,9 @@ let g:ctrlp_max_height=5
 let g:ctrlp_max_files=20000
 let g:ctrlp_show_hidden=0
 
+nnoremap <leader>p :CtrlPTag<CR>
+nnoremap <leader>o :CtrlPBuffer<CR>
+
 " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
 if executable('ag')
   let g:ctrlp_user_command = 'ag -l --nocolor -g "" %s'
@@ -239,7 +242,9 @@ let g:tagbar_autofocus = 1
 let g:tagbar_compact = 1
 
 " Git
+nnoremap <silent> <leader>ga :Git add %:p<CR><CR>
 nnoremap <silent> <leader>gs :Gstatus<CR>
+nnoremap <silent> <leader>gc :Gcommit -v -q<CR>
 nnoremap <silent> <leader>gd :Gdiff<CR>
 nnoremap <silent> <leader>gl :Glog<CR>
 
@@ -293,6 +298,8 @@ set t_vb=
 set tm=500
 
 set nobackup nowb noswapfile   " Turn backup off
+
+set tags=tags;/                " Recursive tag search
 
 " Undotree
 if has("persistent_undo")
