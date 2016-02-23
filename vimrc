@@ -5,7 +5,7 @@ let s:is_windows = has('win32') || has('win64')
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Leader to comma
+" leader to comma
 let mapleader = ","
 let g:mapleader = ","
 let maplocalleader = "\\"
@@ -47,7 +47,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " Interface
 NeoBundle 'flazz/vim-colorschemes'          " List of common color themes
 NeoBundle 'bling/vim-airline'               " Status bar
-NeoBundle 'vim-airline/vim-airline-themes'
+NeoBundle 'vim-airline/vim-airline-themes'  " Airline colors
 NeoBundle 'airblade/vim-gitgutter'          " Gitgutter
 NeoBundle 'luochen1990/rainbow'             " double rainbow
 NeoBundle 'mhinz/vim-startify'              " More useful startup page
@@ -63,23 +63,24 @@ if has('lua')
 endif
 
 NeoBundle 'kien/ctrlp.vim'                  " File searcher
-NeoBundle 'godlygeek/tabular'               " Easy alignment of variables
+NeoBundle 'qpkorr/vim-bufkill'              " Close buffer without closing window
 NeoBundle 'scrooloose/nerdtree'             " File explorer
-NeoBundle 'scrooloose/syntastic'            " Syntax errors
 NeoBundle 'scrooloose/nerdcommenter'        " Commenting shortcuts
+NeoBundle 'scrooloose/syntastic'            " Syntax errors
 NeoBundle 'tpope/vim-fugitive'              " Git
 NeoBundle 'tpope/vim-surround'              " Surround shortcuts
 NeoBundle 'tpope/vim-repeat'                " Repeat stuff
+NeoBundle 'godlygeek/tabular'               " Easy alignment of variables
 NeoBundle 'Raimondi/delimitMate'            " Matching parentheses
 NeoBundle 'nathanaelkane/vim-indent-guides' " Indent visuals
 NeoBundle 'majutsushi/tagbar'               " Tag browsing
 NeoBundle 'rking/ag.vim'                    " Searcher
-NeoBundle 'qpkorr/vim-bufkill'              " Close buffer without closing window
 NeoBundle 'mbbill/undotree'                 " Undo tree
 NeoBundle 'benmills/vimux'                  " tmux + vim
 NeoBundle 'christoomey/vim-tmux-navigator'  " easier tmux navigation
 NeoBundle 'jceb/vim-orgmode'                " Might be useful
 NeoBundle 'mattn/emmet-vim'                 " HTML Love
+NeoBundle 'craigemery/vim-autotag'          " Auto reload ctags on save
 
 " Language specific
 NeoBundle 'othree/html5.vim'
@@ -313,8 +314,8 @@ if has("persistent_undo")
 endif
 
 if executable('ag')
-    nnoremap <Leader>fw :execute "Ag ".expand("<cword>")<CR>
-    nnoremap <Leader>ff :Ag<space>
+    nnoremap <leader>fw :execute "Ag ".expand("<cword>")<CR>
+    nnoremap <leader>ff :Ag<space>
     set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
     set grepformat=%f:%l:%c:%m
 endif
@@ -326,10 +327,10 @@ endif
 set splitright
 set splitbelow
 
-nnoremap <Leader>s :sp<CR>
-nnoremap <Leader>v :vsp<CR>
+nnoremap <leader>s :sp<CR>
+nnoremap <leader>v :vsp<CR>
 
-vmap <Leader>s :sort<CR>
+vmap <leader>s :sort<CR>
 
 " Treat long lines as break lines (useful when moving around in them)
 map j gj
@@ -407,7 +408,7 @@ autocmd BufWrite *.py,*.md,*.js :call DeleteTrailingWS()
 " Reselect paste
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
-nnoremap <silent> <Leader>j :sp<CR>:resize 10<CR> :execute 'edit' expand('%:r').'.in'<CR>
+nnoremap <silent> <leader>j :sp<CR>:resize 10<CR> :execute 'edit' expand('%:r').'.in'<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => GUI
