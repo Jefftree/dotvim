@@ -20,6 +20,7 @@ au BufNewFile,BufFilePre,BufRead .*rrc,.*lrc set filetype=vim
 
 " makefile tab indent correction
 au FileType make setlocal noexpandtab
+au FileType yaml setlocal shiftwidth=2 tabstop=2
 
 set timeoutlen=2000   " mapping timeout
 set ttimeoutlen=50    " keycode timeout
