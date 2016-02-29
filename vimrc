@@ -84,9 +84,7 @@ NeoBundle 'mattn/emmet-vim'                 " HTML Love
 NeoBundle 'craigemery/vim-autotag'          " Auto reload ctags on save
 
 " Language specific
-NeoBundle 'othree/html5.vim'
-"NeoBundle 'jelera/vim-javascript-syntax'    " Javascript Highlighting
-NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'pangloss/vim-javascript'         " Javscript indentations
 NeoBundle 'elzr/vim-json'                   " JSON Highlighting
 NeoBundle 'mxw/vim-jsx'                     " JSX for React.js
 NeoBundle 'tpope/vim-markdown'              " Markdown support
@@ -450,10 +448,7 @@ if has('gui_running')
 elseif (&term =~ "xterm" || &term =~ "screen-256color" || &term =~ "rxvt-unicode-256color")
     "TODO: Check 256 color support first
     set t_Co=256
-    "set term=screen-256color " This messages with rxvt escape codes
     colorscheme jellybeans
-    "let g:airline_theme='tomorrow'
-    "colorscheme Tomorrow
     hi CursorLine ctermbg=17
     hi clear Conceal
 elseif !empty($CONEMUBUILD)
