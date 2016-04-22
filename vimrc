@@ -78,7 +78,7 @@ NeoBundle 'majutsushi/tagbar'               " Tag browsing
 NeoBundle 'rking/ag.vim'                    " Searcher
 NeoBundle 'mbbill/undotree'                 " Undo tree
 NeoBundle 'benmills/vimux'                  " tmux + vim
-NeoBundle 'christoomey/vim-tmux-navigator'  " easier tmux navigation
+"NeoBundle 'christoomey/vim-tmux-navigator'  " easier tmux navigation
 NeoBundle 'jceb/vim-orgmode'                " Might be useful
 NeoBundle 'mattn/emmet-vim'                 " HTML Love
 NeoBundle 'craigemery/vim-autotag'          " Auto reload ctags on save
@@ -137,7 +137,8 @@ map [compile] <Nop>
 autocmd Filetype pandoc nmap <silent> <buffer> [compile] :Pandoc -s --mathjax<CR>
 autocmd Filetype tex nmap <silent> <buffer> [compile] :call VimuxRunCommand("xelatex ".bufname("%"))<CR>
 autocmd Filetype python nmap <silent> <buffer> [compile] :call VimuxRunCommand("python ".bufname("%"))<CR>
-autocmd Filetype c,cpp,cc nmap <silent> <buffer> [compile] :call VimuxRunCommand("make")<CR>
+autocmd Filetype c,cpp,cc nmap <silent> <buffer> [compile] :call VimuxRunCommand("g++ ".bufname("%")." && ./a.out")<CR>
+
 
 map [test] <Nop>
 autocmd Filetype python nmap <silent> <buffer> [test] :call VimuxRunCommand("ts ".bufname("%"))<CR>
@@ -166,7 +167,7 @@ vnoremap id :<C-U>silent! normal! 0vt:<CR>
 omap id :normal vid<CR>
 
 " Bolds definition object. Could probably remap to <C-b> in insert mode LOL
-nmap <leader>b ysid*.
+nmap gb ysid*.
 
 nnoremap <silent> <F5> :UndotreeToggle<CR>
 
