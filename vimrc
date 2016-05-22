@@ -92,6 +92,7 @@ NeoBundle 'vim-pandoc/vim-pandoc'           " Pandoc
 NeoBundle 'vim-pandoc/vim-pandoc-syntax'    " Pandoc Syntax
 NeoBundle 'tmux-plugins/vim-tmux'           " tmux file highlighting
 NeoBundle 'PotatoesMaster/i3-vim-syntax'    " i3 highlighting
+NeoBundle 'wlangstroth/vim-racket'          " Racket
 
 NeoBundleLazy 'gregsexton/gitv', {'depends':['tpope/vim-fugitive'], 'autoload':{'commands':'Gitv'}} "{{{
     nnoremap <silent> <leader>gv :Gitv<CR>
@@ -136,7 +137,7 @@ let g:VimuxHeight = "10"
 map [compile] <Nop>
 autocmd Filetype pandoc nmap <silent> <buffer> [compile] :Pandoc -s --mathjax<CR>
 autocmd Filetype tex nmap <silent> <buffer> [compile] :call VimuxRunCommand("xelatex ".bufname("%"))<CR>
-autocmd Filetype scheme nmap <silent> <buffer> [compile] :call VimuxRunCommand("racket ".bufname("%"))<CR>
+autocmd Filetype racket nmap <silent> <buffer> [compile] :call VimuxRunCommand("racket ".bufname("%"))<CR>
 autocmd Filetype python nmap <silent> <buffer> [compile] :call VimuxRunCommand("python ".bufname("%"))<CR>
 autocmd Filetype c,cpp,cc nmap <silent> <buffer> [compile] :call VimuxRunCommand("g++ ".bufname("%")." && ./a.out")<CR>
 
