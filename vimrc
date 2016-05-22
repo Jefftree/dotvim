@@ -130,12 +130,13 @@ let g:jsx_ext_required = 0
 let delimitMate_expand_cr = 1
 
 " Vimux split fun
-let g:VimuxOrientation = "h"
-let g:VimuxHeight = "40"
+let g:VimuxOrientation = "v"
+let g:VimuxHeight = "10"
 
 map [compile] <Nop>
 autocmd Filetype pandoc nmap <silent> <buffer> [compile] :Pandoc -s --mathjax<CR>
 autocmd Filetype tex nmap <silent> <buffer> [compile] :call VimuxRunCommand("xelatex ".bufname("%"))<CR>
+autocmd Filetype scheme nmap <silent> <buffer> [compile] :call VimuxRunCommand("racket ".bufname("%"))<CR>
 autocmd Filetype python nmap <silent> <buffer> [compile] :call VimuxRunCommand("python ".bufname("%"))<CR>
 autocmd Filetype c,cpp,cc nmap <silent> <buffer> [compile] :call VimuxRunCommand("g++ ".bufname("%")." && ./a.out")<CR>
 
