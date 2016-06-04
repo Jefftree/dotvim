@@ -452,8 +452,11 @@ if has('gui_running')
 elseif (&term =~ "xterm" || &term =~ "screen-256color" || &term =~ "rxvt-unicode-256color")
     "TODO: Check 256 color support first
     set t_Co=256
-    colorscheme jellybeans
-    hi CursorLine ctermbg=17
+    let g:airline_theme='tomorrow'
+    colorscheme Tomorrow
+
+    "colorscheme jellybeans
+    "hi CursorLine ctermbg=17
     hi clear Conceal
 elseif !empty($CONEMUBUILD)
     set term=pcansi
