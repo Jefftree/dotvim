@@ -16,11 +16,13 @@ let $DOTFILES=(expand('~/.dotfiles'))
 " File extension corrections
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 au BufNewFile,BufFilePre,BufRead .*rrc,.*lrc set filetype=vim
+au BufNewFile,BufFilePre,BufRead *.wlp4 set filetype=c
 "au BufRead *.html set filetype=htmlm4
 
 " makefile tab indent correction
 au FileType make setlocal noexpandtab
 au FileType yaml setlocal shiftwidth=2 tabstop=2
+au FileType cfg setlocal shiftwidth=1 tabstop=1
 
 set timeoutlen=2000   " mapping timeout
 set ttimeoutlen=50    " keycode timeout
@@ -106,6 +108,8 @@ NeoBundleCheck " Check for missing plugins on startup
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:syntastic_enable_racket_racket_checker = 1
 
 let g:user_emmet_expandabbr_key='<Tab>'
 
