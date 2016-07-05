@@ -148,7 +148,8 @@ autocmd Filetype c,cpp,cc nmap <silent> <buffer> [compile] :call VimuxRunCommand
 
 map [test] <Nop>
 autocmd Filetype python nmap <silent> <buffer> [test] :call VimuxRunCommand("ts ".bufname("%"))<CR>
-autocmd Filetype pandoc nmap <silent> <buffer> [test] :call VimuxRunCommand("notes ".bufname("%"))<CR>
+autocmd Filetype pandoc nmap <silent> <buffer> [test] :Pandoc -s --mathjax pdf<CR>
+"autocmd Filetype pandoc nmap <silent> <buffer> [test] :call VimuxRunCommand("notes ".bufname("%"))<CR>
 autocmd Filetype tex nmap <silent> <buffer> [test] :call VimuxRunCommand("pdflatex ".bufname("%"))<CR>
 nmap <leader>n [test]
 
@@ -220,7 +221,7 @@ let g:pandoc#modules#disabled = ["folding"]
 let g:pandoc#formatting#smart_autoformat_on_cursormoved = 1
 let g:pandoc#syntax#codeblocks#embeds#langs = ["ruby","python",
                 \ "literatehaskell=lhaskell", "bash=sh","json=javascript",
-                \ "css","html","javascript","c","cpp","make", "asm"]
+                \ "css","html","javascript","c","cpp","make", "asm", "java"]
 let g:pandoc#syntax#conceal#blacklist = ["list","atx"]
 
 " Syntastic

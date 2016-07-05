@@ -70,3 +70,10 @@ DFA
 NFA
 NFAs
 DFAs
+expr
+LHS
+RHS
+CFG
+factor
+md
+dcls
