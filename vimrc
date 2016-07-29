@@ -108,6 +108,7 @@ NeoBundleCheck " Check for missing plugins on startup
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:pandoc#spell#enabled = 0
 
 let g:syntastic_enable_racket_racket_checker = 1
 
@@ -149,8 +150,8 @@ autocmd Filetype c,cpp,cc nmap <silent> <buffer> [compile] :call VimuxRunCommand
 map [test] <Nop>
 autocmd Filetype python nmap <silent> <buffer> [test] :call VimuxRunCommand("ts ".bufname("%"))<CR>
 autocmd Filetype pandoc nmap <silent> <buffer> [test] :Pandoc -s --mathjax pdf<CR>
-"autocmd Filetype pandoc nmap <silent> <buffer> [test] :call VimuxRunCommand("notes ".bufname("%"))<CR>
-autocmd Filetype tex nmap <silent> <buffer> [test] :call VimuxRunCommand("pdflatex ".bufname("%"))<CR>
+autocmd Filetype pandoc nmap <silent> <buffer> [test] :call VimuxRunCommand("notes ".bufname("%")." pdf")<CR>
+"autocmd Filetype tex nmap <silent> <buffer> [test] :call VimuxRunCommand("pdflatex ".bufname("%"))<CR>
 nmap <leader>n [test]
 
 " Probably need a more logical mapping lol
@@ -457,11 +458,11 @@ if has('gui_running')
 elseif (&term =~ "xterm" || &term =~ "screen-256color" || &term =~ "rxvt-unicode-256color")
     "TODO: Check 256 color support first
     set t_Co=256
-    let g:airline_theme='tomorrow'
-    colorscheme Tomorrow
+    "let g:airline_theme='tomorrow'
+    "colorscheme Tomorrow
 
-    "colorscheme jellybeans
-    "hi CursorLine ctermbg=17
+    colorscheme jellybeans
+    hi CursorLine ctermbg=17
     hi clear Conceal
 elseif !empty($CONEMUBUILD)
     set term=pcansi
