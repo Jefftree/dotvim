@@ -108,11 +108,14 @@ NeoBundleCheck " Check for missing plugins on startup
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" No need to spell check strings
 let g:pandoc#spell#enabled = 0
 
 let g:syntastic_enable_racket_racket_checker = 1
 
-let g:user_emmet_expandabbr_key='<Tab>'
+" Behaviour of this is kinda unpredictable. Look into it
+"let g:user_emmet_expandabbr_key='<Tab>'
 
 if has('lua')
     let g:neocomplete#enable_at_startup=1
