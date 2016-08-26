@@ -95,6 +95,7 @@ NeoBundle 'vim-pandoc/vim-pandoc-syntax'    " Pandoc Syntax
 NeoBundle 'tmux-plugins/vim-tmux'           " tmux file highlighting
 NeoBundle 'PotatoesMaster/i3-vim-syntax'    " i3 highlighting
 NeoBundle 'wlangstroth/vim-racket'          " Racket
+NeoBundle 'keith/swift.vim'                 " Swift
 
 NeoBundleLazy 'gregsexton/gitv', {'depends':['tpope/vim-fugitive'], 'autoload':{'commands':'Gitv'}} "{{{
     nnoremap <silent> <leader>gv :Gitv<CR>
