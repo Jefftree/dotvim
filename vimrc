@@ -16,7 +16,9 @@ let $DOTFILES=(expand('~/.dotfiles'))
 " File extension corrections
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 au BufNewFile,BufFilePre,BufRead .*rrc,.*lrc set filetype=vim
+au BufNewFile,BufFilePre,BufRead vimrc set filetype=vim
 au BufNewFile,BufFilePre,BufRead *.wlp4 set filetype=c
+au BufNewFile,BufFilePre,BufRead *.xtx set filetype=tex
 "au BufRead *.html set filetype=htmlm4
 
 " makefile tab indent correction
@@ -126,11 +128,10 @@ if has('lua')
     imap <expr><S-TAB> pumvisible() ? "\<C-p>" : ""
     smap <expr><S-TAB> pumvisible() ? "\<C-p>" : ""
 
-    " For nano guys
+    " Just for u colin
     imap <expr><Up> pumvisible() ? neocomplete#smart_close_popup() . "\<Up>" : "<Up>"
     imap <expr><Down> pumvisible() ? neocomplete#smart_close_popup() . "\<Down>" : "<Down>"
 endif
-
 
 " JSX Enabled on all JS Files
 let g:jsx_ext_required = 0
@@ -164,12 +165,14 @@ nmap <leader>m [compile]
 function Light()
     let g:airline_theme='tomorrow'
     colorscheme Tomorrow
+    hi clear Conceal
 endfunction
 
 function Dark()
     let g:airline_theme='wombat'
     colorscheme jellybeans
     hi CursorLine ctermbg=17
+    hi clear Conceal
 endfunction
 
 nnoremap <leader>l :call Light()<CR>
@@ -266,7 +269,7 @@ nnoremap <silent> <leader>gl :Glog<CR>
 noremap <PageUp> :PrevColorScheme<CR>
 noremap <PageDown> :NextColorScheme<CR>
 
-let g:rainbow_active = 0 " Temporarily disabled
+let g:rainbow_active = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General Settings
@@ -421,6 +424,7 @@ autocmd BufWrite *.py,*.md,*.js :call DeleteTrailingWS()
 " Reselect paste
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
+" Test panel
 nnoremap <silent> <leader>j :sp<CR>:resize 10<CR> :execute 'edit' expand('%:r').'.in'<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
