@@ -25,6 +25,7 @@ au BufNewFile,BufFilePre,BufRead *.xtx set filetype=tex
 au FileType make setlocal noexpandtab
 au FileType yaml setlocal shiftwidth=2 tabstop=2
 au FileType cfg setlocal shiftwidth=1 tabstop=1
+au FileType js setlocal shiftwidth=2 tabstop=2
 
 set timeoutlen=2000   " mapping timeout
 set ttimeoutlen=50    " keycode timeout
@@ -237,7 +238,7 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-let g:syntastic_javascript_checkers=['eslint']
+let g:syntastic_javascript_checkers=['jshint']
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
@@ -269,7 +270,7 @@ nnoremap <silent> <leader>gl :Glog<CR>
 noremap <PageUp> :PrevColorScheme<CR>
 noremap <PageDown> :NextColorScheme<CR>
 
-let g:rainbow_active = 1
+let g:rainbow_active = 0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General Settings
@@ -304,7 +305,7 @@ set laststatus=2               " Always show the status line
 
 set expandtab                  " Use spaces instead of tabs
 set smarttab                   " insert tabs according to shiftwidth, not tabstop
-set shiftwidth=4 tabstop=4     " 1 tab == 4 spaces
+set shiftwidth=2 tabstop=2     " 1 tab == 2 spaces; I love javascript
 set shiftround                 " use multiple of shiftwidth when indenting with '<' and '>'
 
 set autoindent                 " always set autoindenting on
@@ -330,6 +331,7 @@ if has("persistent_undo")
 endif
 
 if executable('ag')
+    let g:ag_working_path_mode="r"
     nnoremap <leader>fw :execute "Ag ".expand("<cword>")<CR>
     nnoremap <leader>ff :Ag<space>
     set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
