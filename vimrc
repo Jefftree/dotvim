@@ -36,7 +36,7 @@ set ttyfast           " assume fast terminal connection
 set encoding=utf-8    " set encoding for text
 set hidden            " allow buffer switching without saving
 set autoread          " auto reload if file saved externally
-set showcmd           " always show last used command
+set noshowcmd         " Don't show last cmd, faster
 set autochdir         " automatically change to file dir
 set clipboard=unnamed " Share clipboard with OS
 
@@ -122,9 +122,11 @@ let g:syntastic_enable_racket_racket_checker = 1
 "let g:user_emmet_expandabbr_key='<Tab>'
 
 if has('lua')
+
     let g:neocomplete#enable_at_startup=1
 
-    imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ? "\<C-n>" : emmet#expandAbbrIntelligent("\<TAB>"))
+    "imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ? "\<C-n>" : emmet#expandAbbrIntelligent("\<TAB>"))
+    imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ? "\<C-n>" : "<TAB>")
     smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
     imap <expr><S-TAB> pumvisible() ? "\<C-p>" : ""
     smap <expr><S-TAB> pumvisible() ? "\<C-p>" : ""
@@ -278,6 +280,8 @@ let g:rainbow_active = 0
 syntax enable                  " Enable syntax highlighting
 
 set wildmenu                   " Expands autocompletion stuff in cmd mode
+set wildmode=list:longest,full " List completion. Similar to zsh
+set wildignorecase
 set wildignore=*.o,*~,*.pyc    " Ignore compiled files
 
 set ruler                      " Show cursor position
@@ -290,6 +294,7 @@ set ignorecase                 " ignore case when searching
 set smartcase                  " case-sensitive if uppercase search
 set hlsearch                   " Highlight search results
 set incsearch                  " Show search matches as you type
+set wrapscan                   " Searches wrap after hitting end
 set magic                      " Regex is love regex is life
 set showmatch                  " Show matching brackets when text indicator is over them
 set matchtime=2                " Time limit for matching brackets
@@ -319,6 +324,8 @@ set nobackup nowb noswapfile   " Turn backup off
 
 set tags=tags;/                " Recursive tag search
 
+set synmaxcol=512              " Don't highlight long lines
+
 " Undotree
 if has("persistent_undo")
     if !isdirectory(expand('~').'/.vim/.undodir')
@@ -331,7 +338,7 @@ if has("persistent_undo")
 endif
 
 if executable('ag')
-    let g:ag_working_path_mode="r"
+    let g:ag_working_path_mode="r" "Recursive search till git root
     nnoremap <leader>fw :execute "Ag ".expand("<cword>")<CR>
     nnoremap <leader>ff :Ag<space>
     set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
