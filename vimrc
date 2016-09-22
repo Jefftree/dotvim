@@ -471,7 +471,7 @@ vnoremap < <gv
 vnoremap > >gv
 
 " Reindent
-nnoremap <F12> mzgg=G`z
+nnoremap R mzgg=G`z
 
 " TODO: Delete trailing white space on save
 func! DeleteTrailingWS()
