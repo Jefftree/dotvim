@@ -323,6 +323,8 @@ set wildmenu                   " Expands autocompletion stuff in cmd mode
 set wildmode=list:longest,full " List completion. Similar to zsh
 set wildignorecase
 set wildignore=*.o,*~,*.pyc    " Ignore compiled files
+set wildignore+=*DS_Store*
+set wildignore+=*.png,*.jpg,*.gif
 
 set ruler                      " Show cursor position
 set cmdheight=1                " Lines to use for cmd line
@@ -384,6 +386,16 @@ if executable('ag')
     set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
     set grepformat=%f:%l:%c:%m
 endif
+
+"""""""""""""""""""""""""""""""""""
+" Command Mode
+"""""""""""""""""""""""""""""""""""
+
+" Bash like keys for the command line.
+ cnoremap <c-a> <home>
+ cnoremap <c-e> <end>
+ cnoremap <c-h> <s-left>
+ cnoremap <c-l> <s-right>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Moving around, tabs, windows and buffers
