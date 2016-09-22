@@ -111,6 +111,7 @@ NeoBundle 'Shougo/vimproc.vim', {
 
 " Unite requires latest vim version
 NeoBundle 'Shougo/unite.vim'                " UI for bunch of stuff
+NeoBundle 'Shougo/neomru.vim'
 
 NeoBundleLazy 'gregsexton/gitv', {'depends':['tpope/vim-fugitive'],
       \ 'autoload':{'commands':'Gitv'}} "{{{
