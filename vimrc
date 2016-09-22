@@ -85,7 +85,6 @@ NeoBundle 'mbbill/undotree'                 " Undo tree
 NeoBundle 'benmills/vimux'                  " tmux + vim
 "NeoBundle 'christoomey/vim-tmux-navigator'  " easier tmux navigation
 NeoBundle 'jceb/vim-orgmode'                " Might be useful
-NeoBundle 'mattn/emmet-vim'                 " HTML Love
 NeoBundle 'craigemery/vim-autotag'          " Auto reload ctags on save
 
 " Language specific
@@ -100,9 +99,23 @@ NeoBundle 'PotatoesMaster/i3-vim-syntax'    " i3 highlighting
 NeoBundle 'wlangstroth/vim-racket'          " Racket
 NeoBundle 'keith/swift.vim'                 " Swift
 
-NeoBundleLazy 'gregsexton/gitv', {'depends':['tpope/vim-fugitive'], 'autoload':{'commands':'Gitv'}} "{{{
-    nnoremap <silent> <leader>gv :Gitv<CR>
-    nnoremap <silent> <leader>gV :Gitv!<CR>
+" Utilities
+NeoBundle 'Shougo/vimproc.vim', {
+      \ 'build': {
+        \ 'mac': 'make -f make_mac.mak',
+        \ 'unix': 'make -f make_unix.mak',
+        \ 'cygwin': 'make -f make_cygwin.mak',
+        \ 'windows': 'mingw32-make -f make_mingw32.mak',
+      \ },
+    \ }
+
+" Unite requires latest vim version
+NeoBundle 'Shougo/unite.vim'                " UI for bunch of stuff
+
+NeoBundleLazy 'gregsexton/gitv', {'depends':['tpope/vim-fugitive'],
+      \ 'autoload':{'commands':'Gitv'}} "{{{
+nnoremap <silent> <leader>gv :Gitv<CR>
+nnoremap <silent> <leader>gV :Gitv!<CR>
 "}}}
 
 call neobundle#end()
@@ -113,13 +126,40 @@ NeoBundleCheck " Check for missing plugins on startup
 " => Plugins Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" Unite
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#sorter_default#use(['sorter_rank'])
+call unite#custom#profile('default', 'context', {
+              \ 'winheight': 8,
+              \ 'vertical_preview': 1,
+              \ 'direction': 'botright'
+              \ })
+let g:unite_source_history_yank_enable=1
+
+if executable('ag')
+    let g:unite_source_rec_async_command = 'ag --follow --nocolor --nogroup --hidden -g ""'
+    let g:unite_source_grep_command='ag'
+    let g:unite_source_grep_default_opts='--nocolor --line-numbers --nogroup -S -C4'
+    let g:unite_source_grep_recursive_opt=''
+endif
+
+nmap <space> [unite]
+nnoremap [unite] <nop>
+
+"if exists('b:git_dir')
+
+nnoremap <silent> [unite]r :Unite grep:.<cr>
+nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=Search -start-insert -input= file_rec/async:!<cr>
+    "<c-u> means cursor up one line
+nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
+
+nnoremap <silent> [unite]s :Unite -quick-match buffer<cr>
+
+
 " No need to spell check strings
 let g:pandoc#spell#enabled = 0
 
 let g:syntastic_enable_racket_racket_checker = 1
-
-" Behaviour of this is kinda unpredictable. Look into it
-"let g:user_emmet_expandabbr_key='<Tab>'
 
 if has('lua')
 
