@@ -80,12 +80,10 @@ NeoBundle 'godlygeek/tabular'               " Easy alignment of variables
 NeoBundle 'Raimondi/delimitMate'            " Matching parentheses
 NeoBundle 'nathanaelkane/vim-indent-guides' " Indent visuals
 NeoBundle 'majutsushi/tagbar'               " Tag browsing
-NeoBundle 'rking/ag.vim'                    " Searcher
 NeoBundle 'mbbill/undotree'                 " Undo tree
 NeoBundle 'benmills/vimux'                  " tmux + vim
 "NeoBundle 'christoomey/vim-tmux-navigator'  " easier tmux navigation
 NeoBundle 'jceb/vim-orgmode'                " Might be useful
-NeoBundle 'craigemery/vim-autotag'          " Auto reload ctags on save
 
 " Language specific
 NeoBundle 'pangloss/vim-javascript'         " Javscript indentations
@@ -130,32 +128,44 @@ NeoBundleCheck " Check for missing plugins on startup
 " Unite
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_rank'])
+call unite#custom#source('file_rec/async', 'ignore_pattern', 'node_modules/')
 call unite#custom#profile('default', 'context', {
               \ 'winheight': 8,
-              \ 'vertical_preview': 1,
-              \ 'direction': 'botright'
+              \ 'vertical_preview': 1
               \ })
-let g:unite_source_history_yank_enable=1
+let g:unite_update_time = 200
+let g:unite_split_rule = "botright"
 
 if executable('ag')
-    let g:unite_source_rec_async_command = 'ag --follow --nocolor --nogroup --hidden -g ""'
-    let g:unite_source_grep_command='ag'
-    let g:unite_source_grep_default_opts='--nocolor --line-numbers --nogroup -S -C4'
-    let g:unite_source_grep_recursive_opt=''
+    set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
+    set grepformat=%f:%l:%c:%m
+
+    let g:unite_source_rec_async_command = 'ag --follow --nocolor --nogroup -g ""'
+    let g:unite_source_grep_command = 'ag'
+    let g:unite_source_grep_default_opts =
+          \ '-i --vimgrep --hidden --ignore ' .
+          \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
 endif
 
 nmap <space> [unite]
 nnoremap [unite] <nop>
 
+autocmd FileType unite call s:unite_settings()
+function! s:unite_settings()
+  nmap <buffer> <ESC> <Plug>(unite_insert_enter)
+  imap <buffer> <ESC> <Plug>(unite_exit)
+endfunction
+
+
 "if exists('b:git_dir')
 
-nnoremap <silent> [unite]r :Unite grep:.<cr>
+"<c-u> means cursor up one line
+nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=recent file_mru<cr>
+nnoremap <silent> [unite]r :<C-u>Unite -no-quit grep/git:/:<cr>
 nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=Search -start-insert -input= file_rec/async:!<cr>
-    "<c-u> means cursor up one line
 nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
-
-nnoremap <silent> [unite]s :Unite -quick-match buffer<cr>
-
+nnoremap <silent> [unite]s :<C-u>Unite -quick-match buffer<cr>
+nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
 
 " No need to spell check strings
 let g:pandoc#spell#enabled = 0
@@ -238,9 +248,6 @@ let g:ctrlp_custom_ignore = '\v[\/](\.(git|hg|svn|idea)|node_modules|coverage|bo
 let g:ctrlp_max_height=5
 let g:ctrlp_max_files=20000
 let g:ctrlp_show_hidden=0
-
-nnoremap <leader>p :CtrlPTag<CR>
-nnoremap <leader>o :CtrlPBuffer<CR>
 
 " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
 if executable('ag')
@@ -380,13 +387,11 @@ if has("persistent_undo")
     set undoreload=10000 "maximum number lines to save for undo on a buffer reload
 endif
 
-if executable('ag')
-    let g:ag_working_path_mode="r" "Recursive search till git root
-    nnoremap <leader>fw :execute "Ag ".expand("<cword>")<CR>
-    nnoremap <leader>ff :Ag<space>
-    set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
-    set grepformat=%f:%l:%c:%m
-endif
+nnoremap <leader>fw :execute "vimgrep ".expand("<cword>")." %"<cr>:copen<cr>
+nnoremap <leader>ff :execute 'vimgrep /'.@/.'/g %'<cr>:copen<cr>
+
+" Hide quit message
+nnoremap <C-c> <C-c>:echo<cr>
 
 """""""""""""""""""""""""""""""""""
 " Command Mode
