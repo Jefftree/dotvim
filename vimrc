@@ -108,7 +108,7 @@ NeoBundle 'Shougo/vimproc.vim', {
     \ }
 
 " Unite requires latest vim version
-NeoBundle 'Shougo/unite.vim'                " UI for bunch of stuff
+NeoBundle 'Shougo/unite.vim'                " Interface for navigation
 NeoBundle 'Shougo/neomru.vim'
 
 NeoBundleLazy 'gregsexton/gitv', {'depends':['tpope/vim-fugitive'],
@@ -137,9 +137,6 @@ let g:unite_update_time = 200
 let g:unite_split_rule = "botright"
 
 if executable('ag')
-    set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
-    set grepformat=%f:%l:%c:%m
-
     let g:unite_source_rec_async_command = 'ag --follow --nocolor --nogroup -g ""'
     let g:unite_source_grep_command = 'ag'
     let g:unite_source_grep_default_opts =
@@ -156,16 +153,15 @@ function! s:unite_settings()
   imap <buffer> <ESC> <Plug>(unite_exit)
 endfunction
 
-
 "if exists('b:git_dir')
 
 "<c-u> means cursor up one line
 nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=recent file_mru<cr>
 nnoremap <silent> [unite]r :<C-u>Unite -no-quit grep/git:/:<cr>
 nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=Search -start-insert -input= file_rec/async:!<cr>
-nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
 nnoremap <silent> [unite]s :<C-u>Unite -quick-match buffer<cr>
 nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
+nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
 
 " No need to spell check strings
 let g:pandoc#spell#enabled = 0
@@ -173,7 +169,6 @@ let g:pandoc#spell#enabled = 0
 let g:syntastic_enable_racket_racket_checker = 1
 
 if has('lua')
-
     let g:neocomplete#enable_at_startup=1
 
     "imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ? "\<C-n>" : emmet#expandAbbrIntelligent("\<TAB>"))
@@ -211,9 +206,8 @@ autocmd Filetype python nmap <silent> <buffer> [test] :call VimuxRunCommand("ts 
 autocmd Filetype pandoc nmap <silent> <buffer> [test] :Pandoc -s --mathjax pdf<CR>
 autocmd Filetype pandoc nmap <silent> <buffer> [test] :call VimuxRunCommand("notes ".bufname("%")." pdf")<CR>
 "autocmd Filetype tex nmap <silent> <buffer> [test] :call VimuxRunCommand("pdflatex ".bufname("%"))<CR>
-nmap <leader>n [test]
 
-" Probably need a more logical mapping lol
+nmap <leader>n [test]
 nmap <leader>m [compile]
 
 function Light()
@@ -353,6 +347,7 @@ set noshowmode                 " don't show current mode
 set nowrap                     " don't wrap lines
 set number                     " Line numbers
 set cursorline                 " Highlight cursor line
+set synmaxcol=200              " Don't highlight long lines
 
 set shortmess+=I               " No annoying startup message
 set scrolloff=10               " Don't let cursor be near vertical edge of screen
@@ -374,8 +369,6 @@ set nobackup nowb noswapfile   " Turn backup off
 
 set tags=tags;/                " Recursive tag search
 
-set synmaxcol=512              " Don't highlight long lines
-
 " Undotree
 if has("persistent_undo")
     if !isdirectory(expand('~').'/.vim/.undodir')
@@ -387,16 +380,17 @@ if has("persistent_undo")
     set undoreload=10000 "maximum number lines to save for undo on a buffer reload
 endif
 
+if executable('ag')
+    set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
+    set grepformat=%f:%l:%c:%m
+endif
+
 nnoremap <leader>fw :execute "vimgrep ".expand("<cword>")." %"<cr>:copen<cr>
 nnoremap <leader>ff :execute 'vimgrep /'.@/.'/g %'<cr>:copen<cr>
-
-" Hide quit message
-nnoremap <C-c> <C-c>:echo<cr>
 
 """""""""""""""""""""""""""""""""""
 " Command Mode
 """""""""""""""""""""""""""""""""""
-
 " Bash like keys for the command line.
  cnoremap <c-a> <home>
  cnoremap <c-e> <end>
@@ -438,6 +432,9 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+
+" Hide quit message
+nnoremap <C-c> <C-c>:echo<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
@@ -492,7 +489,8 @@ autocmd BufWrite *.py,*.md,*.js :call DeleteTrailingWS()
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " Test panel
-nnoremap <silent> <leader>j :sp<CR>:resize 10<CR> :execute 'edit' expand('%:r').'.in'<CR>
+" No testing for now
+"nnoremap <silent> <leader>j :sp<CR>:resize 10<CR> :execute 'edit' expand('%:r').'.in'<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => GUI
