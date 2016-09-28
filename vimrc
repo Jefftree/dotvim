@@ -14,18 +14,24 @@ let g:localleader = "\\"
 let $DOTFILES=(expand('~/.dotfiles'))
 
 " File extension corrections
-au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
-au BufNewFile,BufFilePre,BufRead .*rrc,.*lrc set filetype=vim
-au BufNewFile,BufFilePre,BufRead vimrc set filetype=vim
-au BufNewFile,BufFilePre,BufRead *.wlp4 set filetype=c
-au BufNewFile,BufFilePre,BufRead *.xtx set filetype=tex
-"au BufRead *.html set filetype=htmlm4
+augroup ext_syntax
+  autocmd!
+  au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
+  au BufNewFile,BufFilePre,BufRead .*rrc,.*lrc set filetype=vim
+  au BufNewFile,BufFilePre,BufRead vimrc set filetype=vim
+  au BufNewFile,BufFilePre,BufRead *.wlp4 set filetype=c
+  au BufNewFile,BufFilePre,BufRead *.xtx set filetype=tex
+  "au BufRead *.html set filetype=htmlm4
+augroup END
 
 " makefile tab indent correction
-au FileType make setlocal noexpandtab
-au FileType yaml setlocal shiftwidth=2 tabstop=2
-au FileType cfg setlocal shiftwidth=1 tabstop=1
-au FileType js setlocal shiftwidth=2 tabstop=2
+augroup tab_config
+  autocmd!
+  au FileType make setlocal noexpandtab
+  au FileType yaml setlocal shiftwidth=2 tabstop=2
+  au FileType cfg setlocal shiftwidth=1 tabstop=1
+  au FileType js setlocal shiftwidth=2 tabstop=2
+augroup END
 
 set timeoutlen=2000   " mapping timeout
 set ttimeoutlen=50    " keycode timeout
@@ -159,7 +165,7 @@ endfunction
 nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=recent file_mru<cr>
 nnoremap <silent> [unite]r :<C-u>Unite -no-quit grep/git:/:<cr>
 nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=Search -start-insert -input= file_rec/async:!<cr>
-nnoremap <silent> [unite]s :<C-u>Unite -quick-match buffer<cr>
+nnoremap <silent> [unite]b :<C-u>Unite -quick-match buffer<cr>
 nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
 nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
 
@@ -282,7 +288,7 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-let g:syntastic_javascript_checkers=['jshint']
+let g:syntastic_javascript_checkers=['eslint']
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
@@ -396,6 +402,7 @@ nnoremap <leader>ff :execute 'vimgrep /'.@/.'/g %'<cr>:copen<cr>
  cnoremap <c-e> <end>
  cnoremap <c-h> <s-left>
  cnoremap <c-l> <s-right>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Moving around, tabs, windows and buffers
