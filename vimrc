@@ -160,8 +160,9 @@ endfunction
 "if exists('b:git_dir')
 
 "<c-u> means cursor up one line
-nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=recent file_mru<cr>
-nnoremap <silent> [unite]r :<C-u>Unite -no-quit grep/git:/:<cr>
+nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=recent file_mru<cr>
+nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=Edit file -start-insert<cr>
+nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=Grep -no-quit grep/git:/:<cr>
 nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=Search -start-insert -input= file_rec/async:!<cr>
 nnoremap <silent> [unite]b :<C-u>Unite -quick-match buffer<cr>
 nnoremap <silent> [unite]s :<C-u>Unite buffer<cr>
