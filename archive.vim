@@ -9,6 +9,13 @@ if has("gui_macvim")
     nmap <SwipeRight> :bnext<CR>
 endif
 
+NeoBundle 'xolox/vim-colorscheme-switcher', {
+            \ 'depends' : 'xolox/vim-misc'}  " Quickswitch theme
+
+" Colorscheme
+noremap <PageUp> :PrevColorScheme<CR>
+noremap <PageDown> :NextColorScheme<CR>
+
 NeoBundle 'tpope/vim-speeddating'           " <C-a>, <C-x> for dates
 
 NeoBundle 'derekwyatt/vim-scala'            " Scala support

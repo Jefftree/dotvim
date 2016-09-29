@@ -63,8 +63,6 @@ NeoBundle 'vim-airline/vim-airline-themes'  " Airline colors
 NeoBundle 'airblade/vim-gitgutter'          " Gitgutter
 NeoBundle 'luochen1990/rainbow'             " double rainbow
 NeoBundle 'mhinz/vim-startify'              " More useful startup page
-NeoBundle 'xolox/vim-colorscheme-switcher', {
-            \ 'depends' : 'xolox/vim-misc'}  " Quickswitch theme
 
 " Functionality
 
@@ -166,6 +164,7 @@ nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=recent file_mru<cr>
 nnoremap <silent> [unite]r :<C-u>Unite -no-quit grep/git:/:<cr>
 nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=Search -start-insert -input= file_rec/async:!<cr>
 nnoremap <silent> [unite]b :<C-u>Unite -quick-match buffer<cr>
+nnoremap <silent> [unite]s :<C-u>Unite buffer<cr>
 nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
 nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
 
@@ -315,10 +314,6 @@ nnoremap <silent> <leader>gs :Gstatus<CR>
 nnoremap <silent> <leader>gc :Gcommit -v -q<CR>
 nnoremap <silent> <leader>gd :Gdiff<CR>
 nnoremap <silent> <leader>gl :Glog<CR>
-
-" Colorscheme
-noremap <PageUp> :PrevColorScheme<CR>
-noremap <PageDown> :NextColorScheme<CR>
 
 let g:rainbow_active = 0
 
