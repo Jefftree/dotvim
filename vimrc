@@ -85,15 +85,15 @@ call dein#add('godlygeek/tabular')               " Easy alignment of variables
 call dein#add('Raimondi/delimitMate')            " Matching parentheses
 call dein#add('nathanaelkane/vim-indent-guides') " Indent visuals
 call dein#add('majutsushi/tagbar')               " Tag browsing
-call dein#add('mbbill/undotree')                 " Undo tree
+call dein#add('mbbill/undotree', {'on_cmd':'UndotreeToggle'})                 " Undo tree
 call dein#add('benmills/vimux')                  " tmux + vim
 "call dein#add('christoomey/vim-tmux-navigator')  " easier tmux navigation
 "call dein#add('jceb/vim-orgmode')                " Might be useful
 
 " Language specific
-call dein#add('pangloss/vim-javascript')         " Javscript indentations
+call dein#add('pangloss/vim-javascript', {'on_ft': 'javascript'})         " Javscript indentations
 call dein#add('elzr/vim-json')                   " JSON Highlighting
-call dein#add('mxw/vim-jsx')                     " JSX for React.js
+"call dein#add('mxw/vim-jsx')                     " JSX for React.js
 call dein#add('tpope/vim-markdown')              " Markdown support
 call dein#add('vim-pandoc/vim-pandoc')           " Pandoc
 call dein#add('vim-pandoc/vim-pandoc-syntax')    " Pandoc Syntax
@@ -104,11 +104,10 @@ call dein#add('keith/swift.vim')                 " Swift
 call dein#add('Shougo/vimproc.vim', {'build': 'make'})
 
 " Utilities
-
 call dein#add('Shougo/unite.vim')                " Interface for navigation
 call dein#add('Shougo/neomru.vim')
 
-call dein#add('gregsexton/gitv', {'depends':['tpope/vim-fugitive'], 'on_cmd': 'Gitv'}) "{{{
+call dein#add('gregsexton/gitv', {'on_cmd': 'Gitv'}) "{{{
   nnoremap <silent> <leader>gv :Gitv<CR>
   nnoremap <silent> <leader>gV :Gitv!<CR>
 "}}}
@@ -117,6 +116,8 @@ call dein#end()
 if dein#check_install()
   call dein#install()
 endif
+
+call map(dein#check_clean(), "delete(v:val, 'rf')")
 
 filetype plugin indent on
 
