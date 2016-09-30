@@ -1,5 +1,6 @@
 set nocompatible
 "set all& "reset
+" Do we even need this?
 let s:is_windows = has('win32') || has('win64')
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -52,78 +53,72 @@ set clipboard=unnamed " Share clipboard with OS
 if s:is_windows
     set rtp+=~/.vim
 endif
-set rtp+=~/.vim/bundle/neobundle.vim
-call neobundle#begin(expand('~/.vim/bundle/'))
-NeoBundleFetch 'Shougo/neobundle.vim'
+
+set rtp+=~/.vim/bundle/repos/github.com/Shougo/dein.vim
+call dein#begin(expand('~/.vim/bundle/'))
+call dein#add('Shougo/dein.vim')
 
 " Interface
-NeoBundle 'flazz/vim-colorschemes'          " List of common color themes
-NeoBundle 'bling/vim-airline'               " Status bar
-NeoBundle 'vim-airline/vim-airline-themes'  " Airline colors
-NeoBundle 'airblade/vim-gitgutter'          " Gitgutter
-NeoBundle 'luochen1990/rainbow'             " double rainbow
-NeoBundle 'mhinz/vim-startify'              " More useful startup page
+call dein#add('flazz/vim-colorschemes')          " List of common color themes
+call dein#add('bling/vim-airline')               " Status bar
+call dein#add('vim-airline/vim-airline-themes')  " Airline colors
+call dein#add('airblade/vim-gitgutter')          " Gitgutter
+call dein#add('luochen1990/rainbow')             " double rainbow
+call dein#add('mhinz/vim-startify')              " More useful startup page
 
 " Functionality
-
 if has('lua')
-    NeoBundle 'Shougo/neosnippet'               " Snippets functionality
-    NeoBundle 'Shougo/neosnippet-snippets'      " Useful snippets
-    NeoBundle 'Shougo/neocomplete.vim'          " Completion
+    call dein#add('Shougo/neosnippet')               " Snippets functionality
+    call dein#add('Shougo/neosnippet-snippets')      " Useful snippets
+    call dein#add('Shougo/neocomplete.vim')          " Completion
 endif
 
-NeoBundle 'kien/ctrlp.vim'                  " File searcher
-NeoBundle 'qpkorr/vim-bufkill'              " Close buffer without closing window
-NeoBundle 'scrooloose/nerdtree'             " File explorer
-NeoBundle 'scrooloose/nerdcommenter'        " Commenting shortcuts
-NeoBundle 'scrooloose/syntastic'            " Syntax errors
-NeoBundle 'tpope/vim-fugitive'              " Git
-NeoBundle 'tpope/vim-surround'              " Surround shortcuts
-NeoBundle 'tpope/vim-repeat'                " Repeat stuff
-NeoBundle 'godlygeek/tabular'               " Easy alignment of variables
-NeoBundle 'Raimondi/delimitMate'            " Matching parentheses
-NeoBundle 'nathanaelkane/vim-indent-guides' " Indent visuals
-NeoBundle 'majutsushi/tagbar'               " Tag browsing
-NeoBundle 'mbbill/undotree'                 " Undo tree
-NeoBundle 'benmills/vimux'                  " tmux + vim
-"NeoBundle 'christoomey/vim-tmux-navigator'  " easier tmux navigation
-NeoBundle 'jceb/vim-orgmode'                " Might be useful
+call dein#add('kien/ctrlp.vim')                  " File searcher
+call dein#add('qpkorr/vim-bufkill')              " Close buffer without closing window
+call dein#add('scrooloose/nerdtree')             " File explorer
+call dein#add('scrooloose/nerdcommenter')        " Commenting shortcuts
+call dein#add('scrooloose/syntastic')            " Syntax errors
+call dein#add('tpope/vim-fugitive')              " Git
+call dein#add('tpope/vim-surround')              " Surround shortcuts
+call dein#add('tpope/vim-repeat')                " Repeat stuff
+call dein#add('godlygeek/tabular')               " Easy alignment of variables
+call dein#add('Raimondi/delimitMate')            " Matching parentheses
+call dein#add('nathanaelkane/vim-indent-guides') " Indent visuals
+call dein#add('majutsushi/tagbar')               " Tag browsing
+call dein#add('mbbill/undotree')                 " Undo tree
+call dein#add('benmills/vimux')                  " tmux + vim
+"call dein#add('christoomey/vim-tmux-navigator')  " easier tmux navigation
+"call dein#add('jceb/vim-orgmode')                " Might be useful
 
 " Language specific
-NeoBundle 'pangloss/vim-javascript'         " Javscript indentations
-NeoBundle 'elzr/vim-json'                   " JSON Highlighting
-NeoBundle 'mxw/vim-jsx'                     " JSX for React.js
-NeoBundle 'tpope/vim-markdown'              " Markdown support
-NeoBundle 'vim-pandoc/vim-pandoc'           " Pandoc
-NeoBundle 'vim-pandoc/vim-pandoc-syntax'    " Pandoc Syntax
-NeoBundle 'tmux-plugins/vim-tmux'           " tmux file highlighting
-NeoBundle 'PotatoesMaster/i3-vim-syntax'    " i3 highlighting
-NeoBundle 'wlangstroth/vim-racket'          " Racket
-NeoBundle 'keith/swift.vim'                 " Swift
+call dein#add('pangloss/vim-javascript')         " Javscript indentations
+call dein#add('elzr/vim-json')                   " JSON Highlighting
+call dein#add('mxw/vim-jsx')                     " JSX for React.js
+call dein#add('tpope/vim-markdown')              " Markdown support
+call dein#add('vim-pandoc/vim-pandoc')           " Pandoc
+call dein#add('vim-pandoc/vim-pandoc-syntax')    " Pandoc Syntax
+call dein#add('tmux-plugins/vim-tmux')           " tmux file highlighting
+call dein#add('PotatoesMaster/i3-vim-syntax')    " i3 highlighting
+call dein#add('wlangstroth/vim-racket')          " Racket
+call dein#add('keith/swift.vim')                 " Swift
+call dein#add('Shougo/vimproc.vim', {'build': 'make'})
 
 " Utilities
-NeoBundle 'Shougo/vimproc.vim', {
-      \ 'build': {
-        \ 'mac': 'make -f make_mac.mak',
-        \ 'unix': 'make -f make_unix.mak',
-        \ 'cygwin': 'make -f make_cygwin.mak',
-        \ 'windows': 'mingw32-make -f make_mingw32.mak',
-      \ },
-    \ }
 
-" Unite requires latest vim version
-NeoBundle 'Shougo/unite.vim'                " Interface for navigation
-NeoBundle 'Shougo/neomru.vim'
+call dein#add('Shougo/unite.vim')                " Interface for navigation
+call dein#add('Shougo/neomru.vim')
 
-NeoBundleLazy 'gregsexton/gitv', {'depends':['tpope/vim-fugitive'],
-      \ 'autoload':{'commands':'Gitv'}} "{{{
-nnoremap <silent> <leader>gv :Gitv<CR>
-nnoremap <silent> <leader>gV :Gitv!<CR>
+call dein#add('gregsexton/gitv', {'depends':['tpope/vim-fugitive'], 'on_cmd': 'Gitv'}) "{{{
+  nnoremap <silent> <leader>gv :Gitv<CR>
+  nnoremap <silent> <leader>gV :Gitv!<CR>
 "}}}
 
-call neobundle#end()
+call dein#end()
+if dein#check_install()
+  call dein#install()
+endif
+
 filetype plugin indent on
-NeoBundleCheck " Check for missing plugins on startup
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins Settings
@@ -205,7 +200,6 @@ autocmd Filetype tex nmap <silent> <buffer> [compile] :call VimuxRunCommand("xel
 autocmd Filetype racket nmap <silent> <buffer> [compile] :call VimuxRunCommand("racket ".bufname("%"))<CR>
 autocmd Filetype python nmap <silent> <buffer> [compile] :call VimuxRunCommand("python ".bufname("%"))<CR>
 autocmd Filetype c,cpp,cc nmap <silent> <buffer> [compile] :call VimuxRunCommand("g++ ".bufname("%")." && ./a.out")<CR>
-
 
 map [test] <Nop>
 autocmd Filetype python nmap <silent> <buffer> [test] :call VimuxRunCommand("ts ".bufname("%"))<CR>
