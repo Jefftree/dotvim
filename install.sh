@@ -5,4 +5,4 @@ fi
 echo "so ~/.vim/vimrc" > ~/.vimrc
 
 # Install Plugins. Still need to press <CR>
-vim +NeoBundleCheck
+vim
