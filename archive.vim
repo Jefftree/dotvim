@@ -11,6 +11,9 @@ endif
 
 call dein#add('nathanaelkane/vim-indent-guides') " Indent visuals
 
+call dein#add('christoomey/vim-tmux-navigator')  " easier tmux navigation
+call dein#add('jceb/vim-orgmode')                " Might be useful
+
 NeoBundle 'xolox/vim-colorscheme-switcher', {
             \ 'depends' : 'xolox/vim-misc'}  " Quickswitch theme
 
