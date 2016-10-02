@@ -9,6 +9,8 @@ if has("gui_macvim")
     nmap <SwipeRight> :bnext<CR>
 endif
 
+call dein#add('nathanaelkane/vim-indent-guides') " Indent visuals
+
 NeoBundle 'xolox/vim-colorscheme-switcher', {
             \ 'depends' : 'xolox/vim-misc'}  " Quickswitch theme
 
@@ -117,3 +119,16 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 
 " Don't autofold code
 let g:pymode_folding = 0
+
+" Indent guide configuration for terminal
+if v:version > 703
+    " TODO: Enable or disable on startup?
+    "let g:indent_guides_enable_on_vim_startup = 1
+    let g:indent_guides_auto_colors=0
+    function! s:indent_set_console_colors()
+        hi IndentGuidesOdd ctermbg=234 guibg=darkgrey
+        hi IndentGuidesEven ctermbg=233 guibg=darkgrey
+    endfunction
+    autocmd VimEnter,Colorscheme * call s:indent_set_console_colors()
+endif
+

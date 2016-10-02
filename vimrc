@@ -83,7 +83,6 @@ call dein#add('tpope/vim-surround')              " Surround shortcuts
 call dein#add('tpope/vim-repeat')                " Repeat stuff
 call dein#add('godlygeek/tabular')               " Easy alignment of variables
 call dein#add('Raimondi/delimitMate')            " Matching parentheses
-call dein#add('nathanaelkane/vim-indent-guides') " Indent visuals
 call dein#add('majutsushi/tagbar')               " Tag browsing
 call dein#add('mbbill/undotree', {'on_cmd':'UndotreeToggle'})                 " Undo tree
 call dein#add('benmills/vimux')                  " tmux + vim
@@ -112,12 +111,18 @@ call dein#add('gregsexton/gitv', {'on_cmd': 'Gitv'}) "{{{
   nnoremap <silent> <leader>gV :Gitv!<CR>
 "}}}
 
+
+call dein#add('/usr/local/opt/fzf')
+
 call dein#end()
 if dein#check_install()
   call dein#install()
 endif
 
-call map(dein#check_clean(), "delete(v:val, 'rf')")
+function ClearCache()
+  call dein#recache_runtimepath()
+endfunction
+
 
 filetype plugin indent on
 
@@ -153,7 +158,13 @@ function! s:unite_settings()
   imap <buffer> <ESC> <Plug>(unite_exit)
 endfunction
 
-"if exists('b:git_dir')
+" Not working bro
+if exists('b:git_dir')
+  nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=Search -start-insert -input= file_rec/git:!<cr>
+else
+  nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=Search -start-insert -input= file_rec/async:!<cr>
+endif
+
 
 "<c-u> means cursor up one line
 nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=recent file_mru<cr>
@@ -211,13 +222,13 @@ autocmd Filetype pandoc nmap <silent> <buffer> [test] :call VimuxRunCommand("not
 nmap <leader>n [test]
 nmap <leader>m [compile]
 
-function Light()
+function! Light()
     let g:airline_theme='tomorrow'
     colorscheme Tomorrow
     hi clear Conceal
 endfunction
 
-function Dark()
+function! Dark()
     let g:airline_theme='wombat'
     colorscheme jellybeans
     hi CursorLine ctermbg=17
@@ -496,18 +507,6 @@ nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 " Reduce annoying split line impact
 set fillchars+=vert:.
 hi! VertSplit ctermfg=234 ctermbg=234 term=NONE
-
-" Indent guide configuration for terminal
-if v:version > 703
-    " TODO: Enable or disable on startup?
-    "let g:indent_guides_enable_on_vim_startup = 1
-    let g:indent_guides_auto_colors=0
-    function! s:indent_set_console_colors()
-        hi IndentGuidesOdd ctermbg=234 guibg=darkgrey
-        hi IndentGuidesEven ctermbg=233 guibg=darkgrey
-    endfunction
-    autocmd VimEnter,Colorscheme * call s:indent_set_console_colors()
-endif
 
 if has('gui_running')
     colorscheme jellybeans
