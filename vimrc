@@ -129,7 +129,7 @@ filetype plugin indent on
 " Unite
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_rank'])
-call unite#custom#source('file_rec/async', 'ignore_pattern', '\(node_modules/\|vendor/\)')
+call unite#custom#source('file_rec/async', 'ignore_pattern', '\(node_modules/\|vendor/\|env/\)')
 call unite#custom#profile('default', 'context', {
               \ 'winheight': 8,
               \ 'vertical_preview': 1
