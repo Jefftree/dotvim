@@ -135,3 +135,15 @@ if v:version > 703
     autocmd VimEnter,Colorscheme * call s:indent_set_console_colors()
 endif
 
+if !empty($CONEMUBUILD)
+    set term=pcansi
+    set t_Co=256
+    set background=dark
+    let &t_AB="\e[48;5;%dm"
+    let &t_AF="\e[38;5;%dm"
+    set bs=indent,eol,start
+    hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white
+    colorscheme jellybeans
+    highlight Cursor guifg=black
+    highlight iCursor guifg=black
+endif

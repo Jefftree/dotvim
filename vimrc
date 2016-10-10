@@ -194,7 +194,6 @@ endif
 let g:jsx_ext_required = 0
 
 " Auto open new line indentation after {<cr>
-"inoremap {<CR> {<CR>}<Esc>ko
 let delimitMate_expand_cr = 1
 
 " Vimux split fun
@@ -205,7 +204,7 @@ map [compile] <Nop>
 autocmd Filetype pandoc nmap <silent> <buffer> [compile] :Pandoc -s --mathjax<CR>
 autocmd Filetype tex nmap <silent> <buffer> [compile] :call VimuxRunCommand("xelatex ".bufname("%"))<CR>
 autocmd Filetype racket nmap <silent> <buffer> [compile] :call VimuxRunCommand("racket ".bufname("%"))<CR>
-autocmd Filetype python nmap <silent> <buffer> [compile] :call VimuxRunCommand("python ".bufname("%"))<CR>
+autocmd Filetype python nmap <silent> <buffer> [compile] :call VimuxRunCommand("python3 ".bufname("%"))<CR>
 autocmd Filetype c,cpp,cc nmap <silent> <buffer> [compile] :call VimuxRunCommand("g++ ".bufname("%")." && ./a.out")<CR>
 
 map [test] <Nop>
@@ -290,6 +289,7 @@ set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 let g:syntastic_javascript_checkers=['eslint']
+let g:syntastic_python_checkers=['pyflakes']
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
@@ -315,7 +315,6 @@ nnoremap <silent> <leader>ga :Git add %:p<CR><CR>
 nnoremap <silent> <leader>gs :Gstatus<CR>
 nnoremap <silent> <leader>gc :Gcommit -v -q<CR>
 nnoremap <silent> <leader>gd :Gdiff<CR>
-nnoremap <silent> <leader>gl :Glog<CR>
 
 let g:rainbow_active = 0
 
@@ -349,6 +348,7 @@ set lazyredraw                 " less is more
 set noshowmode                 " don't show current mode
 set nowrap                     " don't wrap lines
 set number                     " Line numbers
+set relativenumber             " Relative numbers
 set cursorline                 " Highlight cursor line
 set synmaxcol=200              " Don't highlight long lines
 
@@ -358,7 +358,7 @@ set laststatus=2               " Always show the status line
 
 set expandtab                  " Use spaces instead of tabs
 set smarttab                   " insert tabs according to shiftwidth, not tabstop
-set shiftwidth=2 tabstop=2     " 1 tab == 2 spaces; I love javascript
+set shiftwidth=4 tabstop=4     " 1 tab == 2 spaces; I love javascript
 set shiftround                 " use multiple of shiftwidth when indenting with '<' and '>'
 
 set autoindent                 " always set autoindenting on
@@ -399,7 +399,6 @@ nnoremap <leader>ff :execute 'vimgrep /'.@/.'/g %'<cr>:copen<cr>
  cnoremap <c-e> <end>
  cnoremap <c-h> <s-left>
  cnoremap <c-l> <s-right>
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Moving around, tabs, windows and buffers
@@ -521,7 +520,6 @@ if has('gui_running')
     highlight iCursor guifg=black guibg=#65e770
     hi clear Conceal
 elseif (&term =~ "xterm" || &term =~ "screen-256color" || &term =~ "rxvt-unicode-256color")
-    "TODO: Check 256 color support first
     set t_Co=256
     "let g:airline_theme='tomorrow'
     "colorscheme Tomorrow
@@ -529,15 +527,4 @@ elseif (&term =~ "xterm" || &term =~ "screen-256color" || &term =~ "rxvt-unicode
     colorscheme jellybeans
     hi CursorLine ctermbg=17
     hi clear Conceal
-elseif !empty($CONEMUBUILD)
-    set term=pcansi
-    set t_Co=256
-    set background=dark
-    let &t_AB="\e[48;5;%dm"
-    let &t_AF="\e[38;5;%dm"
-    set bs=indent,eol,start
-    hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white
-    colorscheme jellybeans
-    highlight Cursor guifg=black
-    highlight iCursor guifg=black
 endif
