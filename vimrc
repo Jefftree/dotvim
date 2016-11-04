@@ -65,6 +65,9 @@ call dein#add('vim-airline/vim-airline-themes')  " Airline colors
 call dein#add('airblade/vim-gitgutter')          " Gitgutter
 call dein#add('luochen1990/rainbow')             " double rainbow
 call dein#add('mhinz/vim-startify')              " More useful startup page
+call dein#add('juanedi/predawn.vim')             " Predawn
+call dein#add('xolox/vim-misc')             " Predawn
+call dein#add('xolox/vim-colorscheme-switcher')             " Predawn
 
 " Functionality
 if has('lua')
@@ -86,6 +89,7 @@ call dein#add('Raimondi/delimitMate')            " Matching parentheses
 call dein#add('majutsushi/tagbar')               " Tag browsing
 call dein#add('mbbill/undotree', {'on_cmd':'UndotreeToggle'})                 " Undo tree
 call dein#add('benmills/vimux')                  " tmux + vim
+call dein#add('wellle/targets.vim')              " Edit Motions
 
 " Language specific
 call dein#add('pangloss/vim-javascript', {'on_ft': 'javascript'})         " Javscript indentations
@@ -126,6 +130,8 @@ filetype plugin indent on
 " => Plugins Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+nnoremap <Up> :PrevColorScheme<CR>
+nnoremap <Down> :NextColorScheme<CR>
 " Unite
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_rank'])
@@ -204,7 +210,7 @@ map [compile] <Nop>
 autocmd Filetype pandoc nmap <silent> <buffer> [compile] :Pandoc -s --mathjax<CR>
 autocmd Filetype tex nmap <silent> <buffer> [compile] :call VimuxRunCommand("xelatex ".bufname("%"))<CR>
 autocmd Filetype racket nmap <silent> <buffer> [compile] :call VimuxRunCommand("racket ".bufname("%"))<CR>
-autocmd Filetype python nmap <silent> <buffer> [compile] :call VimuxRunCommand("python3 ".bufname("%"))<CR>
+autocmd Filetype python nmap <silent> <buffer> [compile] :call VimuxRunCommand("python ".bufname("%"))<CR>
 autocmd Filetype c,cpp,cc nmap <silent> <buffer> [compile] :call VimuxRunCommand("g++ ".bufname("%")." && ./a.out")<CR>
 
 map [test] <Nop>
@@ -358,7 +364,7 @@ set laststatus=2               " Always show the status line
 
 set expandtab                  " Use spaces instead of tabs
 set smarttab                   " insert tabs according to shiftwidth, not tabstop
-set shiftwidth=4 tabstop=4     " 1 tab == 2 spaces; I love javascript
+set shiftwidth=2 tabstop=2     " 1 tab == 2 spaces; I love javascript
 set shiftround                 " use multiple of shiftwidth when indenting with '<' and '>'
 
 set autoindent                 " always set autoindenting on
@@ -524,7 +530,9 @@ elseif (&term =~ "xterm" || &term =~ "screen-256color" || &term =~ "rxvt-unicode
     "let g:airline_theme='tomorrow'
     "colorscheme Tomorrow
 
-    colorscheme jellybeans
+    "colorscheme iceberg
+    set background=dark
+    colorscheme hybrid
     hi CursorLine ctermbg=17
     hi clear Conceal
 endif
