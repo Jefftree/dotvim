@@ -25,15 +25,6 @@ augroup ext_syntax
   "au BufRead *.html set filetype=htmlm4
 augroup END
 
-" makefile tab indent correction
-augroup tab_config
-  autocmd!
-  au FileType make setlocal noexpandtab
-  au FileType yaml setlocal shiftwidth=2 tabstop=2
-  au FileType cfg setlocal shiftwidth=1 tabstop=1
-  au FileType js setlocal shiftwidth=2 tabstop=2
-augroup END
-
 set timeoutlen=2000   " mapping timeout
 set ttimeoutlen=50    " keycode timeout
 set nofoldenable      " disable folding
@@ -500,6 +491,16 @@ nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 " Test panel
 " No testing for now
 "nnoremap <silent> <leader>j :sp<CR>:resize 10<CR> :execute 'edit' expand('%:r').'.in'<CR>
+
+
+" makefile tab indent correction
+augroup tab_config
+  autocmd!
+  au FileType make setlocal noexpandtab
+  au FileType yaml setlocal shiftwidth=2 tabstop=2
+  au FileType cfg setlocal shiftwidth=1 tabstop=1
+  au FileType js setlocal shiftwidth=2 tabstop=2
+augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => GUI
