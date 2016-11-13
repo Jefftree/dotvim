@@ -80,6 +80,34 @@ nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=Search -input= file_rec/asyn
     "<c-u> means cursor up one line
 nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
 
+
+call dein#add('scrooloose/syntastic')            " Syntax errors
+
+" Syntastic
+let g:syntastic_enable_racket_racket_checker = 1
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_javascript_checkers=['eslint']
+let g:syntastic_python_checkers=['pyflakes']
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+function! ToggleErrors()
+    let old_last_winnr = winnr('$')
+    lclose
+    if old_last_winnr == winnr('$')
+        SyntasticCheck
+        Errors
+    endif
+endfunction
+
+nnoremap <silent> <C-e> :<C-u>call ToggleErrors()<CR>
+
+
+
 NeoBundle 'klen/python-mode'                " Python
 
 " Python-mode

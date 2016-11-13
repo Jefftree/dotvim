@@ -57,8 +57,8 @@ call dein#add('airblade/vim-gitgutter')          " Gitgutter
 call dein#add('luochen1990/rainbow')             " double rainbow
 call dein#add('mhinz/vim-startify')              " More useful startup page
 call dein#add('juanedi/predawn.vim')             " Predawn
-call dein#add('xolox/vim-misc')             " Predawn
-call dein#add('xolox/vim-colorscheme-switcher')             " Predawn
+call dein#add('xolox/vim-misc')                  " Colorx
+call dein#add('xolox/vim-colorscheme-switcher')  " Colorx
 
 " Functionality
 if has('lua')
@@ -71,7 +71,7 @@ call dein#add('kien/ctrlp.vim')                  " File searcher
 call dein#add('qpkorr/vim-bufkill')              " Close buffer without closing window
 call dein#add('scrooloose/nerdtree')             " File explorer
 call dein#add('scrooloose/nerdcommenter')        " Commenting shortcuts
-call dein#add('scrooloose/syntastic')            " Syntax errors
+call dein#add('neomake/neomake')                 " Neomake
 call dein#add('tpope/vim-fugitive')              " Git
 call dein#add('tpope/vim-surround')              " Surround shortcuts
 call dein#add('tpope/vim-repeat')                " Repeat stuff
@@ -171,8 +171,6 @@ nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=m
 
 " No need to spell check strings
 let g:pandoc#spell#enabled = 0
-
-let g:syntastic_enable_racket_racket_checker = 1
 
 if has('lua')
     let g:neocomplete#enable_at_startup=1
@@ -281,27 +279,16 @@ let g:pandoc#syntax#codeblocks#embeds#langs = ["ruby","python",
                 \ "css","html","javascript","c","cpp","make", "asm", "java"]
 let g:pandoc#syntax#conceal#blacklist = ["list","atx"]
 
-" Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_javascript_checkers=['eslint']
-let g:syntastic_python_checkers=['pyflakes']
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-function! ToggleErrors()
-    let old_last_winnr = winnr('$')
-    lclose
-    if old_last_winnr == winnr('$')
-        SyntasticCheck
-        Errors
+fun! s:FixToggle()
+    let nr = winnr("$")
+    lwindow
+    let nr2 = winnr("$")
+    if nr == nr2
+        lclose
     endif
 endfunction
 
-nnoremap <silent> <C-e> :<C-u>call ToggleErrors()<CR>
+nnoremap <silent> <C-e> :call <SID>FixToggle()<CR>
 
 " Tagbar stuff
 map <silent> <F3> :TagbarToggle<CR>
