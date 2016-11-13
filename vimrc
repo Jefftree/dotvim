@@ -85,7 +85,8 @@ call dein#add('wellle/targets.vim')              " Edit Motions
 " Language specific
 call dein#add('pangloss/vim-javascript', {'on_ft': 'javascript'})         " Javscript indentations
 call dein#add('elzr/vim-json')                   " JSON Highlighting
-"call dein#add('mxw/vim-jsx')                     " JSX for React.js
+call dein#add('moll/vim-node')                   " Node gf shortcuts
+call dein#add('mxw/vim-jsx')                     " JSX for React.js
 call dein#add('tpope/vim-markdown')              " Markdown support
 call dein#add('vim-pandoc/vim-pandoc')           " Pandoc
 call dein#add('vim-pandoc/vim-pandoc-syntax')    " Pandoc Syntax
@@ -93,9 +94,9 @@ call dein#add('tmux-plugins/vim-tmux')           " tmux file highlighting
 call dein#add('PotatoesMaster/i3-vim-syntax')    " i3 highlighting
 call dein#add('wlangstroth/vim-racket')          " Racket
 call dein#add('keith/swift.vim')                 " Swift
-call dein#add('Shougo/vimproc.vim', {'build': 'make'})
 
 " Utilities
+call dein#add('Shougo/vimproc.vim', {'build': 'make'})
 call dein#add('Shougo/unite.vim')                " Interface for navigation
 call dein#add('Shougo/neomru.vim')
 
