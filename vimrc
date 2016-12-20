@@ -22,6 +22,10 @@ augroup ext_syntax
   au BufNewFile,BufFilePre,BufRead vimrc set filetype=vim
   au BufNewFile,BufFilePre,BufRead *.wlp4 set filetype=c
   au BufNewFile,BufFilePre,BufRead *.xtx set filetype=tex
+
+  au BufWritePost * Neomake
+  au BufRead * Neomake
+
   "au BufRead *.html set filetype=htmlm4
 augroup END
 
@@ -126,6 +130,8 @@ call unite#custom#profile('default', 'context', {
               \ 'winheight': 8,
               \ 'vertical_preview': 1
               \ })
+
+let g:unite_source_file_rec_max_cache_files = 10000000
 let g:unite_update_time = 200
 let g:unite_split_rule = "botright"
 
@@ -134,7 +140,7 @@ if executable('ag')
     let g:unite_source_grep_command = 'ag'
     let g:unite_source_grep_default_opts =
           \ '-i --vimgrep --hidden --ignore ' .
-          \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+          \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''vendor'''
 endif
 
 nmap <space> [unite]
