@@ -54,11 +54,8 @@ call dein#add('flazz/vim-colorschemes')          " List of common color themes
 call dein#add('bling/vim-airline')               " Status bar
 call dein#add('vim-airline/vim-airline-themes')  " Airline colors
 call dein#add('airblade/vim-gitgutter')          " Gitgutter
-call dein#add('luochen1990/rainbow')             " double rainbow
 call dein#add('mhinz/vim-startify')              " More useful startup page
 call dein#add('juanedi/predawn.vim')             " Predawn
-call dein#add('xolox/vim-misc')                  " Colorx
-call dein#add('xolox/vim-colorscheme-switcher')  " Colorx
 
 " Functionality
 if has('lua')
@@ -78,12 +75,12 @@ call dein#add('tpope/vim-repeat')                " Repeat stuff
 call dein#add('godlygeek/tabular')               " Easy alignment of variables
 call dein#add('Raimondi/delimitMate')            " Matching parentheses
 call dein#add('majutsushi/tagbar')               " Tag browsing
-call dein#add('mbbill/undotree', {'on_cmd':'UndotreeToggle'})                 " Undo tree
+call dein#add('mbbill/undotree')                 " Undo tree
 call dein#add('benmills/vimux')                  " tmux + vim
 call dein#add('wellle/targets.vim')              " Edit Motions
 
 " Language specific
-call dein#add('pangloss/vim-javascript', {'on_ft': 'javascript'})         " Javscript indentations
+call dein#add('pangloss/vim-javascript')         " Javscript indentations
 call dein#add('elzr/vim-json')                   " JSON Highlighting
 call dein#add('moll/vim-node')                   " Node gf shortcuts
 call dein#add('mxw/vim-jsx')                     " JSX for React.js
@@ -106,8 +103,6 @@ call dein#add('gregsexton/gitv', {'on_cmd': 'Gitv'}) "{{{
   nnoremap <silent> <leader>gV :Gitv!<CR>
 "}}}
 
-call dein#add('/usr/local/opt/fzf')
-
 call dein#end()
 if dein#check_install()
   call dein#install()
@@ -123,8 +118,6 @@ filetype plugin indent on
 " => Plugins Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-nnoremap <Up> :PrevColorScheme<CR>
-nnoremap <Down> :NextColorScheme<CR>
 " Unite
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_rank'])
@@ -301,8 +294,6 @@ nnoremap <silent> <leader>ga :Git add %:p<CR><CR>
 nnoremap <silent> <leader>gs :Gstatus<CR>
 nnoremap <silent> <leader>gc :Gcommit -v -q<CR>
 nnoremap <silent> <leader>gd :Gdiff<CR>
-
-let g:rainbow_active = 0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General Settings
@@ -522,7 +513,7 @@ elseif (&term =~ "xterm" || &term =~ "screen-256color" || &term =~ "rxvt-unicode
 
     "colorscheme iceberg
     set background=dark
-    colorscheme hybrid
+    colorscheme jellybeans
     hi CursorLine ctermbg=17
     hi clear Conceal
 endif

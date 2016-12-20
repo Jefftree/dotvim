@@ -107,6 +107,8 @@ endfunction
 nnoremap <silent> <C-e> :<C-u>call ToggleErrors()<CR>
 
 
+call dein#add('luochen1990/rainbow')             " double rainbow
+let g:rainbow_active = 0
 
 NeoBundle 'klen/python-mode'                " Python
 
