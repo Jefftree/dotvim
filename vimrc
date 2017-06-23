@@ -71,7 +71,7 @@ endif
 call dein#add('kien/ctrlp.vim')                  " File searcher
 call dein#add('qpkorr/vim-bufkill')              " Close buffer without closing window
 call dein#add('scrooloose/nerdtree')             " File explorer
-call dein#add('scrooloose/nerdcommenter')        " Commenting shortcuts
+call dein#add('tpope/vim-commentary')            " Commenting shortcuts
 call dein#add('neomake/neomake')                 " Neomake
 call dein#add('tpope/vim-fugitive')              " Git
 call dein#add('tpope/vim-surround')              " Surround shortcuts
