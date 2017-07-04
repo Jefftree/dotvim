@@ -59,7 +59,6 @@ call dein#add('bling/vim-airline')               " Status bar
 call dein#add('vim-airline/vim-airline-themes')  " Airline colors
 call dein#add('airblade/vim-gitgutter')          " Gitgutter
 call dein#add('mhinz/vim-startify')              " More useful startup page
-call dein#add('juanedi/predawn.vim')             " Predawn
 
 " Functionality
 if has('lua')
@@ -434,8 +433,6 @@ nnoremap <F6> :e %:p:s,.h$,.X123X,:s,.cc$,.h,:s,.X123X$,.cc,<CR>
 
 " Quick access to config files. TODO: May need to remap
 nmap <leader>, :e ~/.vim/vimrc<CR>
-nmap <leader>. :e ~/.vim/sandbox.vim<CR>
-nmap <leader>t :e ~/.tmux.conf<CR>
 
 " Faster saving
 nmap <leader>w :w!<cr>
@@ -517,7 +514,6 @@ elseif (&term =~ "xterm" || &term =~ "screen-256color" || &term =~ "rxvt-unicode
     "let g:airline_theme='tomorrow'
     "colorscheme Tomorrow
 
-    "colorscheme iceberg
     set background=dark
     colorscheme jellybeans
     hi CursorLine ctermbg=17
