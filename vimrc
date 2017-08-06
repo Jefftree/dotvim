@@ -93,8 +93,6 @@ call dein#add('vim-pandoc/vim-pandoc-syntax')    " Pandoc Syntax
 call dein#add('tmux-plugins/vim-tmux')           " tmux file highlighting
 call dein#add('PotatoesMaster/i3-vim-syntax')    " i3 highlighting
 call dein#add('wlangstroth/vim-racket')          " Racket
-call dein#add('digitaltoad/vim-pug')             " Jade
-call dein#add('keith/swift.vim')                 " Swift
 
 " Utilities
 call dein#add('Shougo/vimproc.vim', {'build': 'make'})
