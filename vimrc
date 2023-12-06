@@ -49,69 +49,61 @@ if s:is_windows
     set rtp+=~/.vim
 endif
 
-set rtp+=~/.vim/bundle/repos/github.com/Shougo/dein.vim
-call dein#begin(expand('~/.vim/bundle/'))
-call dein#add('Shougo/dein.vim')
+" Plugins will be downloaded under the specified directory.
+call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
+
+" Declare the list of plugins.
+Plug 'tpope/vim-sensible'
+Plug 'junegunn/seoul256.vim'
 
 " Interface
-call dein#add('flazz/vim-colorschemes')          " List of common color themes
-call dein#add('bling/vim-airline')               " Status bar
-call dein#add('vim-airline/vim-airline-themes')  " Airline colors
-call dein#add('airblade/vim-gitgutter')          " Gitgutter
-call dein#add('mhinz/vim-startify')              " More useful startup page
+Plug 'flazz/vim-colorschemes'          " List of common color themes
+Plug 'bling/vim-airline'               " Status bar
+Plug 'vim-airline/vim-airline-themes'  " Airline colors
+Plug 'airblade/vim-gitgutter'          " Gitgutter
+Plug 'mhinz/vim-startify'              " More useful startup page
 
 " Functionality
 if has('lua')
-    call dein#add('Shougo/neosnippet')               " Snippets functionality
-    call dein#add('Shougo/neosnippet-snippets')      " Useful snippets
-    call dein#add('Shougo/neocomplete.vim')          " Completion
+    Plug 'Shougo/neosnippet'               " Snippets functionality
+    Plug 'Shougo/neosnippet-snippets'      " Useful snippets
+    Plug 'Shougo/neocomplete.vim'          " Completion
 endif
 
-call dein#add('kien/ctrlp.vim')                  " File searcher
-call dein#add('qpkorr/vim-bufkill')              " Close buffer without closing window
-call dein#add('scrooloose/nerdtree')             " File explorer
-call dein#add('tpope/vim-commentary')            " Commenting shortcuts
-call dein#add('neomake/neomake')                 " Neomake
-call dein#add('tpope/vim-fugitive')              " Git
-call dein#add('tpope/vim-surround')              " Surround shortcuts
-call dein#add('tpope/vim-repeat')                " Repeat stuff
-call dein#add('godlygeek/tabular')               " Easy alignment of variables
-call dein#add('Raimondi/delimitMate')            " Matching parentheses
-call dein#add('majutsushi/tagbar')               " Tag browsing
-call dein#add('mbbill/undotree')                 " Undo tree
-call dein#add('benmills/vimux')                  " tmux + vim
-call dein#add('wellle/targets.vim')              " Edit Motions
+Plug 'kien/ctrlp.vim'                  " File searcher
+Plug 'qpkorr/vim-bufkill'              " Close buffer without closing window
+Plug 'scrooloose/nerdtree'             " File explorer
+Plug 'tpope/vim-commentary'            " Commenting shortcuts
+Plug 'neomake/neomake'                 " Neomake
+Plug 'tpope/vim-fugitive'              " Git
+Plug 'tpope/vim-surround'              " Surround shortcuts
+Plug 'tpope/vim-repeat'                " Repeat stuff
+Plug 'godlygeek/tabular'               " Easy alignment of variables
+Plug 'Raimondi/delimitMate'            " Matching parentheses
+Plug 'majutsushi/tagbar'               " Tag browsing
+Plug 'mbbill/undotree'                 " Undo tree
+Plug 'benmills/vimux'                  " tmux + vim
+Plug 'wellle/targets.vim'              " Edit Motions
 
 " Language specific
-call dein#add('pangloss/vim-javascript')         " Javscript indentations
-call dein#add('elzr/vim-json')                   " JSON Highlighting
-call dein#add('moll/vim-node')                   " Node gf shortcuts
-call dein#add('mxw/vim-jsx')                     " JSX for React.js
-call dein#add('tpope/vim-markdown')              " Markdown support
-call dein#add('vim-pandoc/vim-pandoc')           " Pandoc
-call dein#add('vim-pandoc/vim-pandoc-syntax')    " Pandoc Syntax
-call dein#add('tmux-plugins/vim-tmux')           " tmux file highlighting
-call dein#add('PotatoesMaster/i3-vim-syntax')    " i3 highlighting
-call dein#add('wlangstroth/vim-racket')          " Racket
+Plug 'pangloss/vim-javascript'         " Javscript indentations
+Plug 'elzr/vim-json'                   " JSON Highlighting
+Plug 'moll/vim-node'                   " Node gf shortcuts
+Plug 'mxw/vim-jsx'                     " JSX for React.js
+Plug 'tpope/vim-markdown'              " Markdown support
+Plug 'vim-pandoc/vim-pandoc'           " Pandoc
+Plug 'vim-pandoc/vim-pandoc-syntax'    " Pandoc Syntax
+Plug 'tmux-plugins/vim-tmux'           " tmux file highlighting
+Plug 'PotatoesMaster/i3-vim-syntax'    " i3 highlighting
+Plug 'wlangstroth/vim-racket'          " Racket
 
 " Utilities
-call dein#add('Shougo/vimproc.vim', {'build': 'make'})
-call dein#add('Shougo/unite.vim')                " Interface for navigation
-call dein#add('Shougo/neomru.vim')
+Plug 'Shougo/vimproc.vim'
+Plug 'Shougo/unite.vim'                " Interface for navigation
+Plug 'Shougo/neomru.vim'
 
-call dein#add('gregsexton/gitv', {'on_cmd': 'Gitv'}) "{{{
-  nnoremap <silent> <leader>gv :Gitv<CR>
-  nnoremap <silent> <leader>gV :Gitv!<CR>
-"}}}
-
-call dein#end()
-if dein#check_install()
-  call dein#install()
-endif
-
-function ClearCache()
-  call dein#recache_runtimepath()
-endfunction
+" List ends here. Plugins become visible to Vim after this call.
+call plug#end()
 
 filetype plugin indent on
 
