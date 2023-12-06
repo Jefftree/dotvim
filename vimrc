@@ -62,13 +62,6 @@ Plug 'vim-airline/vim-airline-themes'  # Airline colors
 Plug 'airblade/vim-gitgutter'          # Gitgutter
 Plug 'mhinz/vim-startify'              # More useful startup page
 
-# Functionality
-if has('lua')
-    Plug 'Shougo/neosnippet'               # Snippets functionality
-    Plug 'Shougo/neosnippet-snippets'      # Useful snippets
-    Plug 'Shougo/neocomplete.vim'          # Completion
-endif
-
 Plug 'kien/ctrlp.vim'                  # File searcher
 Plug 'qpkorr/vim-bufkill'              # Close buffer without closing window
 Plug 'scrooloose/nerdtree'             # File explorer
@@ -87,11 +80,9 @@ Plug 'wellle/targets.vim'              # Edit Motions
 # Language specific
 Plug 'pangloss/vim-javascript'         # Javscript indentations
 Plug 'elzr/vim-json'                   # JSON Highlighting
-Plug 'moll/vim-node'                   # Node gf shortcuts
 Plug 'mxw/vim-jsx'                     # JSX for React.js
 Plug 'tpope/vim-markdown'              # Markdown support
 Plug 'tmux-plugins/vim-tmux'           # tmux file highlighting
-Plug 'PotatoesMaster/i3-vim-syntax'    # i3 highlighting
 
 # List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -101,19 +92,6 @@ filetype plugin indent on
 ###############################################################
 # => Plugins Settings
 ###############################################################
-
-if has('lua')
-    let g:neocomplete#enable_at_startup=1
-
-    imap <expr><TAB> neosnippet#expandable_or_jumpable() ? #\<Plug>(neosnippet_expand_or_jump)# : (pumvisible() ? #\<C-n># : #<TAB>#)
-    smap <expr><TAB> neosnippet#expandable_or_jumpable() ? #\<Plug>(neosnippet_expand_or_jump)# : #\<TAB>#
-    imap <expr><S-TAB> pumvisible() ? #\<C-p># : ##
-    smap <expr><S-TAB> pumvisible() ? #\<C-p># : ##
-
-    # Just for u colin
-    imap <expr><Up> pumvisible() ? neocomplete#smart_close_popup() . #\<Up># : #<Up>#
-    imap <expr><Down> pumvisible() ? neocomplete#smart_close_popup() . #\<Down># : #<Down>#
-endif
 
 # JSX Enabled on all JS Files
 let g:jsx_ext_required = 0
