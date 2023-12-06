@@ -71,7 +71,6 @@ Plug 'tpope/vim-surround'              " Surround shortcuts
 Plug 'tpope/vim-repeat'                " Repeat stuff
 Plug 'godlygeek/tabular'               " Easy alignment of variables
 Plug 'Raimondi/delimitMate'            " Matching parentheses
-Plug 'majutsushi/tagbar'               " Tag browsing
 Plug 'mbbill/undotree'                 " Undo tree
 Plug 'benmills/vimux'                  " tmux + vim
 Plug 'wellle/targets.vim'              " Edit Motions
@@ -151,35 +150,15 @@ if executable('ag')
 endif
 
 " Airline tabline
-"let g:airline_powerline_fonts = 1 " Too much effort to patch fonts on all machines
-" let g:airline"extensions"tabline"enabled = 1
 let g:airline_theme='wombat'
 let g:airline_left_sep=''
 let g:airline_right_sep=''
-" let g:airline"extensions"tabline"left_sep = ' '
-" let g:airline"extensions"tabline"left_alt_sep = '|'
 
 " Startify
 let g:startify_change_to_vcs_root = 1
 let g:startify_session_persistence = 0		" automatically update sessions
 let g:startify_show_sessions = 1
 nnoremap <F1> :Startify<cr>
-
-fun! s:FixToggle()
-    let nr = winnr("$")
-    lwindow
-    let nr2 = winnr("$")
-    if nr == nr2
-        lclose
-    endif
-endfunction
-
-nnoremap <silent> <C-e> :call <SID>FixToggle()<CR>
-
-" Tagbar stuff
-map <silent> <F3> :TagbarToggle<CR>
-let g:tagbar_autofocus = 1
-let g:tagbar_compact = 1
 
 " Git
 nnoremap <silent> <leader>ga :Git add %:p<CR><CR>
