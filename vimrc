@@ -91,8 +91,6 @@ Plug 'elzr/vim-json'                   " JSON Highlighting
 Plug 'moll/vim-node'                   " Node gf shortcuts
 Plug 'mxw/vim-jsx'                     " JSX for React.js
 Plug 'tpope/vim-markdown'              " Markdown support
-Plug 'vim-pandoc/vim-pandoc'           " Pandoc
-Plug 'vim-pandoc/vim-pandoc-syntax'    " Pandoc Syntax
 Plug 'tmux-plugins/vim-tmux'           " tmux file highlighting
 Plug 'PotatoesMaster/i3-vim-syntax'    " i3 highlighting
 Plug 'wlangstroth/vim-racket'          " Racket
@@ -158,8 +156,6 @@ nnoremap <silent> [unite]s :<C-u>Unite buffer<cr>
 nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
 nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
 
-" No need to spell check strings
-let g:pandoc#spell#enabled = 0
 
 if has('lua')
     let g:neocomplete#enable_at_startup=1
@@ -186,7 +182,6 @@ let g:VimuxOrientation = "v"
 let g:VimuxHeight = "10"
 
 map [compile] <Nop>
-autocmd Filetype pandoc nmap <silent> <buffer> [compile] :Pandoc -s --mathjax<CR>
 autocmd Filetype tex nmap <silent> <buffer> [compile] :call VimuxRunCommand("xelatex ".bufname("%"))<CR>
 autocmd Filetype racket nmap <silent> <buffer> [compile] :call VimuxRunCommand("racket ".bufname("%"))<CR>
 autocmd Filetype python nmap <silent> <buffer> [compile] :call VimuxRunCommand("python ".bufname("%"))<CR>
@@ -194,8 +189,6 @@ autocmd Filetype c,cpp,cc nmap <silent> <buffer> [compile] :call VimuxRunCommand
 
 map [test] <Nop>
 autocmd Filetype python nmap <silent> <buffer> [test] :call VimuxRunCommand("ts ".bufname("%"))<CR>
-autocmd Filetype pandoc nmap <silent> <buffer> [test] :Pandoc -s --mathjax pdf<CR>
-autocmd Filetype pandoc nmap <silent> <buffer> [test] :call VimuxRunCommand("notes ".bufname("%")." pdf")<CR>
 "autocmd Filetype tex nmap <silent> <buffer> [test] :call VimuxRunCommand("pdflatex ".bufname("%"))<CR>
 
 nmap <leader>n [test]
@@ -259,14 +252,6 @@ let g:startify_change_to_vcs_root = 1
 let g:startify_session_persistence = 0		" automatically update sessions
 let g:startify_show_sessions = 1
 nnoremap <F1> :Startify<cr>
-
-" Pandoc
-let g:pandoc#modules#disabled = ["folding"]
-let g:pandoc#formatting#smart_autoformat_on_cursormoved = 1
-let g:pandoc#syntax#codeblocks#embeds#langs = ["ruby","python",
-                \ "literatehaskell=lhaskell", "bash=sh","json=javascript",
-                \ "css","html","javascript","c","cpp","make", "asm", "java"]
-let g:pandoc#syntax#conceal#blacklist = ["list","atx"]
 
 fun! s:FixToggle()
     let nr = winnr("$")
