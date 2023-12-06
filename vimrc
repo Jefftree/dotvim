@@ -94,11 +94,6 @@ Plug 'tpope/vim-markdown'              " Markdown support
 Plug 'tmux-plugins/vim-tmux'           " tmux file highlighting
 Plug 'PotatoesMaster/i3-vim-syntax'    " i3 highlighting
 
-" Utilities
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-Plug 'Shougo/unite.vim'                " Interface for navigation
-Plug 'Shougo/neomru.vim'
-
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 
@@ -107,54 +102,6 @@ filetype plugin indent on
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" Unite
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_rank'])
-call unite#custom#source('file_rec/async', 'ignore_pattern', '\(node_modules/\|vendor/\|env/\)')
-call unite#custom#profile('default', 'context', {
-              \ 'winheight': 8,
-              \ 'vertical_preview': 1
-              \ })
-
-let g:unite_source_file_rec_max_cache_files = 10000000
-let g:unite_update_time = 200
-let g:unite_split_rule = "botright"
-
-if executable('ag')
-    let g:unite_source_rec_async_command = 'ag --follow --nocolor --nogroup -g ""'
-    let g:unite_source_grep_command = 'ag'
-    let g:unite_source_grep_default_opts =
-          \ '-i --vimgrep --hidden --ignore ' .
-          \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''vendor'''
-endif
-
-nmap <space> [unite]
-nnoremap [unite] <nop>
-
-autocmd FileType unite call s:unite_settings()
-function! s:unite_settings()
-  nmap <buffer> <ESC> <Plug>(unite_insert_enter)
-  imap <buffer> <ESC> <Plug>(unite_exit)
-endfunction
-
-" Not working bro
-if exists('b:git_dir')
-  nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=Search -start-insert -input= file_rec/git:!<cr>
-else
-  nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=Search -start-insert -input= file_rec/async:!<cr>
-endif
-
-"<c-u> means cursor up one line
-nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=recent file_mru<cr>
-nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=Edit file -start-insert<cr>
-nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=Grep -no-quit grep/git:/:<cr>
-nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=Search -start-insert -input= file_rec/async:!<cr>
-nnoremap <silent> [unite]b :<C-u>Unite -quick-match buffer<cr>
-nnoremap <silent> [unite]s :<C-u>Unite buffer<cr>
-nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
-nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
-
 
 if has('lua')
     let g:neocomplete#enable_at_startup=1
