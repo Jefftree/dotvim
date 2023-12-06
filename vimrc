@@ -95,7 +95,7 @@ Plug 'tmux-plugins/vim-tmux'           " tmux file highlighting
 Plug 'PotatoesMaster/i3-vim-syntax'    " i3 highlighting
 
 " Utilities
-Plug 'Shougo/vimproc.vim'
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'Shougo/unite.vim'                " Interface for navigation
 Plug 'Shougo/neomru.vim'
 
@@ -159,7 +159,6 @@ nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=m
 if has('lua')
     let g:neocomplete#enable_at_startup=1
 
-    "imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ? "\<C-n>" : emmet#expandAbbrIntelligent("\<TAB>"))
     imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ? "\<C-n>" : "<TAB>")
     smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
     imap <expr><S-TAB> pumvisible() ? "\<C-p>" : ""
@@ -187,7 +186,6 @@ autocmd Filetype c,cpp,cc nmap <silent> <buffer> [compile] :call VimuxRunCommand
 
 map [test] <Nop>
 autocmd Filetype python nmap <silent> <buffer> [test] :call VimuxRunCommand("ts ".bufname("%"))<CR>
-"autocmd Filetype tex nmap <silent> <buffer> [test] :call VimuxRunCommand("pdflatex ".bufname("%"))<CR>
 
 nmap <leader>n [test]
 nmap <leader>m [compile]
@@ -443,11 +441,6 @@ autocmd BufWrite *.py,*.md,*.js :call DeleteTrailingWS()
 
 " Reselect paste
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
-
-" Test panel
-" No testing for now
-"nnoremap <silent> <leader>j :sp<CR>:resize 10<CR> :execute 'edit' expand('%:r').'.in'<CR>
-
 
 " makefile tab indent correction
 augroup tab_config
