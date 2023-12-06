@@ -21,7 +21,6 @@ augroup ext_syntax
   au BufNewFile,BufFilePre,BufRead .*rrc,.*lrc set filetype=vim
   au BufNewFile,BufFilePre,BufRead vimrc set filetype=vim
   au BufNewFile,BufFilePre,BufRead *.wlp4 set filetype=c
-  au BufNewFile,BufFilePre,BufRead *.xtx set filetype=tex
 
   au BufWritePost * Neomake
   au BufRead * Neomake
@@ -127,7 +126,6 @@ let g:VimuxOrientation = "v"
 let g:VimuxHeight = "10"
 
 map [compile] <Nop>
-autocmd Filetype tex nmap <silent> <buffer> [compile] :call VimuxRunCommand("xelatex ".bufname("%"))<CR>
 autocmd Filetype python nmap <silent> <buffer> [compile] :call VimuxRunCommand("python ".bufname("%"))<CR>
 autocmd Filetype c,cpp,cc nmap <silent> <buffer> [compile] :call VimuxRunCommand("g++ ".bufname("%")." && ./a.out")<CR>
 
