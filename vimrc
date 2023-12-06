@@ -64,7 +64,6 @@ Plug 'mhinz/vim-startify'              # More useful startup page
 
 Plug 'kien/ctrlp.vim'                  # File searcher
 Plug 'qpkorr/vim-bufkill'              # Close buffer without closing window
-Plug 'scrooloose/nerdtree'             # File explorer
 Plug 'tpope/vim-commentary'            # Commenting shortcuts
 Plug 'neomake/neomake'                 # Neomake
 Plug 'tpope/vim-fugitive'              # Git
@@ -150,12 +149,6 @@ let g:ctrlp_show_hidden=0
 if executable('ag')
   let g:ctrlp_user_command = 'ag -l --nocolor -g ## %s'
 endif
-
-# NERDtree file explorer
-let NERDTreeQuitOnOpen=0
-let NERDTreeIgnore=['\.git','\.hg','\.o$','\.d$','^node_modules$', '^coverage$']
-nnoremap <silent> <F2> :NERDTreeToggle<CR>
-nnoremap <silent> <F4> :NERDTreeFind<CR>
 
 # Airline tabline
 #let g:airline_powerline_fonts = 1 # Too much effort to patch fonts on all machines
