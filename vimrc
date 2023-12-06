@@ -93,7 +93,6 @@ Plug 'mxw/vim-jsx'                     " JSX for React.js
 Plug 'tpope/vim-markdown'              " Markdown support
 Plug 'tmux-plugins/vim-tmux'           " tmux file highlighting
 Plug 'PotatoesMaster/i3-vim-syntax'    " i3 highlighting
-Plug 'wlangstroth/vim-racket'          " Racket
 
 " Utilities
 Plug 'Shougo/vimproc.vim'
@@ -183,7 +182,6 @@ let g:VimuxHeight = "10"
 
 map [compile] <Nop>
 autocmd Filetype tex nmap <silent> <buffer> [compile] :call VimuxRunCommand("xelatex ".bufname("%"))<CR>
-autocmd Filetype racket nmap <silent> <buffer> [compile] :call VimuxRunCommand("racket ".bufname("%"))<CR>
 autocmd Filetype python nmap <silent> <buffer> [compile] :call VimuxRunCommand("python ".bufname("%"))<CR>
 autocmd Filetype c,cpp,cc nmap <silent> <buffer> [compile] :call VimuxRunCommand("g++ ".bufname("%")." && ./a.out")<CR>
 
